@@ -4,15 +4,15 @@ import intelligent_commerce.intelligent_commerce.member.domain.Address
 import intelligent_commerce.intelligent_commerce.member.domain.Member
 import intelligent_commerce.intelligent_commerce.member.domain.Role
 
-data class MemberResponse(
+data class MemberInfo(
     val id: Long?,
     val bankbookNum: String,
     val auth: Role,
     val address: Address
 ) {
     companion object {
-        fun entityToDto(member: Member): MemberResponse {
-            return MemberResponse(member.id, member.bankbookNum, member.auth, member.address)
+        fun entityToDto(member: Member): MemberInfo {
+            return MemberInfo(member.id, member.bankbookNum, member.auth, member.address)
         }
     }
 }
