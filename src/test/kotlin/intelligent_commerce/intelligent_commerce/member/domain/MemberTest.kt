@@ -12,7 +12,7 @@ class MemberTest {
         val email = "test_updatePw@gmail.com"
         val pw = "1234"
         val bankbookNum = "1234567898765"
-        val member = Member.create(email, pw, bankbookNum, Role.MEMBER)
+        val member = Member.create(email, pw, bankbookNum, Role.MEMBER, Address("seoul", "잠실-1-1", "102동 102호"))
 
         //when
         val newPassword = "1111"
@@ -29,7 +29,7 @@ class MemberTest {
         val email = "test_updateBankbook@gmail.com"
         val pw = "1234"
         val bankbookNum = "1234567898765"
-        val member = Member.create(email, pw, bankbookNum, Role.MEMBER)
+        val member = Member.create(email, pw, bankbookNum, Role.MEMBER, Address("seoul", "잠실-1-1", "102동 102호"))
 
         //when
         val newBankbookNum = "9876543212345"
@@ -38,5 +38,28 @@ class MemberTest {
         //then
         Assertions.assertThat(member.bankbookNum)
             .isEqualTo(newBankbookNum)
+    }
+
+    @Test
+    fun updateAddressTest() {
+        //given
+        val email = "test_updateBankbook@gmail.com"
+        val pw = "1234"
+        val bankbookNum = "1234567898765"
+        val member = Member.create(email, pw, bankbookNum, Role.MEMBER, Address("seoul", "잠실-1-1", "102동 102호"))
+
+        //when
+        val newCity = "seoul"
+        val newRoadNum = "종로-1-1"
+        val newDetail = "301동 505호"
+        member.updateAddress(newCity, newRoadNum, newDetail)
+
+        //then
+        Assertions.assertThat(member.address.city)
+            .isEqualTo(newCity)
+        Assertions.assertThat(member.address.roadNum)
+            .isEqualTo(newRoadNum)
+        Assertions.assertThat(member.address.detail)
+            .isEqualTo(newDetail)
     }
 }
