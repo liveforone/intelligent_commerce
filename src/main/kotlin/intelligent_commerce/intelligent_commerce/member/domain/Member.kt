@@ -17,13 +17,14 @@ class Member private constructor(
     @Column(unique = true) val email: String,
     var pw: String,
     var bankbookNum: String,
-    @Convert(converter = RoleConverter::class) val auth: Role
+    @Convert(converter = RoleConverter::class) val auth: Role,
+    @Embedded var address: Address
 ) : UserDetails {
 
     companion object {
         private fun createIdentity(): String = UUID.randomUUID().toString()
 
-        fun create(email: String, pw: String, bankbookNum: String, auth: Role): Member {
+        fun create(email: String, pw: String, bankbookNum: String, auth: Role, address: Address): Member {
             val adminEmail = "admin_intelligent_commerce@gmail.com"
 
             return Member(
@@ -32,7 +33,8 @@ class Member private constructor(
                 email,
                 PasswordUtil.encodePassword(pw),
                 bankbookNum,
-                if (email == adminEmail) Role.ADMIN else auth
+                if (email == adminEmail) Role.ADMIN else auth,
+                address
             )
         }
     }
@@ -44,6 +46,10 @@ class Member private constructor(
 
     fun updateBankbookNum(bankbookNum: String) {
         this.bankbookNum = bankbookNum
+    }
+
+    fun updateAddress(city: String, roadNum: String, detail: String) {
+        this.address = Address(city, roadNum, detail)
     }
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
