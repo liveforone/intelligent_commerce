@@ -12,6 +12,7 @@ import intelligent_commerce.intelligent_commerce.member.service.command.MemberCo
 import intelligent_commerce.intelligent_commerce.member.service.query.MemberQueryService
 import intelligent_commerce.intelligent_commerce.jwt.constant.JwtConstant
 import intelligent_commerce.intelligent_commerce.member.dto.update.UpdateAddress
+import intelligent_commerce.intelligent_commerce.mileage.service.command.MileageCommandService
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.Valid
 import org.slf4j.LoggerFactory
@@ -31,17 +32,19 @@ inline fun <reified T> T.logger() = LoggerFactory.getLogger(T::class.java)!!
 class MemberController @Autowired constructor(
     private val memberCommandService: MemberCommandService,
     private val memberQueryService: MemberQueryService,
+    private val mileageCommandService: MileageCommandService,
     private val controllerValidator: ControllerValidator
 ) {
 
     @PostMapping(MemberUrl.SIGNUP_MEMBER)
-    fun signupMember(
+    fun signupMemberWithCreateMileage(
         @RequestBody @Valid signupRequest: SignupRequest,
         bindingResult: BindingResult
     ): ResponseEntity<*> {
         controllerValidator.validateBinding(bindingResult)
 
-        memberCommandService.createMember(signupRequest)
+        val identity = memberCommandService.createMember(signupRequest)
+        mileageCommandService.createMileage(identity)
         logger().info(MemberControllerLog.SIGNUP_SUCCESS.log)
 
         return MemberResponse.signupSuccess()
