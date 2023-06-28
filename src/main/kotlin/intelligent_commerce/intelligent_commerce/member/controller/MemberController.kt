@@ -11,6 +11,7 @@ import intelligent_commerce.intelligent_commerce.member.dto.update.UpdatePasswor
 import intelligent_commerce.intelligent_commerce.member.service.command.MemberCommandService
 import intelligent_commerce.intelligent_commerce.member.service.query.MemberQueryService
 import intelligent_commerce.intelligent_commerce.jwt.constant.JwtConstant
+import intelligent_commerce.intelligent_commerce.member.dto.update.UpdateAddress
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.Valid
 import org.slf4j.LoggerFactory
@@ -107,5 +108,19 @@ class MemberController @Autowired constructor(
         logger().info(MemberControllerLog.UPDATE_BANKBOOK_NUM_SUCCESS.log)
 
         return MemberResponse.updateBankbookNumSuccess()
+    }
+
+    @PutMapping(MemberUrl.UPDATE_ADDRESS)
+    fun updateAddress(
+        @RequestBody @Valid updateAddress: UpdateAddress,
+        bindingResult: BindingResult,
+        principal: Principal
+    ): ResponseEntity<*> {
+        controllerValidator.validateBinding(bindingResult)
+
+        memberCommandService.updateAddress(updateAddress, identity = principal.name)
+        logger().info(MemberControllerLog.UPDATE_ADDRESS_SUCCESS.log)
+
+        return MemberResponse.updateAddressSuccess()
     }
 }
