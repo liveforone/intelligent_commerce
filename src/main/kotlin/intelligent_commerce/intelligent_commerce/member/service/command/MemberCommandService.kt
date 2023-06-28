@@ -2,6 +2,7 @@ package intelligent_commerce.intelligent_commerce.member.service.command
 
 import intelligent_commerce.intelligent_commerce.jwt.JwtTokenProvider
 import intelligent_commerce.intelligent_commerce.jwt.TokenInfo
+import intelligent_commerce.intelligent_commerce.member.domain.Address
 import intelligent_commerce.intelligent_commerce.member.domain.Member
 import intelligent_commerce.intelligent_commerce.member.dto.request.LoginRequest
 import intelligent_commerce.intelligent_commerce.member.dto.request.SignupRequest
@@ -9,6 +10,7 @@ import intelligent_commerce.intelligent_commerce.member.dto.update.UpdateBankboo
 import intelligent_commerce.intelligent_commerce.member.dto.update.UpdatePassword
 import intelligent_commerce.intelligent_commerce.member.repository.MemberRepository
 import intelligent_commerce.intelligent_commerce.member.domain.Role
+import intelligent_commerce.intelligent_commerce.member.dto.update.UpdateAddress
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
@@ -24,17 +26,27 @@ class MemberCommandService @Autowired constructor(
 ) {
 
     fun createMember(signupRequest: SignupRequest): String {
-        return Member.create(signupRequest.email!!, signupRequest.pw!!, signupRequest.bankbookNum!!, Role.MEMBER)
-            .also {
+        return Member.create(
+            signupRequest.email!!,
+            signupRequest.pw!!,
+            signupRequest.bankbookNum!!,
+            Role.MEMBER,
+            Address(signupRequest.city!!, signupRequest.roadNum!!, signupRequest.detail!!)
+        ).also {
                 memberRepository.save(it)
-            }.identity
+        }.identity
     }
 
     fun createSeller(signupRequest: SignupRequest): String {
-        return Member.create(signupRequest.email!!, signupRequest.pw!!, signupRequest.bankbookNum!!, Role.SELLER)
-            .also {
+        return Member.create(
+            signupRequest.email!!,
+            signupRequest.pw!!,
+            signupRequest.bankbookNum!!,
+            Role.SELLER,
+            Address(signupRequest.city!!, signupRequest.roadNum!!, signupRequest.detail!!)
+        ).also {
                 memberRepository.save(it)
-            }.identity
+        }.identity
     }
 
     fun login(loginRequest: LoginRequest): TokenInfo {
@@ -60,6 +72,13 @@ class MemberCommandService @Autowired constructor(
         memberRepository.findOneByIdentity(identity)
             .also {
                 it.updateBankbookNum(updateBankbookNum.bankbookNum!!)
+            }
+    }
+
+    fun updateAddress(updateAddress: UpdateAddress, identity: String) {
+        memberRepository.findOneByIdentity(identity)
+            .also {
+                it.updateAddress(updateAddress.city!!, updateAddress.roadNum!!, updateAddress.detail!!)
             }
     }
 }
