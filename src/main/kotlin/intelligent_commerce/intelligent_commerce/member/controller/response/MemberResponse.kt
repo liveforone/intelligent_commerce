@@ -1,6 +1,6 @@
 package intelligent_commerce.intelligent_commerce.member.controller.response
 
-import intelligent_commerce.intelligent_commerce.member.dto.response.MemberResponse
+import intelligent_commerce.intelligent_commerce.member.dto.response.MemberInfo
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 
@@ -10,6 +10,7 @@ object MemberResponse {
     private const val LOGIN_SUCCESS = "로그인에 성공하였습니다.\n환영합니다."
     private const val UPDATE_PW_SUCCESS = "비밀번호를 성공적으로 변경하였습니다."
     private const val UPDATE_BANKBOOK_NUM_SUCCESS = "계좌번호를 성공적으로 변경하였습니다."
+    private const val UPDATE_ADDRESS_SUCCESS = "주소를 성공적으로 변경하였습니다."
 
     fun signupSuccess(): ResponseEntity<*> {
         return ResponseEntity
@@ -19,9 +20,11 @@ object MemberResponse {
 
     fun loginSuccess(): ResponseEntity<*> = ResponseEntity.ok(LOGIN_SUCCESS)
 
-    fun infoSuccess(member: MemberResponse): ResponseEntity<*> = ResponseEntity.ok(member)
+    fun infoSuccess(member: MemberInfo): ResponseEntity<*> = ResponseEntity.ok(member)
 
     fun updatePwSuccess(): ResponseEntity<*> = ResponseEntity.ok(UPDATE_PW_SUCCESS)
 
     fun updateBankbookNumSuccess(): ResponseEntity<*> = ResponseEntity.ok(UPDATE_BANKBOOK_NUM_SUCCESS)
+
+    fun updateAddressSuccess(): ResponseEntity<*> = ResponseEntity.ok(UPDATE_ADDRESS_SUCCESS)
 }
