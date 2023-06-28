@@ -7,5 +7,6 @@ object MemberUrl {
     const val INFO = "/member/info"
     const val UPDATE_PASSWORD = "/member/update/password"
     const val UPDATE_BANKBOOK_NUM = "/member/update/bankbookNum"
+    const val UPDATE_ADDRESS = "/member/update/address"
     const val PROHIBITION = "/prohibition"
 }
