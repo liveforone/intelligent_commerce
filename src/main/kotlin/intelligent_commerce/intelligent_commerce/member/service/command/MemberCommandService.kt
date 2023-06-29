@@ -1,5 +1,7 @@
 package intelligent_commerce.intelligent_commerce.member.service.command
 
+import intelligent_commerce.intelligent_commerce.exception.exception.MemberException
+import intelligent_commerce.intelligent_commerce.exception.message.MemberExceptionMessage
 import intelligent_commerce.intelligent_commerce.jwt.JwtTokenProvider
 import intelligent_commerce.intelligent_commerce.jwt.TokenInfo
 import intelligent_commerce.intelligent_commerce.member.domain.Address
@@ -10,6 +12,8 @@ import intelligent_commerce.intelligent_commerce.member.dto.update.UpdateBankboo
 import intelligent_commerce.intelligent_commerce.member.dto.update.UpdatePassword
 import intelligent_commerce.intelligent_commerce.member.repository.MemberRepository
 import intelligent_commerce.intelligent_commerce.member.domain.Role
+import intelligent_commerce.intelligent_commerce.member.domain.util.PasswordUtil
+import intelligent_commerce.intelligent_commerce.member.dto.request.WithdrawRequest
 import intelligent_commerce.intelligent_commerce.member.dto.update.UpdateAddress
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -80,5 +84,15 @@ class MemberCommandService @Autowired constructor(
             .also {
                 it.updateAddress(updateAddress.city!!, updateAddress.roadNum!!, updateAddress.detail!!)
             }
+    }
+
+    fun withdraw(withdrawRequest: WithdrawRequest, identity: String) {
+        val member = memberRepository.findOneByIdentity(identity)
+            .also {
+                if (!PasswordUtil.isMatchPassword(withdrawRequest.pw!!, it.pw)) throw MemberException(
+                    MemberExceptionMessage.WRONG_PASSWORD
+                )
+            }
+        memberRepository.delete(member)
     }
 }
