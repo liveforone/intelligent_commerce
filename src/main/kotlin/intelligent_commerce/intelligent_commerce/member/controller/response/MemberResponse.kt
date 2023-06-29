@@ -11,6 +11,7 @@ object MemberResponse {
     private const val UPDATE_PW_SUCCESS = "비밀번호를 성공적으로 변경하였습니다."
     private const val UPDATE_BANKBOOK_NUM_SUCCESS = "계좌번호를 성공적으로 변경하였습니다."
     private const val UPDATE_ADDRESS_SUCCESS = "주소를 성공적으로 변경하였습니다."
+    private const val WITHDRAW_SUCCESS = "회원탈퇴를 성공적으로 마쳤습니다.\n안녕히가세요."
 
     fun signupSuccess(): ResponseEntity<*> {
         return ResponseEntity
@@ -27,4 +28,6 @@ object MemberResponse {
     fun updateBankbookNumSuccess(): ResponseEntity<*> = ResponseEntity.ok(UPDATE_BANKBOOK_NUM_SUCCESS)
 
     fun updateAddressSuccess(): ResponseEntity<*> = ResponseEntity.ok(UPDATE_ADDRESS_SUCCESS)
+
+    fun withdrawSuccess(): ResponseEntity<*> = ResponseEntity.ok(WITHDRAW_SUCCESS)
 }
