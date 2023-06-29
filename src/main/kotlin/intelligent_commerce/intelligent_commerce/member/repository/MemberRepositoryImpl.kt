@@ -6,6 +6,7 @@ import com.linecorp.kotlinjdsl.spring.data.singleQuery
 import intelligent_commerce.intelligent_commerce.exception.exception.MemberCustomException
 import intelligent_commerce.intelligent_commerce.exception.message.MemberMessage
 import intelligent_commerce.intelligent_commerce.member.domain.Member
+import intelligent_commerce.intelligent_commerce.member.dto.response.MemberInfo
 import jakarta.persistence.NoResultException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
@@ -43,6 +44,23 @@ class MemberRepositoryImpl @Autowired constructor(
         return try {
             queryFactory.singleQuery {
                 select(entity(Member::class))
+                from(entity(Member::class))
+                where(column(Member::identity).equal(identity))
+            }
+        } catch (e: NoResultException) {
+            throw MemberCustomException(MemberMessage.MEMBER_IS_NULL.message)
+        }
+    }
+
+    override fun findOneDtoByIdentity(identity: String): MemberInfo {
+        return try {
+            queryFactory.singleQuery {
+                select(listOf(
+                    column(Member::id),
+                    column(Member::bankbookNum),
+                    column(Member::auth),
+                    column(Member::address)
+                ))
                 from(entity(Member::class))
                 where(column(Member::identity).equal(identity))
             }
