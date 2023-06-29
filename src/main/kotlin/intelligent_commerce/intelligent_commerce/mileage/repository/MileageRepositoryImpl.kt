@@ -9,7 +9,7 @@ import intelligent_commerce.intelligent_commerce.exception.exception.MileageCust
 import intelligent_commerce.intelligent_commerce.exception.message.MileageMessage
 import intelligent_commerce.intelligent_commerce.member.domain.Member
 import intelligent_commerce.intelligent_commerce.mileage.domain.Mileage
-import intelligent_commerce.intelligent_commerce.mileage.dto.MileageResponse
+import intelligent_commerce.intelligent_commerce.mileage.dto.MileageInfo
 import jakarta.persistence.NoResultException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
@@ -33,7 +33,7 @@ class MileageRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun findOneDtoByIdentity(identity: String): MileageResponse {
+    override fun findOneDtoByIdentity(identity: String): MileageInfo {
         return try {
             queryFactory.singleQuery {
                 select(listOf(
