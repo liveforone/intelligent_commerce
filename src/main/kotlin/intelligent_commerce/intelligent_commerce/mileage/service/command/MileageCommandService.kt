@@ -28,10 +28,10 @@ class MileageCommandService @Autowired constructor(
             }
     }
 
-    fun rollbackPoint(itemPrice: Long, identity: String) {
+    fun rollbackAddPoint(itemPrice: Long, identity: String) {
         mileageRepository.findOneByIdentity(identity)
             .also {
-                it.rollbackPoint(itemPrice)
+                it.rollbackAddPoint(itemPrice)
             }
     }
 
@@ -39,6 +39,13 @@ class MileageCommandService @Autowired constructor(
         mileageRepository.findOneByIdentity(identity)
             .also {
                 it.subtractPoint(pointToUse)
+            }
+    }
+
+    fun rollbackSubtractPoint(pointToUse: Long, identity: String) {
+        mileageRepository.findOneByIdentity(identity)
+            .also {
+                it.rollbackSubtractPoint(pointToUse)
             }
     }
 }
