@@ -4,7 +4,7 @@ import com.linecorp.kotlinjdsl.querydsl.expression.column
 import com.linecorp.kotlinjdsl.spring.data.SpringDataQueryFactory
 import com.linecorp.kotlinjdsl.spring.data.singleQuery
 import intelligent_commerce.intelligent_commerce.exception.exception.MemberException
-import intelligent_commerce.intelligent_commerce.exception.message.MemberMessage
+import intelligent_commerce.intelligent_commerce.exception.message.MemberExceptionMessage
 import intelligent_commerce.intelligent_commerce.member.domain.Member
 import intelligent_commerce.intelligent_commerce.member.dto.response.MemberInfo
 import jakarta.persistence.NoResultException
@@ -24,7 +24,7 @@ class MemberRepositoryImpl @Autowired constructor(
                 where(column(Member::id).equal(id))
             }
         } catch (e: NoResultException) {
-            throw MemberException(MemberMessage.MEMBER_IS_NULL.message)
+            throw MemberException(MemberExceptionMessage.MEMBER_Exception_IS_NULL)
         }
     }
 
@@ -36,7 +36,7 @@ class MemberRepositoryImpl @Autowired constructor(
                 where(column(Member::email).equal(email))
             }
         } catch (e: NoResultException) {
-            throw MemberException(MemberMessage.MEMBER_IS_NULL.message)
+            throw MemberException(MemberExceptionMessage.MEMBER_Exception_IS_NULL)
         }
     }
 
@@ -48,7 +48,7 @@ class MemberRepositoryImpl @Autowired constructor(
                 where(column(Member::identity).equal(identity))
             }
         } catch (e: NoResultException) {
-            throw MemberException(MemberMessage.MEMBER_IS_NULL.message)
+            throw MemberException(MemberExceptionMessage.MEMBER_Exception_IS_NULL)
         }
     }
 
@@ -65,7 +65,7 @@ class MemberRepositoryImpl @Autowired constructor(
                 where(column(Member::identity).equal(identity))
             }
         } catch (e: NoResultException) {
-            throw MemberException(MemberMessage.MEMBER_IS_NULL.message)
+            throw MemberException(MemberExceptionMessage.MEMBER_Exception_IS_NULL)
         }
     }
 }

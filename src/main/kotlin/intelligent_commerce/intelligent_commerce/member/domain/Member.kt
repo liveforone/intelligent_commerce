@@ -2,7 +2,7 @@ package intelligent_commerce.intelligent_commerce.member.domain
 
 import intelligent_commerce.intelligent_commerce.converter.RoleConverter
 import intelligent_commerce.intelligent_commerce.exception.exception.MemberException
-import intelligent_commerce.intelligent_commerce.exception.message.MemberMessage
+import intelligent_commerce.intelligent_commerce.exception.message.MemberExceptionMessage
 import intelligent_commerce.intelligent_commerce.member.domain.util.PasswordUtil
 import jakarta.persistence.*
 import org.springframework.security.core.GrantedAuthority
@@ -40,7 +40,7 @@ class Member private constructor(
     }
 
     fun updatePw(newPassword: String, oldPassword: String) {
-        if (!PasswordUtil.isMatchPassword(oldPassword, this.pw)) throw MemberException(MemberMessage.WRONG_PASSWORD.message)
+        if (!PasswordUtil.isMatchPassword(oldPassword, this.pw)) throw MemberException(MemberExceptionMessage.WRONG_PASSWORD)
         this.pw = PasswordUtil.encodePassword(newPassword)
     }
 

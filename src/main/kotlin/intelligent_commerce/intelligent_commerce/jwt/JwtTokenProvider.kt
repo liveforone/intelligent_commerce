@@ -1,7 +1,7 @@
 package intelligent_commerce.intelligent_commerce.jwt
 
 import intelligent_commerce.intelligent_commerce.exception.exception.JwtCustomException
-import intelligent_commerce.intelligent_commerce.exception.message.JwtMessage
+import intelligent_commerce.intelligent_commerce.exception.message.JwtExceptionMessage
 import intelligent_commerce.intelligent_commerce.jwt.constant.JwtConstant
 import intelligent_commerce.intelligent_commerce.member.domain.Member
 import org.springframework.beans.factory.annotation.Value
@@ -67,19 +67,19 @@ class JwtTokenProvider(@Value(JwtConstant.SECRET_KEY_PATH) secretKey: String) {
     }
 
     fun validateToken(token: String?): Boolean {
-        token ?: throw JwtCustomException(JwtMessage.TOKEN_IS_NULL.message)
+        token ?: throw JwtCustomException(JwtExceptionMessage.TOKEN_IS_NULL)
 
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token)
             return true
         } catch (e: MalformedJwtException) {
-            logger().info(JwtMessage.INVALID_MESSAGE.message)
+            logger().info(JwtExceptionMessage.INVALID_Exception_MESSAGE.message)
         } catch (e: ExpiredJwtException) {
-            logger().info(JwtMessage.EXPIRED_MESSAGE.message)
+            logger().info(JwtExceptionMessage.EXPIRED_Exception_MESSAGE.message)
         } catch (e: UnsupportedJwtException) {
-            logger().info(JwtMessage.UNSUPPORTED_MESSAGE.message)
+            logger().info(JwtExceptionMessage.UNSUPPORTED_Exception_MESSAGE.message)
         } catch (e: SecurityException) {
-            logger().info(JwtMessage.INVALID_MESSAGE.message)
+            logger().info(JwtExceptionMessage.INVALID_Exception_MESSAGE.message)
         }
         return false
     }

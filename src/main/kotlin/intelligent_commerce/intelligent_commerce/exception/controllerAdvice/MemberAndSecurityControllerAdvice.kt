@@ -21,14 +21,14 @@ class MemberAndSecurityControllerAdvice {
     @ExceptionHandler(MemberException::class)
     fun memberExceptionHandle(memberException: MemberException): ResponseEntity<*> {
         return ResponseEntity
-            .status(HttpStatus.BAD_REQUEST)
+            .status(memberException.memberExceptionMessage.status)
             .body(memberException.message)
     }
 
     @ExceptionHandler(JwtCustomException::class)
     fun jwtCustomException(jwtCustomException: JwtCustomException): ResponseEntity<*> {
         return ResponseEntity
-            .status(HttpStatus.UNAUTHORIZED)
+            .status(jwtCustomException.jwtExceptionMessage.status)
             .body(jwtCustomException.message)
     }
 }

@@ -1,7 +1,7 @@
 package intelligent_commerce.intelligent_commerce.authenticationInfo
 
 import intelligent_commerce.intelligent_commerce.exception.exception.JwtCustomException
-import intelligent_commerce.intelligent_commerce.exception.message.JwtMessage
+import intelligent_commerce.intelligent_commerce.exception.message.JwtExceptionMessage
 import intelligent_commerce.intelligent_commerce.jwt.constant.JwtConstant
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
@@ -40,7 +40,7 @@ class AuthenticationInfo(@Value(JwtConstant.SECRET_KEY_PATH) secretKey: String) 
         return if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(JwtConstant.BEARER_TOKEN)) {
             bearerToken.substring(JwtConstant.TOKEN_SUB_INDEX)
         } else{
-            throw JwtCustomException(JwtMessage.EMPTY_CLAIMS.message)
+            throw JwtCustomException(JwtExceptionMessage.EMPTY_CLAIMS)
         }
     }
 
