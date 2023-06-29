@@ -12,6 +12,7 @@ import intelligent_commerce.intelligent_commerce.member.dto.update.UpdatePasswor
 import intelligent_commerce.intelligent_commerce.member.service.command.MemberCommandService
 import intelligent_commerce.intelligent_commerce.member.service.query.MemberQueryService
 import intelligent_commerce.intelligent_commerce.jwt.constant.JwtConstant
+import intelligent_commerce.intelligent_commerce.logger
 import intelligent_commerce.intelligent_commerce.member.domain.Role
 import intelligent_commerce.intelligent_commerce.member.dto.request.WithdrawRequest
 import intelligent_commerce.intelligent_commerce.member.dto.update.UpdateAddress
@@ -31,8 +32,6 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
-
-inline fun <reified T> T.logger() = LoggerFactory.getLogger(T::class.java)!!
 
 @RestController
 class MemberController @Autowired constructor(

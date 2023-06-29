@@ -3,6 +3,7 @@ package intelligent_commerce.intelligent_commerce.jwt
 import intelligent_commerce.intelligent_commerce.exception.exception.JwtCustomException
 import intelligent_commerce.intelligent_commerce.exception.message.JwtExceptionMessage
 import intelligent_commerce.intelligent_commerce.jwt.constant.JwtConstant
+import intelligent_commerce.intelligent_commerce.logger
 import intelligent_commerce.intelligent_commerce.member.domain.Member
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
@@ -19,8 +20,6 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.User
 import java.security.Key
 import java.util.*
-
-inline fun <reified T> T.logger() = LoggerFactory.getLogger(T::class.java)!!
 
 @Component
 class JwtTokenProvider(@Value(JwtConstant.SECRET_KEY_PATH) secretKey: String) {
