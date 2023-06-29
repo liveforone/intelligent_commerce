@@ -76,7 +76,7 @@ class MileageCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        mileageCommandService.rollbackPoint(itemPrice, identity)
+        mileageCommandService.rollbackAddPoint(itemPrice, identity)
         flushAndClear()
 
         //then
@@ -105,5 +105,30 @@ class MileageCommandServiceTest @Autowired constructor(
         //then
         Assertions.assertThat(mileageQueryService.getMileageByMemberIdentity(identity).mileagePoint)
             .isEqualTo(MileagePolicy.calculateMileage(itemPrice) - pointToUse)
+    }
+
+    @Test
+    @Transactional
+    fun rollbackSubtractPointTest() {
+        //given
+        val signupRequest = SignupRequest("mileage_test@gmail.com", "1234", "1234567898765", "서울", "잠실-1-1", "102동 102호")
+        val identity = memberCommandService.createMember(signupRequest)
+        flushAndClear()
+        mileageCommandService.createMileage(identity)
+        flushAndClear()
+        val itemPrice: Long = 50000
+        mileageCommandService.addPoint(itemPrice, identity)
+        flushAndClear()
+        val pointToUse: Long = 400
+        mileageCommandService.subtractPoint(pointToUse, identity)
+        flushAndClear()
+
+        //when
+        mileageCommandService.rollbackSubtractPoint(pointToUse, identity)
+        flushAndClear()
+
+        //then
+        Assertions.assertThat(mileageQueryService.getMileageByMemberIdentity(identity).mileagePoint)
+            .isEqualTo(MileagePolicy.calculateMileage(itemPrice))
     }
 }

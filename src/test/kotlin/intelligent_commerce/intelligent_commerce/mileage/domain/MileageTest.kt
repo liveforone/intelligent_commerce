@@ -32,7 +32,7 @@ class MileageTest {
         mileage.addPoint(itemPrice)
 
         //when
-        mileage.rollbackPoint(itemPrice)
+        mileage.rollbackAddPoint(itemPrice)
 
         //then
         Assertions.assertThat(mileage.mileagePoint)
@@ -54,5 +54,23 @@ class MileageTest {
         //then
         Assertions.assertThat(mileage.mileagePoint)
             .isEqualTo(MileagePolicy.calculateMileage(itemPrice) - pointToUse)
+    }
+
+    @Test
+    fun rollbackSubtractPointTest() {
+        //given
+        val member = Member.create("test@gmail.com", "1234", "1234567898765", Role.MEMBER, Address("seoul", "잠실-1-1", "102동 102호"))
+        val mileage = Mileage.create(member)
+        val itemPrice: Long = 30000
+        mileage.addPoint(itemPrice)
+        val pointToUse: Long = 200
+        mileage.subtractPoint(pointToUse)
+
+        //when
+        mileage.rollbackSubtractPoint(pointToUse)
+
+        //then
+        Assertions.assertThat(mileage.mileagePoint)
+            .isEqualTo(MileagePolicy.calculateMileage(itemPrice))
     }
 }
