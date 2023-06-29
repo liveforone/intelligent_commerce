@@ -21,6 +21,11 @@ class MemberCommandServiceTest @Autowired constructor(
     private val memberQueryService: MemberQueryService
 ) {
 
+    fun flushAndClear() {
+        entityManager.flush()
+        entityManager.clear()
+    }
+
     @Test
     @Transactional
     fun createMemberTest() {
@@ -35,8 +40,7 @@ class MemberCommandServiceTest @Autowired constructor(
         //when
         val signupRequest = SignupRequest(email, pw, bankbookNum, city, roadNum, detail)
         val identity = memberCommandService.createMember(signupRequest)
-        entityManager.flush()
-        entityManager.clear()
+        flushAndClear()
 
         //then
         Assertions.assertThat(memberQueryService.getMemberByIdentity(identity).auth)
@@ -57,8 +61,7 @@ class MemberCommandServiceTest @Autowired constructor(
         //when
         val signupRequest = SignupRequest(email, pw, bankbookNum, city, roadNum, detail)
         val identity = memberCommandService.createSeller(signupRequest)
-        entityManager.flush()
-        entityManager.clear()
+        flushAndClear()
 
         //then
         Assertions.assertThat(memberQueryService.getMemberByIdentity(identity).auth)
@@ -77,15 +80,13 @@ class MemberCommandServiceTest @Autowired constructor(
         val detail = "102동 102호"
         val signupRequest = SignupRequest(email, pw, bankbookNum, city, roadNum, detail)
         val identity = memberCommandService.createSeller(signupRequest)
-        entityManager.flush()
-        entityManager.clear()
+        flushAndClear()
 
         //when
         val newBankbookNum = "9876543212345"
         val request = UpdateBankbookNum(newBankbookNum)
         memberCommandService.updateBankbookNum(request, identity)
-        entityManager.flush()
-        entityManager.clear()
+        flushAndClear()
 
         //then
         Assertions.assertThat(memberQueryService.getMemberByIdentity(identity).bankbookNum)
@@ -104,8 +105,7 @@ class MemberCommandServiceTest @Autowired constructor(
         val detail = "102동 102호"
         val signupRequest = SignupRequest(email, pw, bankbookNum, city, roadNum, detail)
         val identity = memberCommandService.createSeller(signupRequest)
-        entityManager.flush()
-        entityManager.clear()
+        flushAndClear()
 
         //when
         val newCity = "seoul"
@@ -113,8 +113,7 @@ class MemberCommandServiceTest @Autowired constructor(
         val newDetail = "301동 505호"
         val request = UpdateAddress(newCity, newRoadNum, newDetail)
         memberCommandService.updateAddress(request, identity)
-        entityManager.flush()
-        entityManager.clear()
+        flushAndClear()
 
         //then
         Assertions.assertThat(memberQueryService.getMemberByIdentity(identity).address)

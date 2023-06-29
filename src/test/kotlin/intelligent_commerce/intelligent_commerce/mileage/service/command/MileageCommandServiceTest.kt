@@ -20,19 +20,22 @@ class MileageCommandServiceTest @Autowired constructor(
     private val mileageQueryService: MileageQueryService
 ) {
 
+    fun flushAndClear() {
+        entityManager.flush()
+        entityManager.clear()
+    }
+
     @Test
     @Transactional
     fun createMileageTest() {
         //given
         val signupRequest = SignupRequest("mileage_test@gmail.com", "1234", "1234567898765", "서울", "잠실-1-1", "102동 102호")
         val identity = memberCommandService.createMember(signupRequest)
-        entityManager.flush()
-        entityManager.clear()
+        flushAndClear()
 
         //when
         mileageCommandService.createMileage(identity)
-        entityManager.flush()
-        entityManager.clear()
+        flushAndClear()
 
         //then
         Assertions.assertThat(mileageQueryService.getMileageByMemberIdentity(identity))
@@ -45,17 +48,14 @@ class MileageCommandServiceTest @Autowired constructor(
         //given
         val signupRequest = SignupRequest("mileage_test@gmail.com", "1234", "1234567898765", "서울", "잠실-1-1", "102동 102호")
         val identity = memberCommandService.createMember(signupRequest)
-        entityManager.flush()
-        entityManager.clear()
+        flushAndClear()
         mileageCommandService.createMileage(identity)
-        entityManager.flush()
-        entityManager.clear()
+        flushAndClear()
 
         //when
         val itemPrice: Long = 50000
         mileageCommandService.addPoint(itemPrice, identity)
-        entityManager.flush()
-        entityManager.clear()
+        flushAndClear()
 
         //then
         Assertions.assertThat(mileageQueryService.getMileageByMemberIdentity(identity).mileagePoint)
@@ -68,20 +68,16 @@ class MileageCommandServiceTest @Autowired constructor(
         //given
         val signupRequest = SignupRequest("mileage_test@gmail.com", "1234", "1234567898765", "서울", "잠실-1-1", "102동 102호")
         val identity = memberCommandService.createMember(signupRequest)
-        entityManager.flush()
-        entityManager.clear()
+        flushAndClear()
         mileageCommandService.createMileage(identity)
-        entityManager.flush()
-        entityManager.clear()
+        flushAndClear()
         val itemPrice: Long = 50000
         mileageCommandService.addPoint(itemPrice, identity)
-        entityManager.flush()
-        entityManager.clear()
+        flushAndClear()
 
         //when
         mileageCommandService.rollbackPoint(itemPrice, identity)
-        entityManager.flush()
-        entityManager.clear()
+        flushAndClear()
 
         //then
         Assertions.assertThat(mileageQueryService.getMileageByMemberIdentity(identity).mileagePoint)
@@ -94,21 +90,17 @@ class MileageCommandServiceTest @Autowired constructor(
         //given
         val signupRequest = SignupRequest("mileage_test@gmail.com", "1234", "1234567898765", "서울", "잠실-1-1", "102동 102호")
         val identity = memberCommandService.createMember(signupRequest)
-        entityManager.flush()
-        entityManager.clear()
+        flushAndClear()
         mileageCommandService.createMileage(identity)
-        entityManager.flush()
-        entityManager.clear()
+        flushAndClear()
         val itemPrice: Long = 50000
         mileageCommandService.addPoint(itemPrice, identity)
-        entityManager.flush()
-        entityManager.clear()
+        flushAndClear()
 
         //when
         val pointToUse: Long = 400
         mileageCommandService.subtractPoint(pointToUse, identity)
-        entityManager.flush()
-        entityManager.clear()
+        flushAndClear()
 
         //then
         Assertions.assertThat(mileageQueryService.getMileageByMemberIdentity(identity).mileagePoint)
