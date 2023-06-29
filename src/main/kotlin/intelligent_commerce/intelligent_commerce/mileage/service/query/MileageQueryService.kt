@@ -13,6 +13,6 @@ class MileageQueryService @Autowired constructor(
 ) {
 
     fun getMileageByMemberIdentity(identity: String): MileageResponse {
-        return MileageResponse.entityToDto(mileageRepository.findOneByMemberIdentity(identity))
+        return mileageRepository.findOneDtoByIdentity(identity)
     }
 }
