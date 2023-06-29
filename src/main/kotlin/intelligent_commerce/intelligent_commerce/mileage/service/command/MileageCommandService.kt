@@ -22,21 +22,21 @@ class MileageCommandService @Autowired constructor(
     }
 
     fun addPoint(itemPrice: Long, identity: String) {
-        mileageRepository.findOneByMemberIdentity(identity)
+        mileageRepository.findOneByIdentity(identity)
             .also {
                 it.addPoint(itemPrice)
             }
     }
 
     fun rollbackPoint(itemPrice: Long, identity: String) {
-        mileageRepository.findOneByMemberIdentity(identity)
+        mileageRepository.findOneByIdentity(identity)
             .also {
                 it.rollbackPoint(itemPrice)
             }
     }
 
     fun subtractPoint(pointToUse: Long, identity: String) {
-        mileageRepository.findOneByMemberIdentity(identity)
+        mileageRepository.findOneByIdentity(identity)
             .also {
                 it.subtractPoint(pointToUse)
             }
