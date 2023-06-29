@@ -24,7 +24,7 @@ class MemberRepositoryImpl @Autowired constructor(
                 where(column(Member::id).equal(id))
             }
         } catch (e: NoResultException) {
-            throw MemberException(MemberExceptionMessage.MEMBER_Exception_IS_NULL)
+            throw MemberException(MemberExceptionMessage.MEMBER_IS_NULL)
         }
     }
 
@@ -36,7 +36,7 @@ class MemberRepositoryImpl @Autowired constructor(
                 where(column(Member::email).equal(email))
             }
         } catch (e: NoResultException) {
-            throw MemberException(MemberExceptionMessage.MEMBER_Exception_IS_NULL)
+            throw MemberException(MemberExceptionMessage.MEMBER_IS_NULL)
         }
     }
 
@@ -48,7 +48,7 @@ class MemberRepositoryImpl @Autowired constructor(
                 where(column(Member::identity).equal(identity))
             }
         } catch (e: NoResultException) {
-            throw MemberException(MemberExceptionMessage.MEMBER_Exception_IS_NULL)
+            throw MemberException(MemberExceptionMessage.MEMBER_IS_NULL)
         }
     }
 
@@ -65,7 +65,7 @@ class MemberRepositoryImpl @Autowired constructor(
                 where(column(Member::identity).equal(identity))
             }
         } catch (e: NoResultException) {
-            throw MemberException(MemberExceptionMessage.MEMBER_Exception_IS_NULL)
+            throw MemberException(MemberExceptionMessage.MEMBER_IS_NULL)
         }
     }
 }
