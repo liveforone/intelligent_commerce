@@ -11,8 +11,5 @@ import org.springframework.transaction.annotation.Transactional
 class MemberQueryService @Autowired constructor(
     private val memberRepository: MemberRepository
 ) {
-
-    fun getMemberById(id: Long): MemberInfo = MemberInfo.entityToDto(memberRepository.findOneById(id))
-
-    fun getMemberByIdentity(identity: String): MemberInfo = MemberInfo.entityToDto(memberRepository.findOneByIdentity(identity))
+    fun getMemberByIdentity(identity: String): MemberInfo = memberRepository.findOneDtoByIdentity(identity)
 }
