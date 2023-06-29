@@ -9,6 +9,7 @@ import intelligent_commerce.intelligent_commerce.exception.exception.MileageCust
 import intelligent_commerce.intelligent_commerce.exception.message.MileageMessage
 import intelligent_commerce.intelligent_commerce.member.domain.Member
 import intelligent_commerce.intelligent_commerce.mileage.domain.Mileage
+import intelligent_commerce.intelligent_commerce.mileage.dto.MileageResponse
 import jakarta.persistence.NoResultException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
@@ -18,12 +19,28 @@ class MileageRepositoryImpl @Autowired constructor(
     private val queryFactory: SpringDataQueryFactory
 ) : MileageCustomRepository {
 
-    override fun findOneByMemberIdentity(identity: String): Mileage {
+    override fun findOneByIdentity(identity: String): Mileage {
         return try {
             queryFactory.singleQuery {
                 select(entity(Mileage::class))
                 from(entity(Mileage::class))
                 fetch(Mileage::member)
+                join(Mileage::member)
+                where(column(Member::identity).equal(identity))
+            }
+        } catch (e: NoResultException) {
+            throw MileageCustomException(MileageMessage.MILEAGE_IS_NULL.message)
+        }
+    }
+
+    override fun findOneDtoByIdentity(identity: String): MileageResponse {
+        return try {
+            queryFactory.singleQuery {
+                select(listOf(
+                    column(Mileage::id),
+                    column(Mileage::mileagePoint)
+                ))
+                from(entity(Mileage::class))
                 join(Mileage::member)
                 where(column(Member::identity).equal(identity))
             }
