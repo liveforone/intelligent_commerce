@@ -6,7 +6,7 @@ import jakarta.persistence.*
 @Entity
 class Mileage private constructor(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long?,
-    @OneToOne(fetch = FetchType.LAZY) @JoinColumn(unique = true) val member: Member,
+    @OneToOne(fetch = FetchType.LAZY) @JoinColumn(name = "member_identity", referencedColumnName = "identity") val member: Member,
     var mileagePoint: Long
 ) {
     companion object {
