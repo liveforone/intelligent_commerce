@@ -21,12 +21,16 @@ class Mileage private constructor(
         this.mileagePoint += calculatedMileage
     }
 
-    fun rollbackPoint(itemPrice: Long) {
+    fun rollbackAddPoint(itemPrice: Long) {
         val calculatedMileage = MileagePolicy.calculateMileage(itemPrice)
         this.mileagePoint -= calculatedMileage
     }
 
     fun subtractPoint(pointToUse: Long) {
         this.mileagePoint -= pointToUse
+    }
+
+    fun rollbackSubtractPoint(pointToUse: Long) {
+        this.mileagePoint += pointToUse
     }
 }
