@@ -1,6 +1,6 @@
 package intelligent_commerce.intelligent_commerce.exception.controllerAdvice
 
-import intelligent_commerce.intelligent_commerce.exception.exception.BindingCustomException
+import intelligent_commerce.intelligent_commerce.exception.exception.BindingException
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -17,8 +17,8 @@ class GlobalControllerAdvice {
             .body("해당 값은 반드시 UNIQUE 여야 합니다.")
     }
 
-    @ExceptionHandler(BindingCustomException::class)
-    fun bindingErrorHandle(customException: BindingCustomException): ResponseEntity<*> {
+    @ExceptionHandler(BindingException::class)
+    fun bindingExceptionHandle(customException: BindingException): ResponseEntity<*> {
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
             .body(customException.message)

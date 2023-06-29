@@ -5,7 +5,7 @@ import com.linecorp.kotlinjdsl.querydsl.from.fetch
 import com.linecorp.kotlinjdsl.querydsl.from.join
 import com.linecorp.kotlinjdsl.spring.data.SpringDataQueryFactory
 import com.linecorp.kotlinjdsl.spring.data.singleQuery
-import intelligent_commerce.intelligent_commerce.exception.exception.MileageCustomException
+import intelligent_commerce.intelligent_commerce.exception.exception.MileageException
 import intelligent_commerce.intelligent_commerce.exception.message.MileageMessage
 import intelligent_commerce.intelligent_commerce.member.domain.Member
 import intelligent_commerce.intelligent_commerce.mileage.domain.Mileage
@@ -29,7 +29,7 @@ class MileageRepositoryImpl @Autowired constructor(
                 where(column(Member::identity).equal(identity))
             }
         } catch (e: NoResultException) {
-            throw MileageCustomException(MileageMessage.MILEAGE_IS_NULL.message)
+            throw MileageException(MileageMessage.MILEAGE_IS_NULL.message)
         }
     }
 
@@ -45,7 +45,7 @@ class MileageRepositoryImpl @Autowired constructor(
                 where(column(Member::identity).equal(identity))
             }
         } catch (e: NoResultException) {
-            throw MileageCustomException(MileageMessage.MILEAGE_IS_NULL.message)
+            throw MileageException(MileageMessage.MILEAGE_IS_NULL.message)
         }
     }
 }

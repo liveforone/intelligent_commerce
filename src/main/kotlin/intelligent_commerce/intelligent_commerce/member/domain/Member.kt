@@ -1,7 +1,7 @@
 package intelligent_commerce.intelligent_commerce.member.domain
 
 import intelligent_commerce.intelligent_commerce.converter.RoleConverter
-import intelligent_commerce.intelligent_commerce.exception.exception.MemberCustomException
+import intelligent_commerce.intelligent_commerce.exception.exception.MemberException
 import intelligent_commerce.intelligent_commerce.exception.message.MemberMessage
 import intelligent_commerce.intelligent_commerce.member.domain.util.PasswordUtil
 import jakarta.persistence.*
@@ -40,7 +40,7 @@ class Member private constructor(
     }
 
     fun updatePw(newPassword: String, oldPassword: String) {
-        if (!PasswordUtil.isMatchPassword(oldPassword, this.pw)) throw MemberCustomException(MemberMessage.WRONG_PASSWORD.message)
+        if (!PasswordUtil.isMatchPassword(oldPassword, this.pw)) throw MemberException(MemberMessage.WRONG_PASSWORD.message)
         this.pw = PasswordUtil.encodePassword(newPassword)
     }
 
