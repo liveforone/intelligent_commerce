@@ -48,4 +48,8 @@ class MileageCommandService @Autowired constructor(
                 it.rollbackSubtractPoint(pointToUse)
             }
     }
+
+    fun deleteMileage(identity: String) {
+        mileageRepository.deleteOneByIdentity(identity)
+    }
 }
