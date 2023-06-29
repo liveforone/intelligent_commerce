@@ -4,7 +4,6 @@ import com.linecorp.kotlinjdsl.querydsl.expression.column
 import com.linecorp.kotlinjdsl.querydsl.from.fetch
 import com.linecorp.kotlinjdsl.querydsl.from.join
 import com.linecorp.kotlinjdsl.spring.data.SpringDataQueryFactory
-import com.linecorp.kotlinjdsl.spring.data.selectQuery
 import com.linecorp.kotlinjdsl.spring.data.singleQuery
 import intelligent_commerce.intelligent_commerce.exception.exception.MileageException
 import intelligent_commerce.intelligent_commerce.exception.message.MileageExceptionMessage
@@ -47,14 +46,6 @@ class MileageRepositoryImpl @Autowired constructor(
             }
         } catch (e: NoResultException) {
             throw MileageException(MileageExceptionMessage.MILEAGE_Exception_IS_NULL)
-        }
-    }
-
-    override fun deleteOneByIdentity(identity: String) {
-        queryFactory.selectQuery<Mileage> {
-            fetch(Mileage::member)
-            join(Mileage::member)
-            where(column(Member::identity).equal(identity))
         }
     }
 }

@@ -50,6 +50,9 @@ class MileageCommandService @Autowired constructor(
     }
 
     fun deleteMileage(identity: String) {
-        mileageRepository.deleteOneByIdentity(identity)
+        mileageRepository.findOneByIdentity(identity)
+            .also {
+                mileageRepository.delete(it)
+            }
     }
 }

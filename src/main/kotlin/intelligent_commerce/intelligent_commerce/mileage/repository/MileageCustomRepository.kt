@@ -7,5 +7,4 @@ interface MileageCustomRepository {
 
     fun findOneByIdentity(identity: String): Mileage
     fun findOneDtoByIdentity(identity: String): MileageInfo
-    fun deleteOneByIdentity(identity: String)
 }
