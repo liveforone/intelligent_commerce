@@ -31,7 +31,7 @@ class ShopRepositoryImpl @Autowired constructor(
                 where(column(Shop::id).equal(id))
             }
         } catch (e: NoResultException) {
-            throw ShopException(ShopExceptionMessage.SHOP_Exception_IS_NULL)
+            throw ShopException(ShopExceptionMessage.SHOP_IS_NULL)
         }
     }
 
@@ -45,7 +45,7 @@ class ShopRepositoryImpl @Autowired constructor(
                 where(column(Member::identity).equal(identity))
             }
         } catch (e: NoResultException) {
-            throw ShopException(ShopExceptionMessage.SHOP_Exception_IS_NULL)
+            throw ShopException(ShopExceptionMessage.SHOP_IS_NULL)
         }
     }
 
@@ -62,7 +62,7 @@ class ShopRepositoryImpl @Autowired constructor(
                 where(column(Member::identity).equal(identity))
             }
         } catch (e: NoResultException) {
-            throw ShopException(ShopExceptionMessage.SHOP_Exception_IS_NULL)
+            throw ShopException(ShopExceptionMessage.SHOP_IS_NULL)
         }
     }
 }

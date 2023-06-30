@@ -29,7 +29,7 @@ class MileageRepositoryImpl @Autowired constructor(
                 where(column(Member::identity).equal(identity))
             }
         } catch (e: NoResultException) {
-            throw MileageException(MileageExceptionMessage.MILEAGE_Exception_IS_NULL)
+            throw MileageException(MileageExceptionMessage.MILEAGE_IS_NULL)
         }
     }
 
@@ -45,7 +45,7 @@ class MileageRepositoryImpl @Autowired constructor(
                 where(column(Member::identity).equal(identity))
             }
         } catch (e: NoResultException) {
-            throw MileageException(MileageExceptionMessage.MILEAGE_Exception_IS_NULL)
+            throw MileageException(MileageExceptionMessage.MILEAGE_IS_NULL)
         }
     }
 }

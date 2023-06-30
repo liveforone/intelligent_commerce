@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component
 import io.jsonwebtoken.*
 import io.jsonwebtoken.security.Keys
 import io.jsonwebtoken.security.SecurityException
-import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
@@ -72,13 +71,13 @@ class JwtTokenProvider(@Value(JwtConstant.SECRET_KEY_PATH) secretKey: String) {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token)
             return true
         } catch (e: MalformedJwtException) {
-            logger().info(JwtExceptionMessage.INVALID_Exception_MESSAGE.message)
+            logger().info(JwtExceptionMessage.INVALID_MESSAGE.message)
         } catch (e: ExpiredJwtException) {
-            logger().info(JwtExceptionMessage.EXPIRED_Exception_MESSAGE.message)
+            logger().info(JwtExceptionMessage.EXPIRED_MESSAGE.message)
         } catch (e: UnsupportedJwtException) {
-            logger().info(JwtExceptionMessage.UNSUPPORTED_Exception_MESSAGE.message)
+            logger().info(JwtExceptionMessage.UNSUPPORTED_MESSAGE.message)
         } catch (e: SecurityException) {
-            logger().info(JwtExceptionMessage.INVALID_Exception_MESSAGE.message)
+            logger().info(JwtExceptionMessage.INVALID_MESSAGE.message)
         }
         return false
     }
