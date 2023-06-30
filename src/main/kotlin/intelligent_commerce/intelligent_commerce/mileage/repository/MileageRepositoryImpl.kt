@@ -1,6 +1,6 @@
 package intelligent_commerce.intelligent_commerce.mileage.repository
 
-import com.linecorp.kotlinjdsl.querydsl.expression.column
+import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.querydsl.from.fetch
 import com.linecorp.kotlinjdsl.querydsl.from.join
 import com.linecorp.kotlinjdsl.spring.data.SpringDataQueryFactory
@@ -26,7 +26,7 @@ class MileageRepositoryImpl @Autowired constructor(
                 from(entity(Mileage::class))
                 fetch(Mileage::member)
                 join(Mileage::member)
-                where(column(Member::identity).equal(identity))
+                where(col(Member::identity).equal(identity))
             }
         } catch (e: NoResultException) {
             throw MileageException(MileageExceptionMessage.MILEAGE_IS_NULL)
@@ -37,12 +37,12 @@ class MileageRepositoryImpl @Autowired constructor(
         return try {
             queryFactory.singleQuery {
                 select(listOf(
-                    column(Mileage::id),
-                    column(Mileage::mileagePoint)
+                    col(Mileage::id),
+                    col(Mileage::mileagePoint)
                 ))
                 from(entity(Mileage::class))
                 join(Mileage::member)
-                where(column(Member::identity).equal(identity))
+                where(col(Member::identity).equal(identity))
             }
         } catch (e: NoResultException) {
             throw MileageException(MileageExceptionMessage.MILEAGE_IS_NULL)

@@ -1,6 +1,6 @@
 package intelligent_commerce.intelligent_commerce.shop.repository
 
-import com.linecorp.kotlinjdsl.querydsl.expression.column
+import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.querydsl.from.fetch
 import com.linecorp.kotlinjdsl.querydsl.from.join
 import com.linecorp.kotlinjdsl.spring.data.SpringDataQueryFactory
@@ -23,12 +23,12 @@ class ShopRepositoryImpl @Autowired constructor(
         return try {
             queryFactory.singleQuery {
                 select(listOf(
-                    column(Shop::id),
-                    column(Shop::shopName),
-                    column(Shop::tel)
+                    col(Shop::id),
+                    col(Shop::shopName),
+                    col(Shop::tel)
                 ))
                 from(entity(Shop::class))
-                where(column(Shop::id).equal(id))
+                where(col(Shop::id).equal(id))
             }
         } catch (e: NoResultException) {
             throw ShopException(ShopExceptionMessage.SHOP_IS_NULL)
@@ -42,7 +42,7 @@ class ShopRepositoryImpl @Autowired constructor(
                 from(entity(Shop::class))
                 fetch(Shop::seller)
                 join(Shop::seller)
-                where(column(Member::identity).equal(identity))
+                where(col(Member::identity).equal(identity))
             }
         } catch (e: NoResultException) {
             throw ShopException(ShopExceptionMessage.SHOP_IS_NULL)
@@ -53,13 +53,13 @@ class ShopRepositoryImpl @Autowired constructor(
         return try {
             queryFactory.singleQuery {
                 select(listOf(
-                    column(Shop::id),
-                    column(Shop::shopName),
-                    column(Shop::tel)
+                    col(Shop::id),
+                    col(Shop::shopName),
+                    col(Shop::tel)
                 ))
                 from(entity(Shop::class))
                 join(Shop::seller)
-                where(column(Member::identity).equal(identity))
+                where(col(Member::identity).equal(identity))
             }
         } catch (e: NoResultException) {
             throw ShopException(ShopExceptionMessage.SHOP_IS_NULL)

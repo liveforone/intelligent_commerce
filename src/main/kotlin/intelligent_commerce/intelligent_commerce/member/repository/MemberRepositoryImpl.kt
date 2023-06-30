@@ -1,6 +1,6 @@
 package intelligent_commerce.intelligent_commerce.member.repository
 
-import com.linecorp.kotlinjdsl.querydsl.expression.column
+import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.spring.data.SpringDataQueryFactory
 import com.linecorp.kotlinjdsl.spring.data.singleQuery
 import intelligent_commerce.intelligent_commerce.exception.exception.MemberException
@@ -21,7 +21,7 @@ class MemberRepositoryImpl @Autowired constructor(
             queryFactory.singleQuery {
                 select(entity(Member::class))
                 from(entity(Member::class))
-                where(column(Member::id).equal(id))
+                where(col(Member::id).equal(id))
             }
         } catch (e: NoResultException) {
             throw MemberException(MemberExceptionMessage.MEMBER_IS_NULL)
@@ -33,7 +33,7 @@ class MemberRepositoryImpl @Autowired constructor(
             queryFactory.singleQuery {
                 select(entity(Member::class))
                 from(entity(Member::class))
-                where(column(Member::email).equal(email))
+                where(col(Member::email).equal(email))
             }
         } catch (e: NoResultException) {
             throw MemberException(MemberExceptionMessage.MEMBER_IS_NULL)
@@ -45,7 +45,7 @@ class MemberRepositoryImpl @Autowired constructor(
             queryFactory.singleQuery {
                 select(entity(Member::class))
                 from(entity(Member::class))
-                where(column(Member::identity).equal(identity))
+                where(col(Member::identity).equal(identity))
             }
         } catch (e: NoResultException) {
             throw MemberException(MemberExceptionMessage.MEMBER_IS_NULL)
@@ -56,13 +56,13 @@ class MemberRepositoryImpl @Autowired constructor(
         return try {
             queryFactory.singleQuery {
                 select(listOf(
-                    column(Member::id),
-                    column(Member::bankbookNum),
-                    column(Member::auth),
-                    column(Member::address)
+                    col(Member::id),
+                    col(Member::bankbookNum),
+                    col(Member::auth),
+                    col(Member::address)
                 ))
                 from(entity(Member::class))
-                where(column(Member::identity).equal(identity))
+                where(col(Member::identity).equal(identity))
             }
         } catch (e: NoResultException) {
             throw MemberException(MemberExceptionMessage.MEMBER_IS_NULL)
