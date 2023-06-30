@@ -11,10 +11,11 @@ class Shop private constructor(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long?,
     @OneToOne(fetch = FetchType.LAZY) @JoinColumn(
         name = "seller_identity",
-        referencedColumnName = "identity"
+        referencedColumnName = "identity",
+        nullable = false
     ) val seller: Member,
-    var shopName: String,
-    var tel: String
+    @Column(nullable = false) var shopName: String,
+    @Column(nullable = false) var tel: String
 ) {
     companion object {
         fun create(seller: Member, shopName: String, tel: String): Shop {

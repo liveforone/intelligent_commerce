@@ -13,11 +13,11 @@ import java.util.*
 @Entity
 class Member private constructor(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long?,
-    @Column(unique = true) val identity: String,
-    @Column(unique = true) val email: String,
-    var pw: String,
-    var bankbookNum: String,
-    @Convert(converter = RoleConverter::class) val auth: Role,
+    @Column(unique = true, nullable = false) val identity: String,
+    @Column(unique = true, nullable = false) val email: String,
+    @Column(nullable = false) var pw: String,
+    @Column(nullable = false) var bankbookNum: String,
+    @Convert(converter = RoleConverter::class) @Column(nullable = false) val auth: Role,
     @Embedded var address: Address
 ) : UserDetails {
 

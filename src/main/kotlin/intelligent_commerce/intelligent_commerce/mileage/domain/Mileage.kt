@@ -8,9 +8,10 @@ class Mileage private constructor(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long?,
     @OneToOne(fetch = FetchType.LAZY) @JoinColumn(
         name = "member_identity",
-        referencedColumnName = "identity"
+        referencedColumnName = "identity",
+        nullable = false
     ) val member: Member,
-    var mileagePoint: Long
+    @Column(nullable = false) var mileagePoint: Long
 ) {
     companion object {
         fun create(member: Member): Mileage = Mileage(null, member, 0)
