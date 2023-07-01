@@ -93,12 +93,12 @@ class MileageCommandServiceTest @Autowired constructor(
         flushAndClear()
         mileageCommandService.createMileage(identity)
         flushAndClear()
-        val itemPrice: Long = 50000
+        val itemPrice: Long = 500000
         mileageCommandService.addPoint(itemPrice, identity)
         flushAndClear()
 
         //when
-        val pointToUse: Long = 400
+        val pointToUse: Long = 4000
         mileageCommandService.subtractPoint(pointToUse, identity)
         flushAndClear()
 
@@ -116,7 +116,7 @@ class MileageCommandServiceTest @Autowired constructor(
         flushAndClear()
         mileageCommandService.createMileage(identity)
         flushAndClear()
-        val itemPrice: Long = 50000
+        val itemPrice: Long = 500000
         mileageCommandService.addPoint(itemPrice, identity)
         flushAndClear()
         val pointToUse: Long = 400
