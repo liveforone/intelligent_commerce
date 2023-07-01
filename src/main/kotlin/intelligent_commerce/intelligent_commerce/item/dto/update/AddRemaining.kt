@@ -7,5 +7,5 @@ data class AddRemaining(
     @field:NotNull(message = "상품 id를 입력하세요.")
     var id: Long?,
     @field:Positive(message = "재고는 양수만 가능합니다.")
-    var remaining: ULong?
+    var remaining: Long?
 )

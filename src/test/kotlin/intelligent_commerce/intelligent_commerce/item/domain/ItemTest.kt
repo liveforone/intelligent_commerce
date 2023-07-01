@@ -16,8 +16,8 @@ class ItemTest {
         val shop = Shop.create(seller, "test_shop", "01012345678")
         val title = "test_item"
         val content = "test_content"
-        val price: ULong = 30000u
-        val remaining: ULong = 10u
+        val price: Long = 30000
+        val remaining: Long = 10
         val item = Item.create(shop, title, content, price, remaining)
 
         //when
@@ -35,8 +35,8 @@ class ItemTest {
         val shop = Shop.create(seller, "test_shop", "01012345678")
         val title = "test_item"
         val content = "test_content"
-        val price: ULong = 30000u
-        val remaining: ULong = 10u
+        val price: Long = 30000
+        val remaining: Long = 10
         val item = Item.create(shop, title, content, price, remaining)
 
         //when
@@ -54,12 +54,12 @@ class ItemTest {
         val shop = Shop.create(seller, "test_shop", "01012345678")
         val title = "test_item"
         val content = "test_content"
-        val price: ULong = 30000u
-        val remaining: ULong = 10u
+        val price: Long = 30000
+        val remaining: Long = 10
         val item = Item.create(shop, title, content, price, remaining)
 
         //when
-        val updatedPrice: ULong = 25000u
+        val updatedPrice: Long = 25000
         item.updatePrice(updatedPrice)
 
         //then
@@ -73,12 +73,12 @@ class ItemTest {
         val shop = Shop.create(seller, "test_shop", "01012345678")
         val title = "test_item"
         val content = "test_content"
-        val price: ULong = 30000u
-        val remaining: ULong = 10u
+        val price: Long = 30000
+        val remaining: Long = 10
         val item = Item.create(shop, title, content, price, remaining)
 
         //when
-        val wantAddRemaining: ULong = 20u
+        val wantAddRemaining: Long = 20
         item.addRemaining(wantAddRemaining)
 
         //then
@@ -92,15 +92,15 @@ class ItemTest {
         val shop = Shop.create(seller, "test_shop", "01012345678")
         val title = "test_item"
         val content = "test_content"
-        val price: ULong = 30000u
-        val remaining: ULong = 10u
+        val price: Long = 30000
+        val remaining: Long = 10
         val item = Item.create(shop, title, content, price, remaining)
 
         //when
         item.minusRemaining()
 
         //then
-        Assertions.assertThat(item.remaining).isEqualTo(remaining - 1u)
+        Assertions.assertThat(item.remaining).isEqualTo(remaining - 1)
     }
 
     @Test
@@ -110,8 +110,8 @@ class ItemTest {
         val shop = Shop.create(seller, "test_shop", "01012345678")
         val title = "test_item"
         val content = "test_content"
-        val price: ULong = 30000u
-        val remaining: ULong = 10u
+        val price: Long = 30000
+        val remaining: Long = 10
         val item = Item.create(shop, title, content, price, remaining)
         item.minusRemaining()
 

@@ -8,14 +8,14 @@ import jakarta.persistence.*
 @Entity
 class Item private constructor(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long?,
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(nullable = false) val shop: Shop,
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn val shop: Shop,
     @Column(nullable = false) var title: String,
     @Column(nullable = false) var content: String,
-    @Column(nullable = false) var price: ULong,
-    @Column(nullable = false) var remaining: ULong
+    @Column(nullable = false) var price: Long,
+    @Column(nullable = false) var remaining: Long
 ) {
     companion object {
-        fun create(shop: Shop, title: String, content: String, price: ULong, remaining: ULong): Item {
+        fun create(shop: Shop, title: String, content: String, price: Long, remaining: Long): Item {
             return Item(null, shop, title, content, price, remaining)
         }
     }
@@ -28,21 +28,21 @@ class Item private constructor(
         this.content = content
     }
 
-    fun updatePrice(price: ULong) {
+    fun updatePrice(price: Long) {
         this.price = price
     }
 
-    fun addRemaining(remaining: ULong) {
+    fun addRemaining(remaining: Long) {
         this.remaining += remaining
     }
 
     fun minusRemaining() {
-        if (remaining - 1u == 0.toULong()) throw ItemException(ItemExceptionMessage.REMAINING_IS_ZERO)
-        this.remaining -= 1u
+        if (remaining - 1 == 0.toLong()) throw ItemException(ItemExceptionMessage.REMAINING_IS_ZERO)
+        this.remaining -= 1
     }
 
     fun rollbackMinusRemaining() {
-        this.remaining += 1u
+        this.remaining += 1
     }
 
     fun isOwner(identity: String): Boolean {

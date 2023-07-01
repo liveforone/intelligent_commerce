@@ -43,7 +43,7 @@ class ItemCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        val createItem = CreateItem("test_title", "test_content", 20000u, 10u)
+        val createItem = CreateItem("test_title", "test_content", 20000, 10)
         val itemId = itemCommandService.createItem(createItem, identity)
         flushAndClear()
 
@@ -62,7 +62,7 @@ class ItemCommandServiceTest @Autowired constructor(
         val createShop = CreateShop("test_shop", "0212345678")
         shopCommandService.createShop(createShop, identity)
         flushAndClear()
-        val createItem = CreateItem("test_title", "test_content", 20000u, 10u)
+        val createItem = CreateItem("test_title", "test_content", 20000, 10)
         val itemId = itemCommandService.createItem(createItem, identity)
         flushAndClear()
 
@@ -87,7 +87,7 @@ class ItemCommandServiceTest @Autowired constructor(
         val createShop = CreateShop("test_shop", "0212345678")
         shopCommandService.createShop(createShop, identity)
         flushAndClear()
-        val createItem = CreateItem("test_title", "test_content", 20000u, 10u)
+        val createItem = CreateItem("test_title", "test_content", 20000, 10)
         val itemId = itemCommandService.createItem(createItem, identity)
         flushAndClear()
 
@@ -112,12 +112,12 @@ class ItemCommandServiceTest @Autowired constructor(
         val createShop = CreateShop("test_shop", "0212345678")
         shopCommandService.createShop(createShop, identity)
         flushAndClear()
-        val createItem = CreateItem("test_title", "test_content", 20000u, 10u)
+        val createItem = CreateItem("test_title", "test_content", 20000, 10)
         val itemId = itemCommandService.createItem(createItem, identity)
         flushAndClear()
 
         //when
-        val updatedPrice: ULong = 50000u
+        val updatedPrice: Long = 50000
         val request = UpdatePrice(itemId, updatedPrice)
         itemCommandService.updatePrice(request, identity)
         flushAndClear()
@@ -137,13 +137,13 @@ class ItemCommandServiceTest @Autowired constructor(
         val createShop = CreateShop("test_shop", "0212345678")
         shopCommandService.createShop(createShop, identity)
         flushAndClear()
-        val remaining: ULong = 10u
-        val createItem = CreateItem("test_title", "test_content", 20000u, remaining)
+        val remaining: Long = 10
+        val createItem = CreateItem("test_title", "test_content", 20000, remaining)
         val itemId = itemCommandService.createItem(createItem, identity)
         flushAndClear()
 
         //when
-        val updatedRemaining: ULong = 30u
+        val updatedRemaining: Long = 30
         val request = AddRemaining(itemId, updatedRemaining)
         itemCommandService.addRemaining(request, identity)
         flushAndClear()
@@ -163,8 +163,8 @@ class ItemCommandServiceTest @Autowired constructor(
         val createShop = CreateShop("test_shop", "0212345678")
         shopCommandService.createShop(createShop, identity)
         flushAndClear()
-        val remaining: ULong = 10u
-        val createItem = CreateItem("test_title", "test_content", 20000u, remaining)
+        val remaining: Long = 10
+        val createItem = CreateItem("test_title", "test_content", 20000, remaining)
         val itemId = itemCommandService.createItem(createItem, identity)
         flushAndClear()
 
@@ -174,7 +174,7 @@ class ItemCommandServiceTest @Autowired constructor(
 
         //then
         Assertions.assertThat(itemQueryService.getItemById(itemId).remaining)
-            .isEqualTo(remaining - 1u)
+            .isEqualTo(remaining - 1)
     }
 
     @Test
@@ -187,8 +187,8 @@ class ItemCommandServiceTest @Autowired constructor(
         val createShop = CreateShop("test_shop", "0212345678")
         shopCommandService.createShop(createShop, identity)
         flushAndClear()
-        val remaining: ULong = 10u
-        val createItem = CreateItem("test_title", "test_content", 20000u, remaining)
+        val remaining: Long = 10
+        val createItem = CreateItem("test_title", "test_content", 20000, remaining)
         val itemId = itemCommandService.createItem(createItem, identity)
         flushAndClear()
         itemCommandService.minusRemaining(itemId)
