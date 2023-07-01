@@ -41,7 +41,6 @@ class ShopCommandService @Autowired constructor(
     fun deleteShop(identity: String) {
         shopRepository.findOneByIdentity(identity)
             .also {
-                itemCommandService.deleteItemsByShopId(it.id!!)
                 shopRepository.delete(it)
             }
     }
