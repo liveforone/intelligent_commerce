@@ -4,14 +4,15 @@ import intelligent_commerce.intelligent_commerce.exception.exception.ShopExcepti
 import intelligent_commerce.intelligent_commerce.exception.message.ShopExceptionMessage
 import intelligent_commerce.intelligent_commerce.member.domain.Member
 import intelligent_commerce.intelligent_commerce.member.domain.Role
+import intelligent_commerce.intelligent_commerce.shop.domain.constant.ShopConstant
 import jakarta.persistence.*
 
 @Entity
 class Shop private constructor(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long?,
     @OneToOne(fetch = FetchType.LAZY) @JoinColumn(
-        name = "seller_identity",
-        referencedColumnName = "identity",
+        name = ShopConstant.SELLER_COLUMN_NAME,
+        referencedColumnName = ShopConstant.IDENTITY,
         nullable = false
     ) val seller: Member,
     @Column(nullable = false) var shopName: String,

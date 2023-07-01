@@ -1,14 +1,17 @@
 package intelligent_commerce.intelligent_commerce.mileage.domain
 
+import intelligent_commerce.intelligent_commerce.exception.exception.MileageException
+import intelligent_commerce.intelligent_commerce.exception.message.MileageExceptionMessage
 import intelligent_commerce.intelligent_commerce.member.domain.Member
+import intelligent_commerce.intelligent_commerce.mileage.domain.constant.MileageConstant
 import jakarta.persistence.*
 
 @Entity
 class Mileage private constructor(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long?,
     @OneToOne(fetch = FetchType.LAZY) @JoinColumn(
-        name = "member_identity",
-        referencedColumnName = "identity",
+        name = MileageConstant.MEMBER_COLUMN_NAME,
+        referencedColumnName = MileageConstant.IDENTITY,
         nullable = false
     ) val member: Member,
     @Column(nullable = false) var mileagePoint: Long
@@ -19,16 +22,19 @@ class Mileage private constructor(
 
     fun addPoint(itemPrice: Long) {
         val calculatedMileage = MileagePolicy.calculateMileage(itemPrice)
-        this.mileagePoint += calculatedMileage
+        mileagePoint += calculatedMileage
     }
 
     fun rollbackAddPoint(itemPrice: Long) {
         val calculatedMileage = MileagePolicy.calculateMileage(itemPrice)
-        this.mileagePoint -= calculatedMileage
+        if (mileagePoint - calculatedMileage < 0) throw MileageException(MileageExceptionMessage.MILEAGE_ALREADY_USE)
+        mileagePoint -= calculatedMileage
     }
 
     fun subtractPoint(pointToUse: Long) {
-        this.mileagePoint -= pointToUse
+        if (mileagePoint - pointToUse < 0) throw MileageException(MileageExceptionMessage.POINT_TO_USE_IS_OVER)
+        if (mileagePoint < MileageConstant.USE_MILEAGE_LIMIT_POINT) throw MileageException(MileageExceptionMessage.MILEAGE_IS_TOO_SMALL)
+        mileagePoint -= pointToUse
     }
 
     fun rollbackSubtractPoint(pointToUse: Long) {
