@@ -5,6 +5,7 @@ import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.querydsl.from.fetch
 import com.linecorp.kotlinjdsl.querydsl.from.join
 import com.linecorp.kotlinjdsl.spring.data.SpringDataQueryFactory
+import com.linecorp.kotlinjdsl.spring.data.deleteQuery
 import com.linecorp.kotlinjdsl.spring.data.listQuery
 import com.linecorp.kotlinjdsl.spring.data.querydsl.SpringDataCriteriaQueryDsl
 import com.linecorp.kotlinjdsl.spring.data.singleQuery
@@ -125,6 +126,12 @@ class ItemRepositoryImpl @Autowired constructor(
             where(ltLastId(lastId))
             orderBy(col(Item::id).desc())
             limit(15)
+        }
+    }
+
+    override fun deleteAllByShopIdBatch(shopId: Long) {
+        queryFactory.deleteQuery<Item> {
+            where(nestedCol(col(Item::shop), Shop::id).equal(shopId))
         }
     }
 }
