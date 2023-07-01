@@ -35,13 +35,15 @@ class ItemRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun findOneByIdJoinShop(id: Long): Item {
+    override fun findOneByIdJoinShopAndMember(id: Long): Item {
         return try {
             queryFactory.singleQuery {
                 select(entity(Item::class))
                 from(entity(Item::class))
                 fetch(Item::shop)
                 join(Item::shop)
+                fetch(Shop::seller)
+                join(Shop::seller)
                 where(col(Item::id).equal(id))
             }
         } catch (e: NoResultException) {
