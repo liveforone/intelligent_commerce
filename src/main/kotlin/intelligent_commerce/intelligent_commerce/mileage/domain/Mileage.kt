@@ -11,8 +11,7 @@ class Mileage private constructor(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long?,
     @OneToOne(fetch = FetchType.LAZY) @JoinColumn(
         name = MileageConstant.MEMBER_COLUMN_NAME,
-        referencedColumnName = MileageConstant.IDENTITY,
-        nullable = false
+        referencedColumnName = MileageConstant.IDENTITY
     ) val member: Member,
     @Column(nullable = false) var mileagePoint: Long
 ) {

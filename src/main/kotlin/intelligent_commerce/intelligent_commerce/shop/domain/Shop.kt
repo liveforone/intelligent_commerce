@@ -12,8 +12,7 @@ class Shop private constructor(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long?,
     @OneToOne(fetch = FetchType.LAZY) @JoinColumn(
         name = ShopConstant.SELLER_COLUMN_NAME,
-        referencedColumnName = ShopConstant.IDENTITY,
-        nullable = false
+        referencedColumnName = ShopConstant.IDENTITY
     ) val seller: Member,
     @Column(nullable = false) var shopName: String,
     @Column(nullable = false) var tel: String
