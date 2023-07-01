@@ -44,4 +44,8 @@ class Item private constructor(
     fun rollbackMinusRemaining() {
         this.remaining += 1u
     }
+
+    fun isOwner(identity: String): Boolean {
+        return this.shop.seller.identity == identity
+    }
 }
