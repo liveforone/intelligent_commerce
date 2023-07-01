@@ -71,8 +71,12 @@ class ItemCommandService @Autowired constructor(
 
     fun deleteItem(identity: String, id: Long) {
         itemRepository.findOneByIdJoinShop(id).also {
-            if (it.shop.seller.identity != identity) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
+            if (!it.isOwner(identity)) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
             itemRepository.delete(it)
         }
+    }
+
+    fun deleteItemsByShopId(shopId: Long) {
+        itemRepository.deleteAllByShopIdBatch(shopId)
     }
 }

@@ -1,5 +1,6 @@
 package intelligent_commerce.intelligent_commerce.shop.service.command
 
+import intelligent_commerce.intelligent_commerce.item.service.command.ItemCommandService
 import intelligent_commerce.intelligent_commerce.member.repository.MemberRepository
 import intelligent_commerce.intelligent_commerce.shop.domain.Shop
 import intelligent_commerce.intelligent_commerce.shop.dto.request.CreateShop
@@ -14,7 +15,8 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 class ShopCommandService @Autowired constructor(
     private val shopRepository: ShopRepository,
-    private val memberRepository: MemberRepository
+    private val memberRepository: MemberRepository,
+    private val itemCommandService: ItemCommandService
 ) {
 
     fun createShop(createShop: CreateShop, identity: String) {
@@ -39,6 +41,7 @@ class ShopCommandService @Autowired constructor(
     fun deleteShop(identity: String) {
         shopRepository.findOneByIdentity(identity)
             .also {
+                itemCommandService.deleteItemsByShopId(it.id!!)
                 shopRepository.delete(it)
             }
     }
