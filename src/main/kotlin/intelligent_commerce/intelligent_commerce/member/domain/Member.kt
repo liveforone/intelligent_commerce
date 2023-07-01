@@ -3,6 +3,7 @@ package intelligent_commerce.intelligent_commerce.member.domain
 import intelligent_commerce.intelligent_commerce.converter.RoleConverter
 import intelligent_commerce.intelligent_commerce.exception.exception.MemberException
 import intelligent_commerce.intelligent_commerce.exception.message.MemberExceptionMessage
+import intelligent_commerce.intelligent_commerce.member.domain.constant.MemberConstant
 import intelligent_commerce.intelligent_commerce.member.domain.util.PasswordUtil
 import jakarta.persistence.*
 import org.springframework.security.core.GrantedAuthority
@@ -25,23 +26,21 @@ class Member private constructor(
         private fun createIdentity(): String = UUID.randomUUID().toString()
 
         fun create(email: String, pw: String, bankbookNum: String, auth: Role, address: Address): Member {
-            val adminEmail = "admin_intelligent_commerce@gmail.com"
-
             return Member(
                 null,
                 createIdentity(),
                 email,
                 PasswordUtil.encodePassword(pw),
                 bankbookNum,
-                if (email == adminEmail) Role.ADMIN else auth,
+                if (email == MemberConstant.ADMIN_EMAIL) Role.ADMIN else auth,
                 address
             )
         }
     }
 
     fun updatePw(newPassword: String, oldPassword: String) {
-        if (!PasswordUtil.isMatchPassword(oldPassword, this.pw)) throw MemberException(MemberExceptionMessage.WRONG_PASSWORD)
-        this.pw = PasswordUtil.encodePassword(newPassword)
+        if (!PasswordUtil.isMatchPassword(oldPassword, pw)) throw MemberException(MemberExceptionMessage.WRONG_PASSWORD)
+        pw = PasswordUtil.encodePassword(newPassword)
     }
 
     fun updateBankbookNum(bankbookNum: String) {
