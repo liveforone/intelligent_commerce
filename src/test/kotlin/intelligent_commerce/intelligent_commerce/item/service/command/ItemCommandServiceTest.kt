@@ -68,8 +68,8 @@ class ItemCommandServiceTest @Autowired constructor(
 
         //when
         val updatedTitle = "update_title"
-        val request = UpdateItemTitle(updatedTitle)
-        itemCommandService.updateTitle(request, itemId)
+        val request = UpdateItemTitle(itemId, updatedTitle)
+        itemCommandService.updateTitle(request, identity)
         flushAndClear()
 
         //then
@@ -93,8 +93,8 @@ class ItemCommandServiceTest @Autowired constructor(
 
         //when
         val updatedContent = "updated_content"
-        val request = UpdateItemContent(updatedContent)
-        itemCommandService.updateContent(request, itemId)
+        val request = UpdateItemContent(itemId, updatedContent)
+        itemCommandService.updateContent(request, identity)
         flushAndClear()
 
         //then
@@ -118,8 +118,8 @@ class ItemCommandServiceTest @Autowired constructor(
 
         //when
         val updatedPrice: ULong = 50000u
-        val request = UpdatePrice(updatedPrice)
-        itemCommandService.updatePrice(request, itemId)
+        val request = UpdatePrice(itemId, updatedPrice)
+        itemCommandService.updatePrice(request, identity)
         flushAndClear()
 
         //then
@@ -144,8 +144,8 @@ class ItemCommandServiceTest @Autowired constructor(
 
         //when
         val updatedRemaining: ULong = 30u
-        val request = AddRemaining(updatedRemaining)
-        itemCommandService.addRemaining(request, itemId)
+        val request = AddRemaining(itemId, updatedRemaining)
+        itemCommandService.addRemaining(request, identity)
         flushAndClear()
 
         //then
