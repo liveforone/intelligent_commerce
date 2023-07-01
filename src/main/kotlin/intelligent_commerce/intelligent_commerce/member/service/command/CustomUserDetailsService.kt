@@ -24,7 +24,7 @@ class CustomUserDetailsService @Autowired constructor(
                 createAdmin(member)
             }
             Role.SELLER -> {
-                createDriver(member)
+                createSeller(member)
             }
             else -> {
                 createMember(member)
@@ -33,29 +33,26 @@ class CustomUserDetailsService @Autowired constructor(
     }
 
     private fun createAdmin(member: Member): UserDetails {
-        val adminRole = "ADMIN"
         return User.builder()
             .username(member.identity)
             .password(member.password)
-            .roles(adminRole)
+            .roles(Role.ADMIN.name)
             .build()
     }
 
-    private fun createDriver(member: Member): UserDetails {
-        val driverRole = "DRIVER"
+    private fun createSeller(member: Member): UserDetails {
         return User.builder()
             .username(member.identity)
             .password(member.password)
-            .roles(driverRole)
+            .roles(Role.SELLER.name)
             .build()
     }
 
     private fun createMember(member: Member): UserDetails {
-        val memberRole = "MEMBER"
         return User.builder()
             .username(member.identity)
             .password(member.password)
-            .roles(memberRole)
+            .roles(Role.MEMBER.name)
             .build()
     }
 }
