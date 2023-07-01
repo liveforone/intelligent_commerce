@@ -10,5 +10,4 @@ interface ItemCustomRepository {
     fun findAllItems(lastId: Long): List<ItemInfo>
     fun findItemsByShopId(shopId: Long, lastId: Long): List<ItemInfo>
     fun searchItemsByKeyword(keyword: String, lastId: Long): List<ItemInfo>
-    fun deleteAllByShopIdBatch(shopId: Long)
 }

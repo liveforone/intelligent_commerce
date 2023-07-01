@@ -2,17 +2,16 @@ package intelligent_commerce.intelligent_commerce.item.repository
 
 import com.linecorp.kotlinjdsl.query.spec.predicate.PredicateSpec
 import com.linecorp.kotlinjdsl.querydsl.expression.col
+import com.linecorp.kotlinjdsl.querydsl.from.associate
 import com.linecorp.kotlinjdsl.querydsl.from.fetch
 import com.linecorp.kotlinjdsl.querydsl.from.join
-import com.linecorp.kotlinjdsl.spring.data.SpringDataQueryFactory
-import com.linecorp.kotlinjdsl.spring.data.deleteQuery
-import com.linecorp.kotlinjdsl.spring.data.listQuery
+import com.linecorp.kotlinjdsl.spring.data.*
 import com.linecorp.kotlinjdsl.spring.data.querydsl.SpringDataCriteriaQueryDsl
-import com.linecorp.kotlinjdsl.spring.data.singleQuery
 import intelligent_commerce.intelligent_commerce.exception.exception.ItemException
 import intelligent_commerce.intelligent_commerce.exception.message.ItemExceptionMessage
 import intelligent_commerce.intelligent_commerce.item.domain.Item
 import intelligent_commerce.intelligent_commerce.item.dto.response.ItemInfo
+import intelligent_commerce.intelligent_commerce.item.repository.constant.ItemRepositoryConstant
 import intelligent_commerce.intelligent_commerce.shop.domain.Shop
 import jakarta.persistence.NoResultException
 import org.springframework.beans.factory.annotation.Autowired
@@ -90,7 +89,7 @@ class ItemRepositoryImpl @Autowired constructor(
             from(entity(Item::class))
             where(ltLastId(lastId))
             orderBy(col(Item::id).desc())
-            limit(15)
+            limit(ItemRepositoryConstant.LIMIT_PAGE)
         }
     }
 
@@ -109,7 +108,7 @@ class ItemRepositoryImpl @Autowired constructor(
             where(col(Shop::id).equal(shopId))
             where(ltLastId(lastId))
             orderBy(col(Item::id).desc())
-            limit(15)
+            limit(ItemRepositoryConstant.LIMIT_PAGE)
         }
     }
 
@@ -127,13 +126,7 @@ class ItemRepositoryImpl @Autowired constructor(
             where(col(Item::title).like("$keyword%"))
             where(ltLastId(lastId))
             orderBy(col(Item::id).desc())
-            limit(15)
-        }
-    }
-
-    override fun deleteAllByShopIdBatch(shopId: Long) {
-        queryFactory.deleteQuery<Item> {
-            where(nestedCol(col(Item::shop), Shop::id).equal(shopId))
+            limit(ItemRepositoryConstant.LIMIT_PAGE)
         }
     }
 }

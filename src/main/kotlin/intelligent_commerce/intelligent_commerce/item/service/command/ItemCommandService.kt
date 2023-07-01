@@ -79,8 +79,4 @@ class ItemCommandService @Autowired constructor(
             itemRepository.delete(it)
         }
     }
-
-    fun deleteItemsByShopId(shopId: Long) {
-        itemRepository.deleteAllByShopIdBatch(shopId)
-    }
 }
