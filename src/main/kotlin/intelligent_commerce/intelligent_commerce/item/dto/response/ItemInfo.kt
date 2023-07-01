@@ -5,6 +5,6 @@ data class ItemInfo(
     val shopId: Long,
     val title: String,
     val content: String,
-    val price: ULong,
-    val remaining: ULong
+    val price: Long,
+    val remaining: Long
 )
