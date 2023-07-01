@@ -21,7 +21,7 @@ object MemberResponse {
 
     fun loginSuccess(): ResponseEntity<*> = ResponseEntity.ok(LOGIN_SUCCESS)
 
-    fun infoSuccess(member: MemberInfo): ResponseEntity<*> = ResponseEntity.ok(member)
+    fun infoSuccess(member: MemberInfo): ResponseEntity<MemberInfo> = ResponseEntity.ok(member)
 
     fun updatePwSuccess(): ResponseEntity<*> = ResponseEntity.ok(UPDATE_PW_SUCCESS)
 
