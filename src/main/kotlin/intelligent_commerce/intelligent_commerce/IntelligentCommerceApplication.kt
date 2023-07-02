@@ -10,7 +10,6 @@ import org.springframework.web.filter.HiddenHttpMethodFilter
 inline fun <reified T> T.logger() = LoggerFactory.getLogger(T::class.java)!!
 
 @SpringBootApplication
-@EnableJpaAuditing
 class IntelligentCommerceApplication
 
 fun main(args: Array<String>) {
