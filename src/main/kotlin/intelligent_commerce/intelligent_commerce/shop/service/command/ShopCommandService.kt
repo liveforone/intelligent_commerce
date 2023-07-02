@@ -1,6 +1,5 @@
 package intelligent_commerce.intelligent_commerce.shop.service.command
 
-import intelligent_commerce.intelligent_commerce.item.service.command.ItemCommandService
 import intelligent_commerce.intelligent_commerce.member.repository.MemberRepository
 import intelligent_commerce.intelligent_commerce.shop.domain.Shop
 import intelligent_commerce.intelligent_commerce.shop.dto.request.CreateShop
@@ -15,8 +14,7 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 class ShopCommandService @Autowired constructor(
     private val shopRepository: ShopRepository,
-    private val memberRepository: MemberRepository,
-    private val itemCommandService: ItemCommandService
+    private val memberRepository: MemberRepository
 ) {
 
     fun createShop(createShop: CreateShop, identity: String) {
