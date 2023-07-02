@@ -50,8 +50,7 @@ class MemberController @Autowired constructor(
     ): ResponseEntity<*> {
         controllerValidator.validateBinding(bindingResult)
 
-        val identity = memberCommandService.createMember(signupRequest)
-        mileageCommandService.createMileage(identity)
+        memberCommandService.createMember(signupRequest)
         logger().info(MemberControllerLog.SIGNUP_SUCCESS.log)
 
         return MemberResponse.signupSuccess()

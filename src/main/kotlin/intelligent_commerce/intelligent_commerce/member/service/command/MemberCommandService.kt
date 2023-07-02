@@ -15,6 +15,7 @@ import intelligent_commerce.intelligent_commerce.member.domain.Role
 import intelligent_commerce.intelligent_commerce.member.domain.util.PasswordUtil
 import intelligent_commerce.intelligent_commerce.member.dto.request.WithdrawRequest
 import intelligent_commerce.intelligent_commerce.member.dto.update.UpdateAddress
+import intelligent_commerce.intelligent_commerce.mileage.service.command.MileageCommandService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
@@ -26,7 +27,8 @@ import org.springframework.transaction.annotation.Transactional
 class MemberCommandService @Autowired constructor(
     private val memberRepository: MemberRepository,
     private val authenticationManagerBuilder: AuthenticationManagerBuilder,
-    private val jwtTokenProvider: JwtTokenProvider
+    private val jwtTokenProvider: JwtTokenProvider,
+    private val mileageCommandService: MileageCommandService
 ) {
 
     fun createMember(signupRequest: SignupRequest): String {
@@ -37,7 +39,8 @@ class MemberCommandService @Autowired constructor(
             Role.MEMBER,
             Address(signupRequest.city!!, signupRequest.roadNum!!, signupRequest.detail!!)
         ).also {
-                memberRepository.save(it)
+            memberRepository.save(it)
+            mileageCommandService.createMileage(it.identity)
         }.identity
     }
 
