@@ -5,10 +5,7 @@ import intelligent_commerce.intelligent_commerce.item.controller.constant.ItemPa
 import intelligent_commerce.intelligent_commerce.item.controller.constant.ItemUrl
 import intelligent_commerce.intelligent_commerce.item.controller.response.ItemResponse
 import intelligent_commerce.intelligent_commerce.item.dto.request.CreateItem
-import intelligent_commerce.intelligent_commerce.item.dto.update.AddRemaining
-import intelligent_commerce.intelligent_commerce.item.dto.update.UpdateItemContent
-import intelligent_commerce.intelligent_commerce.item.dto.update.UpdateItemTitle
-import intelligent_commerce.intelligent_commerce.item.dto.update.UpdatePrice
+import intelligent_commerce.intelligent_commerce.item.dto.update.*
 import intelligent_commerce.intelligent_commerce.item.service.command.ItemCommandService
 import intelligent_commerce.intelligent_commerce.item.service.query.ItemQueryService
 import intelligent_commerce.intelligent_commerce.logger
@@ -119,6 +116,20 @@ class ItemController @Autowired constructor(
         logger().info(ItemControllerLog.UPDATE_PRICE_SUCCESS.log)
 
         return ItemResponse.updatePriceSuccess()
+    }
+
+    @PutMapping(ItemUrl.UPDATE_DELIVERY_CHARGE)
+    fun updateDeliveryCharge(
+        @RequestBody @Valid updateDeliveryCharge: UpdateDeliveryCharge,
+        bindingResult: BindingResult,
+        principal: Principal
+    ): ResponseEntity<*> {
+        controllerValidator.validateBinding(bindingResult)
+
+        itemCommandService.updateDeliverCharge(updateDeliveryCharge, identity = principal.name)
+        logger().info(ItemControllerLog.UPDATE_DELIVERY_CHARGE_SUCCESS.log)
+
+        return ItemResponse.updateDeliveryChargeSuccess()
     }
 
     @PutMapping(ItemUrl.ADD_REMAINING)

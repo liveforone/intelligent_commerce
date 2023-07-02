@@ -6,5 +6,6 @@ data class ItemInfo(
     val title: String,
     val content: String,
     val price: Long,
+    val deliveryCharge: Long,
     val remaining: Long
 )

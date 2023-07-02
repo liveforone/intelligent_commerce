@@ -4,10 +4,7 @@ import intelligent_commerce.intelligent_commerce.exception.exception.ItemExcepti
 import intelligent_commerce.intelligent_commerce.exception.message.ItemExceptionMessage
 import intelligent_commerce.intelligent_commerce.item.domain.Item
 import intelligent_commerce.intelligent_commerce.item.dto.request.CreateItem
-import intelligent_commerce.intelligent_commerce.item.dto.update.AddRemaining
-import intelligent_commerce.intelligent_commerce.item.dto.update.UpdateItemContent
-import intelligent_commerce.intelligent_commerce.item.dto.update.UpdateItemTitle
-import intelligent_commerce.intelligent_commerce.item.dto.update.UpdatePrice
+import intelligent_commerce.intelligent_commerce.item.dto.update.*
 import intelligent_commerce.intelligent_commerce.item.repository.ItemRepository
 import intelligent_commerce.intelligent_commerce.shop.repository.ShopRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -27,6 +24,7 @@ class ItemCommandService @Autowired constructor(
             createItem.title!!,
             createItem.content!!,
             createItem.price!!,
+            createItem.deliveryCharge!!,
             createItem.remaining!!
         ).also {
             itemRepository.save(it)
@@ -34,29 +32,36 @@ class ItemCommandService @Autowired constructor(
     }
 
     fun updateTitle(requestDto: UpdateItemTitle, identity: String) {
-        itemRepository.findOneByIdJoinShopAndMember(requestDto.id!!).also {
-            if (!it.isOwner(identity)) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
+        itemRepository.findOneByIdJoinSeller(requestDto.id!!).also {
+            if (!it.shop.isOwnerOfShop(identity)) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
             it.updateTitle(requestDto.title!!)
         }
     }
 
     fun updateContent(requestDto: UpdateItemContent, identity: String) {
-        itemRepository.findOneByIdJoinShopAndMember(requestDto.id!!).also {
-            if (!it.isOwner(identity)) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
+        itemRepository.findOneByIdJoinSeller(requestDto.id!!).also {
+            if (!it.shop.isOwnerOfShop(identity)) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
             it.updateContent(requestDto.content!!)
         }
     }
 
     fun updatePrice(requestDto: UpdatePrice, identity: String) {
-        itemRepository.findOneByIdJoinShopAndMember(requestDto.id!!).also {
-            if (!it.isOwner(identity)) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
+        itemRepository.findOneByIdJoinSeller(requestDto.id!!).also {
+            if (!it.shop.isOwnerOfShop(identity)) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
             it.updatePrice(requestDto.price!!)
         }
     }
 
+    fun updateDeliverCharge(requestDto: UpdateDeliveryCharge, identity: String) {
+        itemRepository.findOneByIdJoinSeller(requestDto.id!!).also {
+            if (!it.shop.isOwnerOfShop(identity)) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
+            it.updateDeliveryCharge(requestDto.deliveryCharge!!)
+        }
+    }
+
     fun addRemaining(requestDto: AddRemaining, identity: String) {
-        itemRepository.findOneByIdJoinShopAndMember(requestDto.id!!).also {
-            if (!it.isOwner(identity)) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
+        itemRepository.findOneByIdJoinSeller(requestDto.id!!).also {
+            if (!it.shop.isOwnerOfShop(identity)) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
             it.addRemaining(requestDto.remaining!!)
         }
     }
@@ -74,8 +79,8 @@ class ItemCommandService @Autowired constructor(
     }
 
     fun deleteItem(identity: String, id: Long) {
-        itemRepository.findOneByIdJoinShopAndMember(id).also {
-            if (!it.isOwner(identity)) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
+        itemRepository.findOneByIdJoinSeller(id).also {
+            if (!it.shop.isOwnerOfShop(identity)) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
             itemRepository.delete(it)
         }
     }

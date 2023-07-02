@@ -9,6 +9,7 @@ object ItemUrl {
     const val UPDATE_TITLE = "/item/update/title"
     const val UPDATE_CONTENT = "/item/update/content"
     const val UPDATE_PRICE = "/item/update/price"
+    const val UPDATE_DELIVERY_CHARGE = "/item/update/delivery-charge"
     const val ADD_REMAINING = "/item/update/add-remaining"
     const val DELETE_ITEM = "/item/delete/{id}"
 }
