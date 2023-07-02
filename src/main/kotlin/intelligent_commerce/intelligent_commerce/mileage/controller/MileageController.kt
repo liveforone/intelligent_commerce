@@ -15,7 +15,7 @@ class MileageController @Autowired constructor(
 
     @GetMapping(MileageUrl.MILEAGE_INFO)
     fun mileageInfo(principal: Principal): ResponseEntity<*> {
-        val mileage = mileageQueryService.getMileageByMemberIdentity(identity = principal.name)
+        val mileage = mileageQueryService.getMileageByIdentity(identity = principal.name)
         return ResponseEntity.ok(mileage)
     }
 }
