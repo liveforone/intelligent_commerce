@@ -12,7 +12,7 @@ class MileageQueryService @Autowired constructor(
     private val mileageRepository: MileageRepository
 ) {
 
-    fun getMileageByMemberIdentity(identity: String): MileageInfo {
+    fun getMileageByIdentity(identity: String): MileageInfo {
         return mileageRepository.findOneDtoByIdentity(identity)
     }
 }
