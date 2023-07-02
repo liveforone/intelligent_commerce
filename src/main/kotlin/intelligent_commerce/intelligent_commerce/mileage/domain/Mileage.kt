@@ -11,7 +11,9 @@ class Mileage private constructor(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long?,
     @OneToOne(fetch = FetchType.LAZY) @JoinColumn(
         name = MileageConstant.MEMBER_COLUMN_NAME,
-        referencedColumnName = MileageConstant.IDENTITY
+        referencedColumnName = MileageConstant.IDENTITY,
+        updatable = false,
+        unique = true
     ) val member: Member,
     @Column(nullable = false) var mileagePoint: Long
 ) {
@@ -19,13 +21,13 @@ class Mileage private constructor(
         fun create(member: Member): Mileage = Mileage(null, member, 0)
     }
 
-    fun addPoint(itemPrice: Long) {
-        val calculatedMileage = MileagePolicy.calculateMileage(itemPrice)
+    fun addPoint(totalItemPrice: Long) {
+        val calculatedMileage = MileagePolicy.calculateMileage(totalItemPrice)
         mileagePoint += calculatedMileage
     }
 
-    fun rollbackAddPoint(itemPrice: Long) {
-        val calculatedMileage = MileagePolicy.calculateMileage(itemPrice)
+    fun rollbackAddPoint(totalItemPrice: Long) {
+        val calculatedMileage = MileagePolicy.calculateMileage(totalItemPrice)
         if (mileagePoint - calculatedMileage < 0) throw MileageException(MileageExceptionMessage.MILEAGE_ALREADY_USE)
         mileagePoint -= calculatedMileage
     }

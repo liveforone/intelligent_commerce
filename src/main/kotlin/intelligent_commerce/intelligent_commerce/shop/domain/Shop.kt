@@ -12,7 +12,9 @@ class Shop private constructor(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long?,
     @OneToOne(fetch = FetchType.LAZY) @JoinColumn(
         name = ShopConstant.SELLER_COLUMN_NAME,
-        referencedColumnName = ShopConstant.IDENTITY
+        referencedColumnName = ShopConstant.IDENTITY,
+        updatable = false,
+        unique = true
     ) val seller: Member,
     @Column(nullable = false) var shopName: String,
     @Column(nullable = false) var tel: String
@@ -30,5 +32,9 @@ class Shop private constructor(
 
     fun updateTel(tel: String) {
         this.tel = tel
+    }
+
+    fun isOwnerOfShop(identity: String): Boolean {
+        return seller.identity == identity
     }
 }

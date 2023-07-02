@@ -8,15 +8,19 @@ import jakarta.persistence.*
 @Entity
 class Item private constructor(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long?,
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn val shop: Shop,
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(
+        unique = true,
+        updatable = false
+    ) val shop: Shop,
     @Column(nullable = false) var title: String,
     @Column(nullable = false) var content: String,
     @Column(nullable = false) var price: Long,
+    @Column(nullable = false) var deliveryCharge: Long,
     @Column(nullable = false) var remaining: Long
 ) {
     companion object {
-        fun create(shop: Shop, title: String, content: String, price: Long, remaining: Long): Item {
-            return Item(null, shop, title, content, price, remaining)
+        fun create(shop: Shop, title: String, content: String, price: Long, deliveryCharge: Long = 0, remaining: Long): Item {
+            return Item(null, shop, title, content, price, deliveryCharge, remaining)
         }
     }
 
@@ -32,6 +36,10 @@ class Item private constructor(
         this.price = price
     }
 
+    fun updateDeliveryCharge(deliveryCharge: Long) {
+        this.deliveryCharge = deliveryCharge
+    }
+
     fun addRemaining(remaining: Long) {
         this.remaining += remaining
     }
@@ -43,9 +51,5 @@ class Item private constructor(
 
     fun rollbackMinusRemaining() {
         this.remaining += 1
-    }
-
-    fun isOwner(identity: String): Boolean {
-        return this.shop.seller.identity == identity
     }
 }
