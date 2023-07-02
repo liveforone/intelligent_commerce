@@ -42,7 +42,7 @@ class ShopRepositoryImpl @Autowired constructor(
                 from(entity(Shop::class))
                 fetch(Shop::seller)
                 join(Shop::seller)
-                where(col(Member::identity).equal(identity))
+                where(nestedCol(col(Shop::seller), Member::identity).equal(identity))
             }
         } catch (e: NoResultException) {
             throw ShopException(ShopExceptionMessage.SHOP_IS_NULL)
@@ -58,8 +58,7 @@ class ShopRepositoryImpl @Autowired constructor(
                     col(Shop::tel)
                 ))
                 from(entity(Shop::class))
-                join(Shop::seller)
-                where(col(Member::identity).equal(identity))
+                where(nestedCol(col(Shop::seller), Member::identity).equal(identity))
             }
         } catch (e: NoResultException) {
             throw ShopException(ShopExceptionMessage.SHOP_IS_NULL)
