@@ -25,20 +25,22 @@ class MileageCommandServiceTest @Autowired constructor(
         entityManager.clear()
     }
 
+    /*
+    * 마일리지는 회원가입시 자동으로 insert 된다.
+     */
     @Test
     @Transactional
     fun createMileageTest() {
         //given
         val signupRequest = SignupRequest("mileage_test@gmail.com", "1234", "1234567898765", "서울", "잠실-1-1", "102동 102호")
+
+        //when
         val identity = memberCommandService.createMember(signupRequest)
         flushAndClear()
 
-        //when
-        mileageCommandService.createMileage(identity)
-        flushAndClear()
 
         //then
-        Assertions.assertThat(mileageQueryService.getMileageByMemberIdentity(identity))
+        Assertions.assertThat(mileageQueryService.getMileageByIdentity(identity))
             .isNotNull
     }
 
@@ -49,8 +51,6 @@ class MileageCommandServiceTest @Autowired constructor(
         val signupRequest = SignupRequest("mileage_test@gmail.com", "1234", "1234567898765", "서울", "잠실-1-1", "102동 102호")
         val identity = memberCommandService.createMember(signupRequest)
         flushAndClear()
-        mileageCommandService.createMileage(identity)
-        flushAndClear()
 
         //when
         val itemPrice: Long = 50000
@@ -58,30 +58,8 @@ class MileageCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //then
-        Assertions.assertThat(mileageQueryService.getMileageByMemberIdentity(identity).mileagePoint)
+        Assertions.assertThat(mileageQueryService.getMileageByIdentity(identity).mileagePoint)
             .isEqualTo(MileagePolicy.calculateMileage(itemPrice))
-    }
-
-    @Test
-    @Transactional
-    fun rollbackPointTest() {
-        //given
-        val signupRequest = SignupRequest("mileage_test@gmail.com", "1234", "1234567898765", "서울", "잠실-1-1", "102동 102호")
-        val identity = memberCommandService.createMember(signupRequest)
-        flushAndClear()
-        mileageCommandService.createMileage(identity)
-        flushAndClear()
-        val itemPrice: Long = 50000
-        mileageCommandService.addPoint(itemPrice, identity)
-        flushAndClear()
-
-        //when
-        mileageCommandService.rollbackAddPoint(itemPrice, identity)
-        flushAndClear()
-
-        //then
-        Assertions.assertThat(mileageQueryService.getMileageByMemberIdentity(identity).mileagePoint)
-            .isEqualTo(0)
     }
 
     @Test
@@ -90,8 +68,6 @@ class MileageCommandServiceTest @Autowired constructor(
         //given
         val signupRequest = SignupRequest("mileage_test@gmail.com", "1234", "1234567898765", "서울", "잠실-1-1", "102동 102호")
         val identity = memberCommandService.createMember(signupRequest)
-        flushAndClear()
-        mileageCommandService.createMileage(identity)
         flushAndClear()
         val itemPrice: Long = 500000
         mileageCommandService.addPoint(itemPrice, identity)
@@ -103,32 +79,30 @@ class MileageCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //then
-        Assertions.assertThat(mileageQueryService.getMileageByMemberIdentity(identity).mileagePoint)
+        Assertions.assertThat(mileageQueryService.getMileageByIdentity(identity).mileagePoint)
             .isEqualTo(MileagePolicy.calculateMileage(itemPrice) - pointToUse)
     }
 
     @Test
     @Transactional
-    fun rollbackSubtractPointTest() {
+    fun rollbackMileageTest() {
         //given
         val signupRequest = SignupRequest("mileage_test@gmail.com", "1234", "1234567898765", "서울", "잠실-1-1", "102동 102호")
         val identity = memberCommandService.createMember(signupRequest)
         flushAndClear()
-        mileageCommandService.createMileage(identity)
-        flushAndClear()
         val itemPrice: Long = 500000
         mileageCommandService.addPoint(itemPrice, identity)
         flushAndClear()
-        val pointToUse: Long = 400
+        val pointToUse: Long = 4000
         mileageCommandService.subtractPoint(pointToUse, identity)
         flushAndClear()
 
         //when
-        mileageCommandService.rollbackSubtractPoint(pointToUse, identity)
+        mileageCommandService.rollbackMileage(pointToUse, itemPrice, identity)
         flushAndClear()
 
         //then
-        Assertions.assertThat(mileageQueryService.getMileageByMemberIdentity(identity).mileagePoint)
-            .isEqualTo(MileagePolicy.calculateMileage(itemPrice))
+        Assertions.assertThat(mileageQueryService.getMileageByIdentity(identity).mileagePoint)
+            .isEqualTo(0)
     }
 }
