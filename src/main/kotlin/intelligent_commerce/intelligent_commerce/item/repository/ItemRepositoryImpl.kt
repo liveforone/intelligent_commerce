@@ -2,7 +2,6 @@ package intelligent_commerce.intelligent_commerce.item.repository
 
 import com.linecorp.kotlinjdsl.query.spec.predicate.PredicateSpec
 import com.linecorp.kotlinjdsl.querydsl.expression.col
-import com.linecorp.kotlinjdsl.querydsl.from.associate
 import com.linecorp.kotlinjdsl.querydsl.from.fetch
 import com.linecorp.kotlinjdsl.querydsl.from.join
 import com.linecorp.kotlinjdsl.spring.data.*
@@ -34,7 +33,7 @@ class ItemRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun findOneByIdJoinShopAndMember(id: Long): Item {
+    override fun findOneByIdJoinSeller(id: Long): Item {
         return try {
             queryFactory.singleQuery {
                 select(entity(Item::class))
@@ -59,6 +58,7 @@ class ItemRepositoryImpl @Autowired constructor(
                     col(Item::title),
                     col(Item::content),
                     col(Item::price),
+                    col(Item::deliveryCharge),
                     col(Item::remaining)
                 ))
                 from(entity(Item::class))
@@ -84,6 +84,7 @@ class ItemRepositoryImpl @Autowired constructor(
                 col(Item::title),
                 col(Item::content),
                 col(Item::price),
+                col(Item::deliveryCharge),
                 col(Item::remaining)
             ))
             from(entity(Item::class))
@@ -101,11 +102,11 @@ class ItemRepositoryImpl @Autowired constructor(
                 col(Item::title),
                 col(Item::content),
                 col(Item::price),
+                col(Item::deliveryCharge),
                 col(Item::remaining)
             ))
             from(entity(Item::class))
-            join(Item::shop)
-            where(col(Shop::id).equal(shopId))
+            where(nestedCol(col(Item::shop), Shop::id).equal(shopId))
             where(ltLastId(lastId))
             orderBy(col(Item::id).desc())
             limit(ItemRepositoryConstant.LIMIT_PAGE)
@@ -120,6 +121,7 @@ class ItemRepositoryImpl @Autowired constructor(
                 col(Item::title),
                 col(Item::content),
                 col(Item::price),
+                col(Item::deliveryCharge),
                 col(Item::remaining)
             ))
             from(entity(Item::class))
