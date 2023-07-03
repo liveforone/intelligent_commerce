@@ -27,7 +27,7 @@ class Orders private constructor(
     @Column(nullable = false) val spentMileage: Long,
     @Column(nullable = false) val orderQuantity: Long,
     @Convert(converter = OrderStateConverter::class) @Column(nullable = false) var orderState: OrderState,
-    @CreatedDate @Column(nullable = false) val createdDate: LocalDateTime = LocalDateTime.now()
+    @Column(nullable = false, updatable = false) val createdDate: LocalDateTime = LocalDateTime.now()
 ) {
     companion object {
         private fun calculateTotalPrice(item: Item, spentMileage: Long?, orderQuantity: Long?): Long {
