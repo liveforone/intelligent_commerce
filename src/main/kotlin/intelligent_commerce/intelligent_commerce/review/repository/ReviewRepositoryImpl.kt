@@ -81,13 +81,11 @@ class ReviewRepositoryImpl @Autowired constructor(
 
     override fun findOneDtoByItem(lastId: Long, itemId: Long): List<ReviewInfo> {
         return queryFactory.listQuery {
-            select(
-                listOf(
+            select(listOf(
                     nestedCol(col(Review::order), Orders::id),
                     col(Review::content),
                     col(Review::createdDate)
-                )
-            )
+            ))
             from(entity(Review::class))
             join(Review::order)
             join(Orders::item)
