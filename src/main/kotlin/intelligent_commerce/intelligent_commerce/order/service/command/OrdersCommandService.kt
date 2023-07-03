@@ -30,7 +30,7 @@ class OrdersCommandService @Autowired constructor(
             requestDto.spentMileage,
             requestDto.orderQuantity
         ).also {
-            itemCommandService.minusRemaining(it.item.id!!)
+            itemCommandService.minusRemaining(it.orderQuantity, it.item.id!!)
             requestDto.spentMileage?.let {
                 mileageCommandService.subtractPoint(requestDto.spentMileage!!, identity)
             }
@@ -49,7 +49,7 @@ class OrdersCommandService @Autowired constructor(
     fun cancelOrderByMember(id: Long, identity: String) {
         ordersRepository.findOneByIdJoinMember(id).also {
             if (!it.isOwnerOfOrder(identity)) throw OrdersException(OrdersExceptionMessage.NOT_OWNER_OF_ORDER)
-            itemCommandService.rollbackMinusRemaining(it.item.id!!)
+            itemCommandService.rollbackMinusRemaining(it.orderQuantity, it.item.id!!)
             mileageCommandService.rollbackMileage(it.spentMileage, it.totalPrice, identity)
             it.cancelOrder()
         }

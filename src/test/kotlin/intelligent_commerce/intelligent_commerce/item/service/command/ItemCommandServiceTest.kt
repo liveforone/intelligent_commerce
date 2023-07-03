@@ -191,12 +191,13 @@ class ItemCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        itemCommandService.minusRemaining(itemId)
+        val orderQuantity: Long = 2
+        itemCommandService.minusRemaining(orderQuantity, itemId)
         flushAndClear()
 
         //then
         Assertions.assertThat(itemQueryService.getItemById(itemId).remaining)
-            .isEqualTo(remaining - 1)
+            .isEqualTo(remaining - orderQuantity)
     }
 
     @Test
@@ -213,11 +214,12 @@ class ItemCommandServiceTest @Autowired constructor(
         val createItem = CreateItem("test_title8", "test_content8", 20000, 2500 , 10)
         val itemId = itemCommandService.createItem(createItem, identity)
         flushAndClear()
-        itemCommandService.minusRemaining(itemId)
+        val orderQuantity: Long = 2
+        itemCommandService.minusRemaining(orderQuantity, itemId)
         flushAndClear()
 
         //when
-        itemCommandService.rollbackMinusRemaining(itemId)
+        itemCommandService.rollbackMinusRemaining(orderQuantity, itemId)
         flushAndClear()
 
         //then

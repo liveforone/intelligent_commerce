@@ -43,12 +43,12 @@ class Item private constructor(
         this.remaining += remaining
     }
 
-    fun minusRemaining() {
-        if (remaining - 1 < 0.toLong()) throw ItemException(ItemExceptionMessage.REMAINING_IS_ZERO)
-        this.remaining -= 1
+    fun minusRemaining(orderQuantity: Long) {
+        if (remaining - orderQuantity < 0.toLong()) throw ItemException(ItemExceptionMessage.REMAINING_IS_ZERO)
+        this.remaining -= orderQuantity
     }
 
-    fun rollbackMinusRemaining() {
-        this.remaining += 1
+    fun rollbackMinusRemaining(orderQuantity: Long) {
+        this.remaining += orderQuantity
     }
 }

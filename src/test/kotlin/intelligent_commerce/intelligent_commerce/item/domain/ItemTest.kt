@@ -116,10 +116,11 @@ class ItemTest {
         val item = createSellerShopAndItem(title, content, price, deliveryCharge, remaining)
 
         //when
-        item.minusRemaining()
+        val orderQuantity: Long = 2
+        item.minusRemaining(orderQuantity)
 
         //then
-        Assertions.assertThat(item.remaining).isEqualTo(remaining - 1)
+        Assertions.assertThat(item.remaining).isEqualTo(remaining - orderQuantity)
     }
 
     @Test
@@ -131,10 +132,11 @@ class ItemTest {
         val deliveryCharge: Long = 7000
         val remaining: Long = 70
         val item = createSellerShopAndItem(title, content, price, deliveryCharge, remaining)
-        item.minusRemaining()
+        val orderQuantity: Long = 5
+        item.minusRemaining(orderQuantity)
 
         //when
-        item.rollbackMinusRemaining()
+        item.rollbackMinusRemaining(orderQuantity)
 
         //then
         Assertions.assertThat(item.remaining).isEqualTo(remaining)

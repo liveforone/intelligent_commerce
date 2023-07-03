@@ -66,15 +66,15 @@ class ItemCommandService @Autowired constructor(
         }
     }
 
-    fun minusRemaining(id: Long) {
+    fun minusRemaining(orderQuantity: Long, id: Long) {
         itemRepository.findOneById(id).also {
-            it.minusRemaining()
+            it.minusRemaining(orderQuantity)
         }
     }
 
-    fun rollbackMinusRemaining(id: Long) {
+    fun rollbackMinusRemaining(orderQuantity: Long, id: Long) {
         itemRepository.findOneById(id).also {
-            it.rollbackMinusRemaining()
+            it.rollbackMinusRemaining(orderQuantity)
         }
     }
 
