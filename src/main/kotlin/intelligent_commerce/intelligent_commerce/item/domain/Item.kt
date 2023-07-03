@@ -9,7 +9,6 @@ import jakarta.persistence.*
 class Item private constructor(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long?,
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(
-        unique = true,
         updatable = false
     ) val shop: Shop,
     @Column(nullable = false) var title: String,
@@ -45,7 +44,7 @@ class Item private constructor(
     }
 
     fun minusRemaining() {
-        if (remaining - 1 == 0.toLong()) throw ItemException(ItemExceptionMessage.REMAINING_IS_ZERO)
+        if (remaining - 1 < 0.toLong()) throw ItemException(ItemExceptionMessage.REMAINING_IS_ZERO)
         this.remaining -= 1
     }
 
