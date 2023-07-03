@@ -1,5 +1,8 @@
 # DB 설계
 
+## ER-Diagram
+![er diagram](https://github.com/liveforone/intelligent_commerce/assets/88976237/9d21b8b8-ab6d-43d1-86eb-a217bce07eed)
+
 ## 테이블 생성 및 제약조건 명시
 ### 회원 -> Member
 ```
