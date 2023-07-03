@@ -92,9 +92,8 @@ class MemberCommandService @Autowired constructor(
     fun withdraw(withdrawRequest: WithdrawRequest, identity: String) {
         val member = memberRepository.findOneByIdentity(identity)
             .also {
-                if (!PasswordUtil.isMatchPassword(withdrawRequest.pw!!, it.pw)) throw MemberException(
-                    MemberExceptionMessage.WRONG_PASSWORD
-                )
+                if (!PasswordUtil.isMatchPassword(withdrawRequest.pw!!, it.pw))
+                    throw MemberException(MemberExceptionMessage.WRONG_PASSWORD)
             }
         memberRepository.delete(member)
     }
