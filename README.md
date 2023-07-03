@@ -20,15 +20,18 @@
 * Test : Junit5
 
 ## 2. 프로젝트 설계
+### 시스템 설계
 * [아키텍처 설계](https://github.com/liveforone/intelligent_commerce/blob/master/Documents/ARCITECTURE.md)
 * [DB 설계](https://github.com/liveforone/intelligent_commerce/blob/master/Documents/DB_DESIGN.md)
+### 엔티티 설계
 * [회원 설계](https://github.com/liveforone/intelligent_commerce/blob/master/Documents/MEMBER_DESIGN.md)
 * [마일리지 설계](https://github.com/liveforone/intelligent_commerce/blob/master/Documents/MILEAGE_DESIGN.md)
 * [상점 설계](https://github.com/liveforone/intelligent_commerce/blob/master/Documents/SHOP_DESIGN.md)
 * [상품 설계](https://github.com/liveforone/intelligent_commerce/blob/master/Documents/ITEM_DESIGN.md)
 * [주문 설계](https://github.com/liveforone/intelligent_commerce/blob/master/Documents/ORDER_DESIGN.md)
 * [리뷰 설계](https://github.com/liveforone/intelligent_commerce/blob/master/Documents/REVIEW_DESIGN.md)
-* [전체 흐름도]()
+### 흐름도
+* [전체 흐름도](https://github.com/liveforone/intelligent_commerce/blob/master/Documents/FLOW.md)
 
 ## 3. 고민점
 * [좋은 조인 쿼리]()
@@ -38,25 +41,10 @@
 * 장바구니 추가
 * 관련 상품 추천
 
-
-
-흐름도 문서화
-
 고민 -> 상품안에 상점 안에 판매자가 저장되어있는데, 쿼리도 한번더 나가는게 그렇고, 그거 조회하려고 너무 깊게 조인하는 것도 그렇고
 사용할때 체이닝처럼 길게 늘어지는 코드도 그렇고, 차라리 주문에 한번 더 저장하는 것은 어떨까?
 데이터의 일관성등 무결성 조건들이 (정합성이) 깨질수 있음
 다만 성능을 훨씬 좋고, 효율적임
-
-## 배송 시나리오
-* 판매자는 판매자의 identity로 주문을 찾는 것이 가능하다.
-* 주문 리스트에서 배송완료로 반영해야하는 주문을 클릭하여 detail로 진입한다.
-* 주문을 배송완료로 변경한다.
-
-## 업데이트시 데이터의 주인 체크
-* 업데이트가 발생할때마다 해당 데이터의 주인인지를 반드시 체크한다.
-
-jdsl 동적쿼리 문서화
-jdsl nestCol도 문서화
 
 ## 고도화
 쿼리 성능 최적화 -> 여러번의 조인을 필드에 넣어서 단건 조회 쿼리로 변경 등등 함수를 이용한 업그레이드, 구조 변경으로 업그레이드
@@ -126,53 +114,12 @@ a만을 조회할때에는 문제가 없으나, lazy 로딩일지라도
 * 테스트시에 flush()와 clear()는 함수를 따로 만들어서 가독성 향상하기
 * 연관관계 삭제시, delte method 만들지 말고, jpa에서 제공하는 delete() 함수
 
-## 주문시 마일리지 사용
-* 적립, 사용
-* 적립 롤백, 사용 롤백
-
-## 주요 기능
-상품 추천
-실시간 핫한 상품
-연관상품(상품 비교 기능)
-큐앤에이에서 욕설필터링
-
-## 페이와 연결되는 부분
-결제를하고 정산을 할때 수수료
-광고를 등록할때 결제
-결제시에 스토어 계좌 상수로 두고
-거기에 입금하고 출금하도록 한다.
-
-==============================================
-## 할일
-자동이 아닌 수동으로 상점 생성, 다만 마일리지는 자동 생성
-=========================================
 
 ## 연관게시물
 * 연관게시물을 뽑는 간단하며 좋은 방법은 검색이다.
 * 다만 인덱스를 타지 않는 %% 검색을 사용해야하고
 * 4개정도를 뽑아오는 방식으로 한다.
 
-## 추천
-* 상점 추천/상품 추천 따로 -> 테이블 2개
-* 추천시에 shop/item들의 수를 모르니깐 카프로 상점/상품서비스에서
-* 30분이나 한시간에 한번씩 전체 수를 프로듀스하고
-* 추천 서비스에서는 캐쉬에다가 저장해두고 사용하기
-
-## 주문시 마일리지 페인
-* 아래 처럼 헤더를 삽입하면 된다.
-```
-@GetMapping(value = "/status/")
-void status3(@RequestHeader("key3") String headers, @PathVariable("status") int status);
-```
-
-결제에서 어드민은 스토어의 계좌번호를 변경가능
-
-쿠팡 + 배달시스템은 배민(중계만 해주고 상태만 확인할 뿐 배달은 알아서^^)
-
-구매시에는 수량을 고려한다.
-수량은 미입력이 가능하고, 미입력시에 default는 1이다.
-
-페이랑 연결해야해서(페이를 다른 서비스로 보지말고, 스토어를 위해 제작된 서비스로 생각해야한다.)
 
 장바구니는 구현가능함
 cart만들고 리스트로 뽑아오면됨.
@@ -185,54 +132,3 @@ Statista의 조사에 따르면 장바구니에 상품을 담은 후 이탈하�
 구매할 수 있는 연관된 상품을 추천
 장바구니에 있는 상품들을 상기
 여기에는 없지만 필자의 생각인 빠른 결제로아예 빠르게 결제를 끝내서 상품에 대한 생각을 잊어버리는것
-
-## 서비스
-user
-mileage -> 스토어 내부에서 관리하고, 결제시에 가격을 할인해
-shop
-item(배달료 저장, 추천시스템)
-cart
-order
-결제및정산
-delivery
-review
-
-주문 -> 결제(내부에서) -> 정산 -> 송금(내부에서 + 수수료)
-
-이번 프로젝트의 주요 기능과 테마는
-사용자 중심 기능이다. 사용자에게 편리함을 줄 수 있는 기능들에 집중하고,
-이러한 기능들을 통해서 사용자의 구매를 더욱 유도하고
-단골로써 유치시키는 무기로 사용
-
-큐앤에이는 전화를 기본으로 하고 자주하는 질문 탭을 만들어서 리턴하는걸 할까 고민
-이것과 유사?한게 나쁜말 필터링 기능임. 이 기능 잘활용하면 될듯
-[욕설 필터링](https://github.com/liveforone/tyop/tree/master/src/main/java/tyop/tyop/filteringBot)
-
-쿠팡 기능을 조금 딥하게 파고들어보자
-
-포인트의 경우에는 5000원이나 어느정도 금액 이상일때만 사용가능하도록 한다.
-
-연관상품(오래머물면 X, 너무 적게머물러도 X, 적당히 머무르면 연관된 상품으로 인식)
-
-상품 비교기능(비슷한 상품 목록 출력 등)
-고객 맞춤형 쇼핑(위의 상품 비교와 같은 사용자 편의 기능 제공)
-
-연관상품은 상품이름으로 하던지, 아니면 상품 카테고리를 나누는것도 가성비좋은 연관상품이다.
-카테고리에서 인기있는 상품 몇개 뽑아서 리턴(데이터 활용보다 가성비 넘침), 이 카테고리는 사용자가 볼 수 있는 카테고리도 되겠지만, 서버상에만 존재하며 품목을 분류하는데에 쓰이는 카테고리로도 볼 수 있다.
-
-실시간 핫한 상품도 제공(많이 접속한 것들 위주로) -> 빠르게 가볍게 저장할 시스템이 있으면 좋은데
-혹은 어떤 api가 몇번 호출되는지 파악하는 것도 괜찮음.
-/item/{id}형태라면 이 api에서 /item/1이 많이 호출되는지 아니면 다른건지 파악하는게 가능해짐
-
-결제 매커니즘은 결제시 store 계좌로 입금 사용자 출금
-store 계좌에서 판매자 계좌로 송금
-
-배송시스템은 orderId(order안에 itemId 있다.), 배송상태(배송중, 배송완료), 배송날짜(createdDate, modifiedDate=배송완료날짜), 배송종류(환불, 교환, 일반배송), 배송가격(주문시 입력받음)
-배송완료는 판매자가 request함
-배송정보는 사용자의 경우 주문에서 볼 수 있고,
-배송정보 변경은 판매자만 가능함
-
-교환(7일이내), 환불(7일이내) 신청 시에도 배송에 등록된다.
-교환/환불 신청은 주문서비스에서 신청한다.
-
-주문은 사용자도 볼 수 있고(userId), 판매자도 볼 수 있다.(shopId)
