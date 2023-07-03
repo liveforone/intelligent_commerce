@@ -1,10 +1,134 @@
-@EntityListeners(AuditingEntityListener::class)
+# Intelligent Commerce
 
-비동기 서비스간 통신
-추천알고리즘(상품 추천, 연관 상품)
-결제 동시성(업데이트 쿼리, 도메인 로직으로 처리)
-페이와 연결
-사용자 중심(사용자 편의 기능 중심)
+## 목차
+1. [프로젝트 소개](#1-프로젝트-소개)
+2. [프로젝트 설계](#2-프로젝트-설계)
+3. [고민점](#3-고민점)
+4. [고도화 예정](#4-고도화-예정)
+
+## 1. 프로젝트 소개
+### 소개
+* 해당 프로젝트는 오픈마켓 플랫폼입니다.
+* 상품을 주문하는 과정까지 담아보았습니다.
+* 조회하는 쿼리가 많고, 연관관계가 복잡해서 쿼리의 성능을 높이고, 고민하는데에 시간을 많이 사용했습니다.
+* 기존에 자바로만 만들었던 프로젝트를 간결하고 함수형을 지원하는 코틀린을 사용해 제작하였습니다.
+### 기술 스택
+* Framework : Spring Boot 3.1.1
+* Lang : Kotlin, Jvm17
+* Data : Spring Data Jpa & Kotlin-Jdsl & MySql
+* Security : Spring Security & Jwt
+* Test : Junit5
+
+## 2. 프로젝트 설계
+* [아키텍처 설계](https://github.com/liveforone/intelligent_commerce/blob/master/Documents/ARCITECTURE.md)
+* [DB 설계](https://github.com/liveforone/intelligent_commerce/blob/master/Documents/DB_DESIGN.md)
+* [회원 설계](https://github.com/liveforone/intelligent_commerce/blob/master/Documents/MEMBER_DESIGN.md)
+* [마일리지 설계](https://github.com/liveforone/intelligent_commerce/blob/master/Documents/MILEAGE_DESIGN.md)
+* [상점 설계](https://github.com/liveforone/intelligent_commerce/blob/master/Documents/SHOP_DESIGN.md)
+* [상품 설계](https://github.com/liveforone/intelligent_commerce/blob/master/Documents/ITEM_DESIGN.md)
+* [주문 설계](https://github.com/liveforone/intelligent_commerce/blob/master/Documents/ORDER_DESIGN.md)
+* [리뷰 설계](https://github.com/liveforone/intelligent_commerce/blob/master/Documents/REVIEW_DESIGN.md)
+* [전체 흐름도]()
+
+## 3. 고민점
+* [좋은 조인 쿼리]()
+* [조인 쿼리 성능 높이기]
+
+## 4. 고도화 예정
+* 장바구니 추가
+* 관련 상품 추천
+
+
+
+흐름도 문서화
+
+고민 -> 상품안에 상점 안에 판매자가 저장되어있는데, 쿼리도 한번더 나가는게 그렇고, 그거 조회하려고 너무 깊게 조인하는 것도 그렇고
+사용할때 체이닝처럼 길게 늘어지는 코드도 그렇고, 차라리 주문에 한번 더 저장하는 것은 어떨까?
+데이터의 일관성등 무결성 조건들이 (정합성이) 깨질수 있음
+다만 성능을 훨씬 좋고, 효율적임
+
+## 배송 시나리오
+* 판매자는 판매자의 identity로 주문을 찾는 것이 가능하다.
+* 주문 리스트에서 배송완료로 반영해야하는 주문을 클릭하여 detail로 진입한다.
+* 주문을 배송완료로 변경한다.
+
+## 업데이트시 데이터의 주인 체크
+* 업데이트가 발생할때마다 해당 데이터의 주인인지를 반드시 체크한다.
+
+jdsl 동적쿼리 문서화
+jdsl nestCol도 문서화
+
+## 고도화
+쿼리 성능 최적화 -> 여러번의 조인을 필드에 넣어서 단건 조회 쿼리로 변경 등등 함수를 이용한 업그레이드, 구조 변경으로 업그레이드
+고도화 시에는 불필요한 쿼리, 즉 체크하지 않고 함수를 호출하는 행위등을 잡아내고
+성능을 따지고, 클린코드를 따지고, 모듈화하고, 확장성있게 만든다.
+
+## 조인 의문
+* dto 프로젝션시에는 조인이 필요없는데,
+* 그냥 엔티티를 조회하는경우 조인을 하지 않으면 조회하지 않아도 쿼리가 나감..
+
+## fk 값 원하는 값으로
+* fk의 값을 원하는 값으로 둘때에 주의할점은 해당 값이 fk로써 적절한지이다.
+* 기본값이 pk인 이유는 해당값은 변경 불가능하기 때문이다. 이러한 조건을 가져야한다.
+
+## 조인 결론
+* 객체가 가지고 있는 연관 객체의 fk를 가져올때에는 nestedCol()을 사용하면된다.
+* 그런데 연관 객체의 연관 객체의 연관 객체의... 처럼 연관객체에서 그치지 않고 더 깊이 들어가는 경우나
+* 연관객체의 fk 이외의 필드를 사용하기 위해서는 join을 해야만 한다.
+* dto로 가져올때에는 fetch join이 안되기 때문에 일반 join과 lazy를 사용한다.
+* 페치조인은 eager 로딩 처럼 연관 객체를 조인하여 단 한번의 쿼리로 가져온다.(모두 가져온다.)
+* 즉 참조하는 객체까지 모두 join해야한다. 그렇지 않으면 lazy로딩의 경우 객체를 참조하는 순간 조회쿼리가 또나간다.
+* 연관관계가 있다고 무조건 조인할 필요는 없다. 사용하지 않는 경우에는 조인하지 않아도 된다.
+* 업데이트에 필요한 엔티티 조회 쿼리가 아니라면, dto projection을 사용해서 몇번의 multiple join을 해도
+* 내가 조회하고자 하는 컬럼만 가져올 수 있도록 하여 성능으 높여라
+* 조인쿼리의 경우 최종적으로 조인하고자 객체를 조인한다고 명명한다. 
+* 예를들어 item을 조회하면서 연관객체인 shop의 필드인 seller를 사용한다면
+* findItemJoinSeller와 같이 한다.
+* 이러한 네이밍은 무조건 사용하는것이 아니라, 연관객체의 필드를 사용하는경우에는 join을 명명하지 않는다.
+* 다중 조인이 발생하는 순간 명명한다.
+* oneToOne의 경우 unique와 updateable 제약조건 반드시 명시
+* 이외의 다대일의 경우 updateable만 명시
+* nestedCol 사용할 컬럼으로 반드시 지정
+* 다중 조인은 피하라. 쿼리를 깊게 생각해야해서 연관객체찾느라고 객체지향이 깨져버린다.
+* 차라리 사용할 컬럼을 중복하여 엔티티에 fk로 저장하는것이 조인 + 조인 + 조인....보다 훨 낫다.
+
+## response
+* 컨트롤러메서드는 ResponseEntity<*>, 즉 와일드카드를 사용한다.
+* 와일드 카드는 사실상 any 이기 때문에, 어떠한 결과가 들어가던 자동매핑된다.
+* 다만 성능은 직접 명시하는것보다 떨어질것이다. 그러나 와일드 카드를 사용하는 이유는 예외처리가 작동하면서
+* 다양한 형태의 respones가 리턴되기 때문이다.
+* 그러나 Response 객체를 만들어서 각 컨트롤러 메서드의 성공시 리턴할 response를 모듈화시키는 경우에는
+* 반드시 성공하기 때문에 타입을 명시하여 약간이나마 성능을 올리도록 한다.
+
+## 조인 쿼리 성능 확인
+컬렉션 조인 쿼리 몇개 나가나 확인하고,
+두개 나가면 join을 없애고 그냥 연관 엔티티를 사용해보기
+문제없고 쿼리 하나나가면 그렇게 작성
+현재까지 나온건 shop id를 가져오는 경우에는 조인 필요없고, 조인 쿼리도 안나감
+따라서 연관 엔티티의 필드값이 필요하다면 조인하고, 그렇지 않다면 조인 하지 말아라.
+즉 메서드도 두가지로 나누어야한다.
+
+## 쿼리
+a와 b가 연관관계가 있을때
+a만을 조회할때에는 문제가 없으나, lazy 로딩일지라도
+조인을 하지 않게되면 a만 가져온다.
+따라서 a.b.id를 하여 b의 id를 가져오게되면 b를 조회하는 쿼리가 나간다.
+따라서 이렇게 사용될 일이 있는 경우에는 fetch join을 하여 미리 lazy로 가져오고 사용하면 훨씬 성능이 좋아진다.
+
+## 로직
+마일리지는 일반회원의 경우자동생성
+상점은 셀러만 생성 가능하지만, 따로 신청하도록함.
+회원 정보조회에 여러 api 콜을 하도록함. -> 마일리지 api 따로 만듦.
+
+## 느낀 점
+* dto는 fetch join하지 않는다.
+* 에러를 핸들링할때 exception message에 status도 넣어서 관리하기
+* 테스트시에 flush()와 clear()는 함수를 따로 만들어서 가독성 향상하기
+* 연관관계 삭제시, delte method 만들지 말고, jpa에서 제공하는 delete() 함수
+
+## 주문시 마일리지 사용
+* 적립, 사용
+* 적립 롤백, 사용 롤백
 
 ## 주요 기능
 상품 추천
@@ -18,9 +142,6 @@
 결제시에 스토어 계좌 상수로 두고
 거기에 입금하고 출금하도록 한다.
 
-## 전역 식별자
-* 전역으로 사용되는 식별자로는 username이 있다.
-
 ==============================================
 ## 할일
 자동이 아닌 수동으로 상점 생성, 다만 마일리지는 자동 생성
@@ -30,7 +151,6 @@
 * 연관게시물을 뽑는 간단하며 좋은 방법은 검색이다.
 * 다만 인덱스를 타지 않는 %% 검색을 사용해야하고
 * 4개정도를 뽑아오는 방식으로 한다.
-* 5개를 추천한다면 첫번째는 무작위 광고이고, 그 다음부터는 연관게시물 순으로 가져오는게 좋다.
 
 ## 추천
 * 상점 추천/상품 추천 따로 -> 테이블 2개
@@ -116,33 +236,3 @@ store 계좌에서 판매자 계좌로 송금
 교환/환불 신청은 주문서비스에서 신청한다.
 
 주문은 사용자도 볼 수 있고(userId), 판매자도 볼 수 있다.(shopId)
-
-## intelligent store
-* 반드시 상점 서비스에서 상점의 계좌번호를 가지고 있어야한다.
-* 이것이 상품에 있어서는 안된다.(상점에 있으면 중복될 일도 없음)
-* 또한 결제나 결제 취소 모두 사용자로 부터 계좌를 입력받는다.
-* 상점 서비스에 계좌 DB도 만들어서 계좌번호 여러개 저장하게 하기
-* 왜냐하면 페이서비스로만 결제할 것이 아니니깐
-* 일반적으로 가능한 은행의 계좌를 상점의 경우에는 다 저장하도록 해야함
-* 주문시 주문내역은 하나를 저장하고, 계좌번호 네이밍을 구매자 계좌, 판매자 계좌로 네이밍하여 저장
-
-## 서버 실행
-```
-cd C:\kafka\kafka_2.13-3.4.0
-bin\windows\zookeeper-server-start.bat config\zookeeper.properties
-
-cd C:\kafka\kafka_2.13-3.4.0
-bin\windows\kafka-server-start.bat config\server.properties
-
-cd C:\Users\KYC\study\intelligent_store\discovery-service\discovery-service\build\libs
-java -jar discovery-service-1.0.jar
-
-cd C:\Users\KYC\study\intelligent_store\gateway-service\gateway-service\build\libs
-java -jar gateway-service-1.0.jar
-
-cd C:\Users\KYC\study\intelligent_store\user-service\user-service\build\libs
-java -jar user-service-1.0.jar
-
-cd C:\Users\KYC\study\intelligent_store\mileage-service\mileage-service\build\libs
-java -jar mileage-service-1.0.jar
-```
