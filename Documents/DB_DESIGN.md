@@ -88,3 +88,19 @@ create table review (
 );
 CREATE INDEX order_id_idx ON orders (order_id);
 ```
+
+## no-offset 페이징
+* 페이징 성능을 향상하기 위해 no-offset 방식으로 페이징 처리한다.
+* 이에 따라 동적쿼리 구성이 필요하다.
+* 아래는 jdsl로 구성한 no-offset 동적쿼리이다.
+* 현재 정렬은 desc이기 때문에 asc를 사용한다면 lessThan을 greaterThan으로 변경한다.
+* 정책은 lastId가 0일경우 첫 페이지로 인식하고 null로 처리해 무시하도록 한다.
+* 그 이외에는 lastId보다 작은 id에 한해 조회한다.
+```
+private fun <T> SpringDataCriteriaQueryDsl<T>.ltLastId(lastId: Long): PredicateSpec? {
+        return if (lastId == 0.toLong()) null
+        else and(
+            col(Item::id).lessThan(lastId)
+        )
+    }
+```
