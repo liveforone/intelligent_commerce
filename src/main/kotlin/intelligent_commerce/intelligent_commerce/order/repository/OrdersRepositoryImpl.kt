@@ -25,6 +25,40 @@ class OrdersRepositoryImpl @Autowired constructor(
     private val queryFactory: SpringDataQueryFactory
 ) : OrdersCustomRepository {
 
+    override fun findOneById(id: Long): Orders {
+        return try {
+            queryFactory.singleQuery {
+                select(entity(Orders::class))
+                from(entity(Orders::class))
+                fetch(Orders::member)
+                join(Orders::member)
+                where(col(Orders::id).equal(id))
+            }
+        } catch (e: NoResultException) {
+            throw OrdersException(OrdersExceptionMessage.ORDER_IS_NULL)
+        }
+    }
+
+    override fun findOneDtoById(id: Long): OrderInfo {
+        return try {
+            queryFactory.singleQuery {
+                select(listOf(
+                    col(Orders::id),
+                    nestedCol(col(Orders::item), Item::id),
+                    col(Orders::totalPrice),
+                    col(Orders::spentMileage),
+                    col(Orders::orderQuantity),
+                    col(Orders::orderState),
+                    col(Orders::createdDate)
+                ))
+                from(entity(Orders::class))
+                where(col(Orders::id).equal(id))
+            }
+        } catch (e: NoResultException) {
+            throw OrdersException(OrdersExceptionMessage.ORDER_IS_NULL)
+        }
+    }
+
     override fun findOneByIdJoinMember(id: Long): Orders {
         return try {
             queryFactory.singleQuery {
@@ -50,26 +84,6 @@ class OrdersRepositoryImpl @Autowired constructor(
                 join(Item::shop)
                 fetch(Shop::seller)
                 join(Shop::seller)
-                where(col(Orders::id).equal(id))
-            }
-        } catch (e: NoResultException) {
-            throw OrdersException(OrdersExceptionMessage.ORDER_IS_NULL)
-        }
-    }
-
-    override fun findOneDtoById(id: Long): OrderInfo {
-        return try {
-            queryFactory.singleQuery {
-                select(listOf(
-                    col(Orders::id),
-                    nestedCol(col(Orders::item), Item::id),
-                    col(Orders::totalPrice),
-                    col(Orders::spentMileage),
-                    col(Orders::orderQuantity),
-                    col(Orders::orderState),
-                    col(Orders::createdDate)
-                ))
-                from(entity(Orders::class))
                 where(col(Orders::id).equal(id))
             }
         } catch (e: NoResultException) {
