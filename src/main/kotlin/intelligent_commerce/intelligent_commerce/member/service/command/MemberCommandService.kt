@@ -19,6 +19,7 @@ import intelligent_commerce.intelligent_commerce.mileage.service.command.Mileage
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -57,15 +58,11 @@ class MemberCommandService @Autowired constructor(
     }
 
     fun login(loginRequest: LoginRequest): TokenInfo {
-        val member = memberRepository.findOneByEmail(loginRequest.email!!)
+        val authentication: Authentication = authenticationManagerBuilder
+            .`object`
+            .authenticate(UsernamePasswordAuthenticationToken(loginRequest.email, loginRequest.pw))
 
-        authenticationManagerBuilder.also {
-            it.`object`.authenticate(
-                UsernamePasswordAuthenticationToken(loginRequest.email, loginRequest.pw)
-            )
-        }
-
-        return jwtTokenProvider.generateToken(member)
+        return jwtTokenProvider.generateToken(authentication)
     }
 
     fun updatePassword(updatePassword: UpdatePassword, identity: String) {

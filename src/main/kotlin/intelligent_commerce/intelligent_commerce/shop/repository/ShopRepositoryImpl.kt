@@ -11,6 +11,7 @@ import intelligent_commerce.intelligent_commerce.member.domain.Member
 import intelligent_commerce.intelligent_commerce.shop.domain.Shop
 import intelligent_commerce.intelligent_commerce.shop.dto.response.ShopInfo
 import jakarta.persistence.NoResultException
+import jakarta.persistence.criteria.JoinType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 
@@ -41,7 +42,7 @@ class ShopRepositoryImpl @Autowired constructor(
                 select(entity(Shop::class))
                 from(entity(Shop::class))
                 fetch(Shop::seller)
-                join(Shop::seller)
+                join(Shop::seller, JoinType.INNER)
                 where(nestedCol(col(Shop::seller), Member::identity).equal(identity))
             }
         } catch (e: NoResultException) {

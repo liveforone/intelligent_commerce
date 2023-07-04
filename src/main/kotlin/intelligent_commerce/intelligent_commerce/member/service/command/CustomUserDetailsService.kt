@@ -15,7 +15,7 @@ class CustomUserDetailsService @Autowired constructor(
 ) : UserDetailsService {
 
     override fun loadUserByUsername(email: String): UserDetails {
-        return createUserDetails(memberRepository.findOneByEmail(email))
+        return createUserDetails(member = memberRepository.findOneByEmail(email))
     }
 
     private fun createUserDetails(member: Member): UserDetails {

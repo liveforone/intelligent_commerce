@@ -27,12 +27,12 @@ class Member private constructor(
 
         fun create(email: String, pw: String, bankbookNum: String, auth: Role, address: Address): Member {
             return Member(
-                null,
-                createIdentity(),
+                id = null,
+                identity = createIdentity(),
                 email,
-                PasswordUtil.encodePassword(pw),
+                pw = PasswordUtil.encodePassword(pw),
                 bankbookNum,
-                if (email == MemberConstant.ADMIN_EMAIL) Role.ADMIN else auth,
+                auth = if (email == MemberConstant.ADMIN_EMAIL) Role.ADMIN else auth,
                 address
             )
         }
@@ -52,32 +52,18 @@ class Member private constructor(
     }
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        val authList = arrayListOf<GrantedAuthority>()
-        authList.add(SimpleGrantedAuthority(auth.auth))
-        return authList
+        return arrayListOf<GrantedAuthority>(SimpleGrantedAuthority(auth.auth))
     }
 
-    override fun getPassword(): String {
-        return pw
-    }
+    override fun getPassword(): String = pw
 
-    override fun getUsername(): String {
-        return identity
-    }
+    override fun getUsername(): String = identity
 
-    override fun isAccountNonExpired(): Boolean {
-        return true
-    }
+    override fun isAccountNonExpired(): Boolean = true
 
-    override fun isAccountNonLocked(): Boolean {
-        return true
-    }
+    override fun isAccountNonLocked(): Boolean = true
 
-    override fun isCredentialsNonExpired(): Boolean {
-        return true
-    }
+    override fun isCredentialsNonExpired(): Boolean = true
 
-    override fun isEnabled(): Boolean {
-        return true
-    }
+    override fun isEnabled(): Boolean = true
 }

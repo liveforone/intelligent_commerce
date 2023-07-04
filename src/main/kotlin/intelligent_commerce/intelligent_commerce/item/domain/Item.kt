@@ -2,6 +2,7 @@ package intelligent_commerce.intelligent_commerce.item.domain
 
 import intelligent_commerce.intelligent_commerce.exception.exception.ItemException
 import intelligent_commerce.intelligent_commerce.exception.message.ItemExceptionMessage
+import intelligent_commerce.intelligent_commerce.item.domain.constant.ItemConstant
 import intelligent_commerce.intelligent_commerce.shop.domain.Shop
 import jakarta.persistence.*
 
@@ -18,8 +19,16 @@ class Item private constructor(
     @Column(nullable = false) var remaining: Long
 ) {
     companion object {
-        fun create(shop: Shop, title: String, content: String, price: Long, deliveryCharge: Long = 0, remaining: Long): Item {
-            return Item(null, shop, title, content, price, deliveryCharge, remaining)
+        fun create(shop: Shop, title: String, content: String, price: Long, deliveryCharge: Long?, remaining: Long?): Item {
+            return Item(
+                id = null,
+                shop,
+                title,
+                content,
+                price,
+                deliveryCharge ?: ItemConstant.DELIVERY_CHARGE_MINIMUM,
+                remaining ?: ItemConstant.REMAINING_MINIMUM
+            )
         }
     }
 
@@ -44,11 +53,15 @@ class Item private constructor(
     }
 
     fun minusRemaining(orderQuantity: Long) {
-        if (remaining - orderQuantity < 0.toLong()) throw ItemException(ItemExceptionMessage.REMAINING_IS_ZERO)
+        if (remaining - orderQuantity < ItemConstant.REMAINING_MINIMUM) throw ItemException(ItemExceptionMessage.REMAINING_IS_ZERO)
         this.remaining -= orderQuantity
     }
 
     fun rollbackMinusRemaining(orderQuantity: Long) {
         this.remaining += orderQuantity
+    }
+
+    fun isOwnerOfItem(identity: String): Boolean {
+        return shop.seller.identity == identity
     }
 }

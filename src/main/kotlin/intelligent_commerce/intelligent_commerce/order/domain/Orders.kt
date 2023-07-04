@@ -7,7 +7,6 @@ import intelligent_commerce.intelligent_commerce.item.domain.Item
 import intelligent_commerce.intelligent_commerce.member.domain.Member
 import intelligent_commerce.intelligent_commerce.order.domain.constant.OrdersConstant
 import jakarta.persistence.*
-import org.springframework.data.annotation.CreatedDate
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -31,14 +30,11 @@ class Orders private constructor(
 ) {
     companion object {
         private fun calculateTotalPrice(item: Item, spentMileage: Long?, orderQuantity: Long?): Long {
-            val quantity = orderQuantity ?: OrdersConstant.BASIC_QUANTITY
-            val mileage = spentMileage ?: OrdersConstant.BASIC_MILEAGE
-            return (item.price * quantity) + item.deliveryCharge - mileage
+            return (item.price * (orderQuantity ?: OrdersConstant.BASIC_ORDER_QUANTITY)) + item.deliveryCharge - (spentMileage ?: OrdersConstant.BASIC_MILEAGE)
         }
 
         private fun calculateTotalItemPrice(item: Item, orderQuantity: Long?): Long {
-            val quantity = orderQuantity ?: OrdersConstant.BASIC_QUANTITY
-            return item.price * quantity
+            return item.price * (orderQuantity ?: OrdersConstant.BASIC_ORDER_QUANTITY)
         }
 
         fun create(member: Member, item: Item, spentMileage: Long?, orderQuantity: Long?): Orders {
@@ -49,7 +45,7 @@ class Orders private constructor(
                 totalPrice = calculateTotalPrice(item, spentMileage, orderQuantity),
                 totalItemPrice = calculateTotalItemPrice(item, orderQuantity),
                 spentMileage ?: OrdersConstant.BASIC_MILEAGE,
-                orderQuantity ?: OrdersConstant.BASIC_QUANTITY,
+                orderQuantity ?: OrdersConstant.BASIC_ORDER_QUANTITY,
                 OrderState.DELIVERY_READY_AND_ING
             )
         }

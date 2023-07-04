@@ -18,10 +18,12 @@ class ReviewCommandService @Autowired constructor(
 ) {
 
     fun createReview(requestDto: CreateReview) {
-        Review.create(ordersRepository.findOneById(requestDto.orderId!!), requestDto.content!!)
-            .also {
-                reviewRepository.save(it)
-            }
+        Review.create(
+            order = ordersRepository.findOneById(requestDto.orderId!!),
+            requestDto.content!!
+        ).also {
+            reviewRepository.save(it)
+        }
     }
 
     fun deleteReview(id: Long, identity: String) {

@@ -25,14 +25,14 @@ class OrdersCommandService @Autowired constructor(
 
     fun createOrder(requestDto: CreateOrder, identity: String): Long {
         return Orders.create(
-            memberRepository.findOneByIdentity(identity),
-            itemRepository.findOneById(requestDto.itemId!!),
+            member = memberRepository.findOneByIdentity(identity),
+            item = itemRepository.findOneById(requestDto.itemId!!),
             requestDto.spentMileage,
             requestDto.orderQuantity
         ).also {
             itemCommandService.minusRemaining(it.orderQuantity, it.item.id!!)
             requestDto.spentMileage?.let {
-                mileageCommandService.subtractPoint(requestDto.spentMileage!!, identity)
+                mileage -> mileageCommandService.subtractPoint(mileage, identity)
             }
             ordersRepository.save(it)
             mileageCommandService.addPoint(it.totalItemPrice, identity)
@@ -41,13 +41,13 @@ class OrdersCommandService @Autowired constructor(
 
     fun deliveryCompleted(id: Long, sellerIdentity: String) {
         ordersRepository.findOneByIdJoinSeller(id).also {
-            if (!it.item.shop.isOwnerOfShop(sellerIdentity)) throw OrdersException(OrdersExceptionMessage.NOT_OWNER_OF_ITEM)
+            if (!it.item.isOwnerOfItem(sellerIdentity)) throw OrdersException(OrdersExceptionMessage.NOT_OWNER_OF_ITEM)
             it.deliveryCompleted()
         }
     }
 
     fun cancelOrderByMember(id: Long, identity: String) {
-        ordersRepository.findOneByIdJoinMember(id).also {
+        ordersRepository.findOneById(id).also {
             if (!it.isOwnerOfOrder(identity)) throw OrdersException(OrdersExceptionMessage.NOT_OWNER_OF_ORDER)
             itemCommandService.rollbackMinusRemaining(it.orderQuantity, it.item.id!!)
             mileageCommandService.rollbackMileage(it.spentMileage, it.totalPrice, identity)

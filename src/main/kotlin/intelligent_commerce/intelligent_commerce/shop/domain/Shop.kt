@@ -22,7 +22,7 @@ class Shop private constructor(
     companion object {
         fun create(seller: Member, shopName: String, tel: String): Shop {
             if (seller.auth != Role.SELLER) throw ShopException(ShopExceptionMessage.AUTH_IS_NOT_SELLER)
-            return Shop(null, seller, shopName, tel)
+            return Shop(id = null, seller, shopName, tel)
         }
     }
 
@@ -32,9 +32,5 @@ class Shop private constructor(
 
     fun updateTel(tel: String) {
         this.tel = tel
-    }
-
-    fun isOwnerOfShop(identity: String): Boolean {
-        return seller.identity == identity
     }
 }

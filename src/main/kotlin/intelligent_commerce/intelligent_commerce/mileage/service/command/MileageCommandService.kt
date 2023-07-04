@@ -15,7 +15,7 @@ class MileageCommandService @Autowired constructor(
 ) {
 
     fun createMileage(identity: String) {
-        Mileage.create(memberRepository.findOneByIdentity(identity))
+        Mileage.create(member = memberRepository.findOneByIdentity(identity))
             .also {
                 mileageRepository.save(it)
             }

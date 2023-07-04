@@ -17,6 +17,7 @@ import intelligent_commerce.intelligent_commerce.order.dto.response.OrderInfo
 import intelligent_commerce.intelligent_commerce.order.repository.constant.OrdersRepositoryConstant
 import intelligent_commerce.intelligent_commerce.shop.domain.Shop
 import jakarta.persistence.NoResultException
+import jakarta.persistence.criteria.JoinType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 
@@ -31,7 +32,7 @@ class OrdersRepositoryImpl @Autowired constructor(
                 select(entity(Orders::class))
                 from(entity(Orders::class))
                 fetch(Orders::member)
-                join(Orders::member)
+                join(Orders::member, JoinType.INNER)
                 where(col(Orders::id).equal(id))
             }
         } catch (e: NoResultException) {
@@ -59,31 +60,18 @@ class OrdersRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun findOneByIdJoinMember(id: Long): Orders {
-        return try {
-            queryFactory.singleQuery {
-                select(entity(Orders::class))
-                from(entity(Orders::class))
-                fetch(Orders::member)
-                join(Orders::member)
-                where(col(Orders::id).equal(id))
-            }
-        } catch (e: NoResultException) {
-            throw OrdersException(OrdersExceptionMessage.ORDER_IS_NULL)
-        }
-    }
-
     override fun findOneByIdJoinSeller(id: Long): Orders {
         return try {
             queryFactory.singleQuery {
                 select(entity(Orders::class))
                 from(entity(Orders::class))
+                fetch(Orders::member)
+                join(Orders::member, JoinType.INNER)
                 fetch(Orders::item)
-                join(Orders::item)
+                join(Orders::item, JoinType.INNER)
                 fetch(Item::shop)
-                join(Item::shop)
-                fetch(Shop::seller)
-                join(Shop::seller)
+                join(Item::shop, JoinType.INNER)
+                join(Shop::seller, JoinType.INNER)
                 where(col(Orders::id).equal(id))
             }
         } catch (e: NoResultException) {
@@ -129,9 +117,9 @@ class OrdersRepositoryImpl @Autowired constructor(
                 col(Orders::createdDate)
             ))
             from(entity(Orders::class))
-            join(Orders::item)
-            join(Item::shop)
-            join(Shop::seller)
+            join(Orders::item, JoinType.INNER)
+            join(Item::shop, JoinType.INNER)
+            join(Shop::seller, JoinType.INNER)
             where(col(Member::identity).equal(sellerIdentity))
             where(ltLastId(lastId))
             orderBy(col(Orders::id).desc())

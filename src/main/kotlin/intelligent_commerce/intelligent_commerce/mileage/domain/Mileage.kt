@@ -18,7 +18,7 @@ class Mileage private constructor(
     @Column(nullable = false) var mileagePoint: Long
 ) {
     companion object {
-        fun create(member: Member): Mileage = Mileage(null, member, 0)
+        fun create(member: Member): Mileage = Mileage(id = null, member, MileageConstant.DEFAULT_MILEAGE_POINT)
     }
 
     fun addPoint(totalItemPrice: Long) {
@@ -28,12 +28,12 @@ class Mileage private constructor(
 
     fun rollbackAddPoint(totalItemPrice: Long) {
         val calculatedMileage = MileagePolicy.calculateMileage(totalItemPrice)
-        if (mileagePoint - calculatedMileage < 0) throw MileageException(MileageExceptionMessage.MILEAGE_ALREADY_USE)
+        if (mileagePoint - calculatedMileage < MileageConstant.MILEAGE_MINIMUM) throw MileageException(MileageExceptionMessage.MILEAGE_ALREADY_USE)
         mileagePoint -= calculatedMileage
     }
 
     fun subtractPoint(pointToUse: Long) {
-        if (mileagePoint - pointToUse < 0) throw MileageException(MileageExceptionMessage.POINT_TO_USE_IS_OVER)
+        if (mileagePoint - pointToUse < MileageConstant.MILEAGE_MINIMUM) throw MileageException(MileageExceptionMessage.POINT_TO_USE_IS_OVER)
         if (mileagePoint < MileageConstant.USE_MILEAGE_LIMIT_POINT) throw MileageException(MileageExceptionMessage.MILEAGE_IS_TOO_SMALL)
         mileagePoint -= pointToUse
     }

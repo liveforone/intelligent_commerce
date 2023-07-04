@@ -18,7 +18,11 @@ class ShopCommandService @Autowired constructor(
 ) {
 
     fun createShop(createShop: CreateShop, identity: String) {
-        Shop.create(memberRepository.findOneByIdentity(identity), createShop.shopName!!, createShop.tel!!)
+        Shop.create(
+            seller = memberRepository.findOneByIdentity(identity),
+            createShop.shopName!!,
+            createShop.tel!!
+        )
             .also {
                 shopRepository.save(it)
             }

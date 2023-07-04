@@ -20,12 +20,12 @@ class ItemCommandService @Autowired constructor(
 
     fun createItem(createItem: CreateItem, identity: String): Long {
         return Item.create(
-            shopRepository.findOneByIdentity(identity),
+            shop = shopRepository.findOneByIdentity(identity),
             createItem.title!!,
             createItem.content!!,
             createItem.price!!,
-            createItem.deliveryCharge!!,
-            createItem.remaining!!
+            createItem.deliveryCharge,
+            createItem.remaining
         ).also {
             itemRepository.save(it)
         }.id!!
@@ -33,35 +33,35 @@ class ItemCommandService @Autowired constructor(
 
     fun updateTitle(requestDto: UpdateItemTitle, identity: String) {
         itemRepository.findOneByIdJoinSeller(requestDto.id!!).also {
-            if (!it.shop.isOwnerOfShop(identity)) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
+            if (!it.isOwnerOfItem(identity)) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
             it.updateTitle(requestDto.title!!)
         }
     }
 
     fun updateContent(requestDto: UpdateItemContent, identity: String) {
         itemRepository.findOneByIdJoinSeller(requestDto.id!!).also {
-            if (!it.shop.isOwnerOfShop(identity)) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
+            if (!it.isOwnerOfItem(identity)) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
             it.updateContent(requestDto.content!!)
         }
     }
 
     fun updatePrice(requestDto: UpdatePrice, identity: String) {
         itemRepository.findOneByIdJoinSeller(requestDto.id!!).also {
-            if (!it.shop.isOwnerOfShop(identity)) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
+            if (!it.isOwnerOfItem(identity)) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
             it.updatePrice(requestDto.price!!)
         }
     }
 
     fun updateDeliverCharge(requestDto: UpdateDeliveryCharge, identity: String) {
         itemRepository.findOneByIdJoinSeller(requestDto.id!!).also {
-            if (!it.shop.isOwnerOfShop(identity)) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
+            if (!it.isOwnerOfItem(identity)) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
             it.updateDeliveryCharge(requestDto.deliveryCharge!!)
         }
     }
 
     fun addRemaining(requestDto: AddRemaining, identity: String) {
         itemRepository.findOneByIdJoinSeller(requestDto.id!!).also {
-            if (!it.shop.isOwnerOfShop(identity)) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
+            if (!it.isOwnerOfItem(identity)) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
             it.addRemaining(requestDto.remaining!!)
         }
     }
@@ -80,7 +80,7 @@ class ItemCommandService @Autowired constructor(
 
     fun deleteItem(identity: String, id: Long) {
         itemRepository.findOneByIdJoinSeller(id).also {
-            if (!it.shop.isOwnerOfShop(identity)) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
+            if (!it.isOwnerOfItem(identity)) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
             itemRepository.delete(it)
         }
     }

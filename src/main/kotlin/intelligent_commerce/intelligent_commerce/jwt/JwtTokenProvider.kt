@@ -4,7 +4,6 @@ import intelligent_commerce.intelligent_commerce.exception.exception.JwtCustomEx
 import intelligent_commerce.intelligent_commerce.exception.message.JwtExceptionMessage
 import intelligent_commerce.intelligent_commerce.jwt.constant.JwtConstant
 import intelligent_commerce.intelligent_commerce.logger
-import intelligent_commerce.intelligent_commerce.member.domain.Member
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
@@ -30,11 +29,11 @@ class JwtTokenProvider(@Value(JwtConstant.SECRET_KEY_PATH) secretKey: String) {
         key = Keys.hmacShaKeyFor(keyBytes)
     }
 
-    fun generateToken(member: Member): TokenInfo {
+    fun generateToken(authentication: Authentication): TokenInfo {
         val now: Long = Date().time
         val accessToken = Jwts.builder()
-            .setSubject(member.identity)
-            .claim(JwtConstant.CLAIM_NAME, member.auth)
+            .setSubject(authentication.name)
+            .claim(JwtConstant.CLAIM_NAME, authentication.authorities.iterator().next().authority)
             .setExpiration(Date(now + JwtConstant.TWO_HOUR_MS))
             .signWith(key, SignatureAlgorithm.HS256)
             .compact()

@@ -19,7 +19,7 @@ class Review private constructor(
 
     companion object {
         fun create(order: Orders, content: String): Review {
-            return Review(null, order, content)
+            return Review(id = null, order, content)
         }
     }
 
