@@ -13,15 +13,11 @@ import intelligent_commerce.intelligent_commerce.member.service.command.MemberCo
 import intelligent_commerce.intelligent_commerce.member.service.query.MemberQueryService
 import intelligent_commerce.intelligent_commerce.jwt.constant.JwtConstant
 import intelligent_commerce.intelligent_commerce.logger
-import intelligent_commerce.intelligent_commerce.member.domain.Role
 import intelligent_commerce.intelligent_commerce.member.dto.request.WithdrawRequest
 import intelligent_commerce.intelligent_commerce.member.dto.update.UpdateAddress
-import intelligent_commerce.intelligent_commerce.mileage.service.command.MileageCommandService
-import intelligent_commerce.intelligent_commerce.shop.service.command.ShopCommandService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.Valid
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.BindingResult
@@ -37,8 +33,6 @@ import java.security.Principal
 class MemberController @Autowired constructor(
     private val memberCommandService: MemberCommandService,
     private val memberQueryService: MemberQueryService,
-    private val mileageCommandService: MileageCommandService,
-    private val shopCommandService: ShopCommandService,
     private val controllerValidator: ControllerValidator,
     private val authenticationInfo: AuthenticationInfo
 ) {
@@ -78,8 +72,10 @@ class MemberController @Autowired constructor(
         controllerValidator.validateBinding(bindingResult)
 
         val tokenInfo = memberCommandService.login(loginRequest)
-        response.addHeader(JwtConstant.ACCESS_TOKEN, tokenInfo.accessToken)
-        response.addHeader(JwtConstant.REFRESH_TOKEN, tokenInfo.refreshToken)
+        response.apply {
+            addHeader(JwtConstant.ACCESS_TOKEN, tokenInfo.accessToken)
+            addHeader(JwtConstant.REFRESH_TOKEN, tokenInfo.refreshToken)
+        }
         logger().info(MemberControllerLog.LOGIN_SUCCESS.log)
 
         return MemberResponse.loginSuccess()
@@ -142,12 +138,11 @@ class MemberController @Autowired constructor(
     ): ResponseEntity<*> {
         controllerValidator.validateBinding(bindingResult)
 
-        if (authenticationInfo.getAuth(request) == Role.SELLER.name) {
-            shopCommandService.deleteShop(identity = principal.name)
-        } else {
-            mileageCommandService.deleteMileage(identity = principal.name)
-        }
-        memberCommandService.withdraw(withdrawRequest, identity = principal.name)
+        memberCommandService.withdraw(
+            withdrawRequest,
+            auth = authenticationInfo.getAuth(request),
+            identity = principal.name
+        )
         logger().info(MemberControllerLog.WITHDRAW_SUCCESS.log)
 
         return MemberResponse.withdrawSuccess()
