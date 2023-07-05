@@ -16,6 +16,19 @@
 * 주소의 경우 embedded로 설정하여 깔끔하게 조회되도록 한다.
 * 회원탈퇴시 일반회원의 경우 마일리지를, 판매자 회원의 경우 상점을 자동으로 삭제한다.
 
+## 회원탈퇴시 마일리지/상점 삭제
+* 마일리지는 일반회원으로 가입시 반드시 자동 생성된다.
+* 그러나 판매자 회원(seller)으로 가입시 상점은 자동 생성되지 않는다.
+* 상점은 판매자 회원이 직접 생성해야한다.
+* 그런데, 회원 탈퇴시 마일리지/상점을 삭제 시킬때 상점 삭제를 주의해야한다.
+* jpa의 delete() 메서드를 사용할때에는 엔티티를 찾아서 delete의 () 안에 넣어주면 삭제가 된다.
+* 즉 조회를 한 번 해야한다.
+* 그런데 jdsl은 단건 조회시 jpa criteria의  getSingleResult() 라는 함수를 사용해서 조회한다.
+* 이 함수는 DB에서 조회된 값이 없으면 NoResultException 이라는 에러를 발생시킨다.
+* 따라서 일반적으로 필자가 작성한 단건 조회 쿼리에는 이러한 예외시 적절하게 처리하는 로직을 두었다.
+* 그러나 상점이 삭제될때는 상점을 조회해서 없으면 무시해버리면 그만인데, 이러한 예외가 터질 수 있다.
+* 따라서 [Jdsl에서 null 허용하는 단건 쿼리 만들기](https://github.com/liveforone/intelligent_commerce/blob/master/Documents/NULLABLE_SINGLE_QUERY.md) 문서에서 볼 수 있듯 null을 허용하는 단건 쿼리를 만들어서 해결해야한다.
+
 ## API 설계
 ```
 [POST] /member/signup : SignupRequest 형식 Json 필요
