@@ -18,32 +18,27 @@ class ShopCommandService @Autowired constructor(
 ) {
 
     fun createShop(createShop: CreateShop, identity: String) {
-        Shop.create(
-            seller = memberRepository.findOneByIdentity(identity),
-            createShop.shopName!!,
-            createShop.tel!!
-        )
-            .also {
-                shopRepository.save(it)
-            }
+        with(createShop) {
+            Shop.create(
+                seller = memberRepository.findOneByIdentity(identity),
+                shopName!!,
+                tel!!
+            ).also { shopRepository.save(it) }
+        }
     }
 
     fun updateShopName(updateShopName: UpdateShopName, identity: String) {
-        shopRepository.findOneByIdentity(identity).also {
-            it.updateShopName(updateShopName.shopName!!)
-        }
+        shopRepository.findOneByIdentity(identity)
+            .also { it.updateShopName(updateShopName.shopName!!) }
     }
 
     fun updateTel(updateTel: UpdateTel, identity: String) {
-        shopRepository.findOneByIdentity(identity).also {
-            it.updateTel(updateTel.tel!!)
-        }
+        shopRepository.findOneByIdentity(identity)
+            .also { it.updateTel(updateTel.tel!!) }
     }
 
     fun deleteShop(identity: String) {
-        shopRepository.findOneByIdentity(identity)
-            .also {
-                shopRepository.delete(it)
-            }
+        shopRepository.findOneByIdentityNullable(identity)
+            ?.also { shopRepository.delete(it) }
     }
 }

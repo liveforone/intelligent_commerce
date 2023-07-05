@@ -24,34 +24,38 @@ class OrdersCommandService @Autowired constructor(
 ) {
 
     fun createOrder(requestDto: CreateOrder, identity: String): Long {
-        return Orders.create(
-            member = memberRepository.findOneByIdentity(identity),
-            item = itemRepository.findOneById(requestDto.itemId!!),
-            requestDto.spentMileage,
-            requestDto.orderQuantity
-        ).also {
-            itemCommandService.minusRemaining(it.orderQuantity, it.item.id!!)
-            requestDto.spentMileage?.let {
-                mileage -> mileageCommandService.subtractPoint(mileage, identity)
+        return with(requestDto) {
+            Orders.create(
+                member = memberRepository.findOneByIdentity(identity),
+                item = itemRepository.findOneById(itemId!!),
+                spentMileage,
+                orderQuantity
+            ).run {
+                itemCommandService.minusRemaining(orderQuantity, item.id!!)
+                requestDto.spentMileage?.let {
+                        mileage -> mileageCommandService.subtractPoint(mileage, identity)
+                }
+                mileageCommandService.addPoint(totalItemPrice, identity)
+                ordersRepository.save(this).id!!
             }
-            ordersRepository.save(it)
-            mileageCommandService.addPoint(it.totalItemPrice, identity)
-        }.id!!
+        }
     }
 
     fun deliveryCompleted(id: Long, sellerIdentity: String) {
-        ordersRepository.findOneByIdJoinSeller(id).also {
-            if (!it.item.isOwnerOfItem(sellerIdentity)) throw OrdersException(OrdersExceptionMessage.NOT_OWNER_OF_ITEM)
-            it.deliveryCompleted()
-        }
+        ordersRepository.findOneByIdJoinSeller(id)
+            .takeIf { it.item.isOwnerOfItem(sellerIdentity) }
+            ?.also { it.deliveryCompleted() }
+            ?: throw OrdersException(OrdersExceptionMessage.NOT_OWNER_OF_ITEM)
     }
 
     fun cancelOrderByMember(id: Long, identity: String) {
-        ordersRepository.findOneById(id).also {
-            if (!it.isOwnerOfOrder(identity)) throw OrdersException(OrdersExceptionMessage.NOT_OWNER_OF_ORDER)
-            itemCommandService.rollbackMinusRemaining(it.orderQuantity, it.item.id!!)
-            mileageCommandService.rollbackMileage(it.spentMileage, it.totalPrice, identity)
-            it.cancelOrder()
-        }
+        ordersRepository.findOneById(id)
+            .takeIf { it.isOwnerOfOrder(identity) }
+            ?.also {
+                itemCommandService.rollbackMinusRemaining(it.orderQuantity, it.item.id!!)
+                mileageCommandService.rollbackMileage(it.spentMileage, it.totalPrice, identity)
+                it.cancelOrder()
+            }
+            ?: throw OrdersException(OrdersExceptionMessage.NOT_OWNER_OF_ORDER)
     }
 }

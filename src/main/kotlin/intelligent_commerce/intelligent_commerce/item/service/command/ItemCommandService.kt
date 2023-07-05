@@ -19,69 +19,67 @@ class ItemCommandService @Autowired constructor(
 ) {
 
     fun createItem(createItem: CreateItem, identity: String): Long {
-        return Item.create(
-            shop = shopRepository.findOneByIdentity(identity),
-            createItem.title!!,
-            createItem.content!!,
-            createItem.price!!,
-            createItem.deliveryCharge,
-            createItem.remaining
-        ).also {
-            itemRepository.save(it)
-        }.id!!
+        return with(createItem) {
+            Item.create(
+                shop = shopRepository.findOneByIdentity(identity),
+                title!!,
+                content!!,
+                price!!,
+                deliveryCharge,
+                remaining
+            ).run { itemRepository.save(this).id!! }
+        }
     }
 
     fun updateTitle(requestDto: UpdateItemTitle, identity: String) {
-        itemRepository.findOneByIdJoinSeller(requestDto.id!!).also {
-            if (!it.isOwnerOfItem(identity)) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
-            it.updateTitle(requestDto.title!!)
-        }
+        itemRepository.findOneByIdJoinSeller(requestDto.id!!)
+            .takeIf { it.isOwnerOfItem(identity) }
+            ?.also { it.updateTitle(requestDto.title!!) }
+            ?: throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
     }
 
     fun updateContent(requestDto: UpdateItemContent, identity: String) {
-        itemRepository.findOneByIdJoinSeller(requestDto.id!!).also {
-            if (!it.isOwnerOfItem(identity)) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
-            it.updateContent(requestDto.content!!)
-        }
+        itemRepository.findOneByIdJoinSeller(requestDto.id!!)
+            .takeIf { it.isOwnerOfItem(identity) }
+            ?.also { it.updateContent(requestDto.content!!) }
+            ?: throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
     }
 
     fun updatePrice(requestDto: UpdatePrice, identity: String) {
-        itemRepository.findOneByIdJoinSeller(requestDto.id!!).also {
-            if (!it.isOwnerOfItem(identity)) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
-            it.updatePrice(requestDto.price!!)
-        }
+        itemRepository.findOneByIdJoinSeller(requestDto.id!!)
+            .takeIf { it.isOwnerOfItem(identity) }
+            ?.also { it.updatePrice(requestDto.price!!) }
+            ?: throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
     }
 
     fun updateDeliverCharge(requestDto: UpdateDeliveryCharge, identity: String) {
-        itemRepository.findOneByIdJoinSeller(requestDto.id!!).also {
-            if (!it.isOwnerOfItem(identity)) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
-            it.updateDeliveryCharge(requestDto.deliveryCharge!!)
-        }
+        itemRepository.findOneByIdJoinSeller(requestDto.id!!)
+            .takeIf { it.isOwnerOfItem(identity) }
+            ?.also { it.updateDeliveryCharge(requestDto.deliveryCharge!!) }
+            ?: throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
     }
 
     fun addRemaining(requestDto: AddRemaining, identity: String) {
-        itemRepository.findOneByIdJoinSeller(requestDto.id!!).also {
-            if (!it.isOwnerOfItem(identity)) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
-            it.addRemaining(requestDto.remaining!!)
-        }
+        itemRepository.findOneByIdJoinSeller(requestDto.id!!)
+            .takeIf { it.isOwnerOfItem(identity) }
+            ?.also { it.addRemaining(requestDto.remaining!!) }
+            ?: throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
     }
 
     fun minusRemaining(orderQuantity: Long, id: Long) {
-        itemRepository.findOneById(id).also {
-            it.minusRemaining(orderQuantity)
-        }
+        itemRepository.findOneById(id)
+            .also { it.minusRemaining(orderQuantity) }
     }
 
     fun rollbackMinusRemaining(orderQuantity: Long, id: Long) {
-        itemRepository.findOneById(id).also {
-            it.rollbackMinusRemaining(orderQuantity)
-        }
+        itemRepository.findOneById(id)
+            .also { it.rollbackMinusRemaining(orderQuantity) }
     }
 
     fun deleteItem(identity: String, id: Long) {
-        itemRepository.findOneByIdJoinSeller(id).also {
-            if (!it.isOwnerOfItem(identity)) throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
-            itemRepository.delete(it)
-        }
+        itemRepository.findOneByIdJoinSeller(id)
+            .takeIf { it.isOwnerOfItem(identity) }
+            ?. also { itemRepository.delete(it) }
+            ?: throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
     }
 }

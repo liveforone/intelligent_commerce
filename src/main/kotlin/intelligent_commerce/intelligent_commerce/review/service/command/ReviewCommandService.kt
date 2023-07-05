@@ -18,19 +18,18 @@ class ReviewCommandService @Autowired constructor(
 ) {
 
     fun createReview(requestDto: CreateReview) {
-        Review.create(
-            order = ordersRepository.findOneById(requestDto.orderId!!),
-            requestDto.content!!
-        ).also {
-            reviewRepository.save(it)
+        with(requestDto) {
+            Review.create(
+                order = ordersRepository.findOneById(orderId!!),
+                content!!
+            ).also { reviewRepository.save(it) }
         }
     }
 
     fun deleteReview(id: Long, identity: String) {
         reviewRepository.findOneByIdJoinMember(id)
-            .also {
-                if (!it.isOwnerOfReview(identity)) throw ReviewException(ReviewExceptionMessage.NOT_OWNER_OF_REVIEW)
-                reviewRepository.delete(it)
-            }
+            .takeIf { it.isOwnerOfReview(identity) }
+            ?.also { reviewRepository.delete(it) }
+            ?: throw ReviewException(ReviewExceptionMessage.NOT_OWNER_OF_REVIEW)
     }
 }

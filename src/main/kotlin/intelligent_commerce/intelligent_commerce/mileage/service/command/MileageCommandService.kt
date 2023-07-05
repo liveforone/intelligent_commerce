@@ -16,23 +16,17 @@ class MileageCommandService @Autowired constructor(
 
     fun createMileage(identity: String) {
         Mileage.create(member = memberRepository.findOneByIdentity(identity))
-            .also {
-                mileageRepository.save(it)
-            }
+            .also { mileageRepository.save(it) }
     }
 
     fun addPoint(itemPrice: Long, identity: String) {
         mileageRepository.findOneByIdentity(identity)
-            .also {
-                it.addPoint(itemPrice)
-            }
+            .also { it.addPoint(itemPrice) }
     }
 
     fun subtractPoint(pointToUse: Long, identity: String) {
         mileageRepository.findOneByIdentity(identity)
-            .also {
-                it.subtractPoint(pointToUse)
-            }
+            .also { it.subtractPoint(pointToUse) }
     }
 
     fun rollbackMileage(pointToUse: Long, itemPrice: Long, identity: String) {
@@ -45,8 +39,6 @@ class MileageCommandService @Autowired constructor(
 
     fun deleteMileage(identity: String) {
         mileageRepository.findOneByIdentity(identity)
-            .also {
-                mileageRepository.delete(it)
-            }
+            .also { mileageRepository.delete(it) }
     }
 }
