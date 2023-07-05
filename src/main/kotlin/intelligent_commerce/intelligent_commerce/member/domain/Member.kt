@@ -51,6 +51,10 @@ class Member private constructor(
         this.address = Address(city, roadNum, detail)
     }
 
+    fun isSeller(): Boolean {
+        return auth == Role.SELLER
+    }
+
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         return arrayListOf<GrantedAuthority>(SimpleGrantedAuthority(auth.auth))
     }
