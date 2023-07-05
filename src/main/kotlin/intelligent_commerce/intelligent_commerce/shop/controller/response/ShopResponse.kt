@@ -24,7 +24,5 @@ object ShopResponse {
         return ResponseEntity.ok(UPDATE_SHOP_NAME_SUCCESS)
     }
 
-    fun updateTelSuccess(): ResponseEntity<*> {
-        return ResponseEntity.ok(UPDATE_TEL)
-    }
+    fun updateTelSuccess(): ResponseEntity<*> = ResponseEntity.ok(UPDATE_TEL)
 }

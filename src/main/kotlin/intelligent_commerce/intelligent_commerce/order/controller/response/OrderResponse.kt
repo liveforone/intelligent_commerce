@@ -10,9 +10,7 @@ object OrderResponse {
     private const val DELIVERY_COMPLETED_SUCCESS = "배송준비 주문을 성공적으로 배송완료 처리하였습니다."
     private const val ORDER_CANCEL_SUCCESS = "주문 취소를 성공적으로 완료했습니다."
 
-    fun orderDetailSuccess(orderInfo: OrderInfo): ResponseEntity<OrderInfo> {
-        return ResponseEntity.ok(orderInfo)
-    }
+    fun orderDetailSuccess(orderInfo: OrderInfo): ResponseEntity<OrderInfo> = ResponseEntity.ok(orderInfo)
 
     fun myOrderSuccess(orderInfo: List<OrderInfo>): ResponseEntity<List<OrderInfo>> {
         return ResponseEntity.ok(orderInfo)
@@ -28,11 +26,7 @@ object OrderResponse {
             .body(ORDER_SUCCESS)
     }
 
-    fun deliveryCompletedSuccess(): ResponseEntity<String> {
-        return ResponseEntity.ok(DELIVERY_COMPLETED_SUCCESS)
-    }
+    fun deliveryCompletedSuccess(): ResponseEntity<String> = ResponseEntity.ok(DELIVERY_COMPLETED_SUCCESS)
 
-    fun orderCancelSuccess(): ResponseEntity<String> {
-        return ResponseEntity.ok(ORDER_CANCEL_SUCCESS)
-    }
+    fun orderCancelSuccess(): ResponseEntity<String> = ResponseEntity.ok(ORDER_CANCEL_SUCCESS)
 }

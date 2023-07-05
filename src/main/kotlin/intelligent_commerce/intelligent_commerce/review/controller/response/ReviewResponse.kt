@@ -27,7 +27,5 @@ object ReviewResponse {
             .body(CREATE_REVIEW_SUCCESS)
     }
 
-    fun deleteReviewSuccess(): ResponseEntity<String> {
-        return ResponseEntity.ok(DELETE_REVIEW_SUCCESS)
-    }
+    fun deleteReviewSuccess(): ResponseEntity<String> = ResponseEntity.ok(DELETE_REVIEW_SUCCESS)
 }
