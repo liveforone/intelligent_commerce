@@ -13,7 +13,6 @@ import intelligent_commerce.intelligent_commerce.shop.domain.Shop
 import intelligent_commerce.intelligent_commerce.shop.dto.response.ShopInfo
 import intelligent_commerce.intelligent_commerce.shop.repository.constant.ShopRepositoryConstant
 import jakarta.persistence.NoResultException
-import jakarta.persistence.criteria.JoinType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 
@@ -44,7 +43,7 @@ class ShopRepositoryImpl @Autowired constructor(
                 select(entity(Shop::class))
                 from(entity(Shop::class))
                 fetch(Shop::seller)
-                join(Shop::seller, JoinType.INNER)
+                join(Shop::seller)
                 where(nestedCol(col(Shop::seller), Member::identity).equal(identity))
             }
         } catch (e: NoResultException) {
@@ -57,7 +56,7 @@ class ShopRepositoryImpl @Autowired constructor(
             select(entity(Shop::class))
             from(entity(Shop::class))
             fetch(Shop::seller)
-            join(Shop::seller, JoinType.INNER)
+            join(Shop::seller)
             where(nestedCol(col(Shop::seller), Member::identity).equal(identity))
         }
 

@@ -12,7 +12,6 @@ import intelligent_commerce.intelligent_commerce.member.domain.Member
 import intelligent_commerce.intelligent_commerce.mileage.domain.Mileage
 import intelligent_commerce.intelligent_commerce.mileage.dto.MileageInfo
 import jakarta.persistence.NoResultException
-import jakarta.persistence.criteria.JoinType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 
@@ -27,7 +26,7 @@ class MileageRepositoryImpl @Autowired constructor(
                 select(entity(Mileage::class))
                 from(entity(Mileage::class))
                 fetch(Mileage::member)
-                join(Mileage::member, JoinType.INNER)
+                join(Mileage::member)
                 where(nestedCol(col(Mileage::member), Member::identity).equal(identity))
             }
         } catch (e: NoResultException) {

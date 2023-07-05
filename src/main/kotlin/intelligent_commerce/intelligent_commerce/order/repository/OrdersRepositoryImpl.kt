@@ -17,7 +17,6 @@ import intelligent_commerce.intelligent_commerce.order.dto.response.OrderInfo
 import intelligent_commerce.intelligent_commerce.order.repository.constant.OrdersRepositoryConstant
 import intelligent_commerce.intelligent_commerce.shop.domain.Shop
 import jakarta.persistence.NoResultException
-import jakarta.persistence.criteria.JoinType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 
@@ -32,7 +31,7 @@ class OrdersRepositoryImpl @Autowired constructor(
                 select(entity(Orders::class))
                 from(entity(Orders::class))
                 fetch(Orders::member)
-                join(Orders::member, JoinType.INNER)
+                join(Orders::member)
                 where(col(Orders::id).equal(id))
             }
         } catch (e: NoResultException) {
@@ -66,12 +65,12 @@ class OrdersRepositoryImpl @Autowired constructor(
                 select(entity(Orders::class))
                 from(entity(Orders::class))
                 fetch(Orders::member)
-                join(Orders::member, JoinType.INNER)
+                join(Orders::member)
                 fetch(Orders::item)
-                join(Orders::item, JoinType.INNER)
+                join(Orders::item)
                 fetch(Item::shop)
-                join(Item::shop, JoinType.INNER)
-                join(Shop::seller, JoinType.INNER)
+                join(Item::shop)
+                join(Shop::seller)
                 where(col(Orders::id).equal(id))
             }
         } catch (e: NoResultException) {
@@ -117,9 +116,9 @@ class OrdersRepositoryImpl @Autowired constructor(
                 col(Orders::createdDate)
             ))
             from(entity(Orders::class))
-            join(Orders::item, JoinType.INNER)
-            join(Item::shop, JoinType.INNER)
-            join(Shop::seller, JoinType.INNER)
+            join(Orders::item)
+            join(Item::shop)
+            join(Shop::seller)
             where(col(Member::identity).equal(sellerIdentity))
             where(ltLastId(lastId))
             orderBy(col(Orders::id).desc())
