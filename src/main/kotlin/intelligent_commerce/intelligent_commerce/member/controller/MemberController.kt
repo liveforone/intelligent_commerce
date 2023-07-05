@@ -140,7 +140,6 @@ class MemberController @Autowired constructor(
 
         memberCommandService.withdraw(
             withdrawRequest,
-            auth = authenticationInfo.getAuth(request),
             identity = principal.name
         )
         logger().info(MemberControllerLog.WITHDRAW_SUCCESS.log)

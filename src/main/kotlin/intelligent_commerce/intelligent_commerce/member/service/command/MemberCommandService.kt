@@ -89,7 +89,7 @@ class MemberCommandService @Autowired constructor(
             }
     }
 
-    fun withdraw(withdrawRequest: WithdrawRequest, auth: String, identity: String) {
+    fun withdraw(withdrawRequest: WithdrawRequest, identity: String) {
         memberRepository.findOneByIdentity(identity)
             .takeIf { PasswordUtil.isMatchPassword(withdrawRequest.pw!!, it.pw) }
             ?.also {

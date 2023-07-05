@@ -53,8 +53,7 @@ class ReviewController @Autowired constructor(
     @PostMapping(ReviewUrl.CREATE_REVIEW)
     fun createReview(
         @RequestBody @Valid createReview: CreateReview,
-        bindingResult: BindingResult,
-        principal: Principal
+        bindingResult: BindingResult
     ): ResponseEntity<*> {
         controllerValidator.validateBinding(bindingResult)
 
