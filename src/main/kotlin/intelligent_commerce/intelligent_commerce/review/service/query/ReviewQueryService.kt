@@ -12,13 +12,9 @@ class ReviewQueryService @Autowired constructor(
     private val reviewRepository: ReviewRepository
 ) {
 
-    fun getReviewById(id: Long): ReviewInfo {
-        return reviewRepository.findOneDtoById(id)
-    }
+    fun getReviewById(id: Long): ReviewInfo = reviewRepository.findOneDtoById(id)
 
-    fun getReviewByOrder(orderId: Long): ReviewInfo {
-        return reviewRepository.findOneDtoByOrder(orderId)
-    }
+    fun getReviewByOrder(orderId: Long): ReviewInfo = reviewRepository.findOneDtoByOrder(orderId)
 
     fun getReviewsByItem(lastId: Long, itemId: Long): List<ReviewInfo> {
         return reviewRepository.findOneDtoByItem(lastId, itemId)
