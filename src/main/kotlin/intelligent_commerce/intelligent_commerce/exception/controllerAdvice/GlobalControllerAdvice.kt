@@ -14,13 +14,13 @@ class GlobalControllerAdvice {
     fun duplicateEntityValueExceptionHandle(): ResponseEntity<*> {
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
-            .body("해당 값은 반드시 UNIQUE 여야 합니다.")
+            .body("데이터 베이스 무결성 조건을 위반하였습니다.")
     }
 
     @ExceptionHandler(BindingException::class)
-    fun bindingExceptionHandle(customException: BindingException): ResponseEntity<*> {
+    fun bindingExceptionHandle(bindingException: BindingException): ResponseEntity<*> {
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
-            .body(customException.message)
+            .body(bindingException.message)
     }
 }
