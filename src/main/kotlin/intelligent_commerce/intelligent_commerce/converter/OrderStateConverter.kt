@@ -6,11 +6,7 @@ import jakarta.persistence.Converter
 
 @Converter
 class OrderStateConverter : AttributeConverter<OrderState, String> {
-    override fun convertToDatabaseColumn(attribute: OrderState): String {
-        return attribute.name
-    }
+    override fun convertToDatabaseColumn(attribute: OrderState): String = attribute.name
 
-    override fun convertToEntityAttribute(dbData: String): OrderState {
-        return OrderState.valueOf(dbData)
-    }
+    override fun convertToEntityAttribute(dbData: String): OrderState = OrderState.valueOf(dbData)
 }
