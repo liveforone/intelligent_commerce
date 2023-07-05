@@ -9,19 +9,12 @@ import io.jsonwebtoken.security.Keys
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
-import org.springframework.util.StringUtils
-import java.security.Key
 import java.util.*
 
 @Component
 class AuthenticationInfo(@Value(JwtConstant.SECRET_KEY_PATH) secretKey: String) {
 
-    private val key: Key
-
-    init {
-        val keyBytes: ByteArray = Base64.getDecoder().decode(secretKey)
-        key = Keys.hmacShaKeyFor(keyBytes)
-    }
+    private val key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(secretKey))
 
     fun getUsername(request: HttpServletRequest): String {
         val token = resolveToken(request)
@@ -37,12 +30,16 @@ class AuthenticationInfo(@Value(JwtConstant.SECRET_KEY_PATH) secretKey: String) 
 
     private fun resolveToken(request: HttpServletRequest): String {
         val bearerToken = request.getHeader(JwtConstant.HEADER)
-        return if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(JwtConstant.BEARER_TOKEN)) {
-            bearerToken.substring(JwtConstant.TOKEN_SUB_INDEX)
-        } else{
-            throw JwtCustomException(JwtExceptionMessage.EMPTY_CLAIMS)
-        }
+        return bearerToken?.takeIf { it.startsWith(JwtConstant.BEARER_TOKEN) }
+            ?.substring(JwtConstant.TOKEN_SUB_INDEX)
+            ?: throw JwtCustomException(JwtExceptionMessage.EMPTY_CLAIMS)
     }
 
-    private fun parseClaims(accessToken: String): Claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).body
+    private fun parseClaims(accessToken: String): Claims {
+        val jwt = Jwts
+            .parserBuilder()
+            .setSigningKey(key)
+            .build()
+        return jwt.parseClaimsJws(accessToken).body
+    }
 }

@@ -6,7 +6,6 @@ import intelligent_commerce.intelligent_commerce.jwt.constant.JwtConstant
 import intelligent_commerce.intelligent_commerce.logger
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
-
 import io.jsonwebtoken.*
 import io.jsonwebtoken.security.Keys
 import io.jsonwebtoken.security.SecurityException
@@ -16,24 +15,21 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.User
-import java.security.Key
 import java.util.*
 
 @Component
 class JwtTokenProvider(@Value(JwtConstant.SECRET_KEY_PATH) secretKey: String) {
 
-    private val key: Key
-
-    init {
-        val keyBytes: ByteArray = Base64.getDecoder().decode(secretKey)
-        key = Keys.hmacShaKeyFor(keyBytes)
-    }
+    private val key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(secretKey))
 
     fun generateToken(authentication: Authentication): TokenInfo {
         val now: Long = Date().time
         val accessToken = Jwts.builder()
             .setSubject(authentication.name)
-            .claim(JwtConstant.CLAIM_NAME, authentication.authorities.iterator().next().authority)
+            .claim(
+                JwtConstant.CLAIM_NAME,
+                authentication.authorities.iterator().next().authority
+            )
             .setExpiration(Date(now + JwtConstant.TWO_HOUR_MS))
             .signWith(key, SignatureAlgorithm.HS256)
             .compact()
@@ -83,7 +79,11 @@ class JwtTokenProvider(@Value(JwtConstant.SECRET_KEY_PATH) secretKey: String) {
 
     private fun parseClaims(accessToken: String?): Claims {
         return try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).body
+            Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(accessToken)
+                .body
         } catch (e: ExpiredJwtException) {
             e.claims
         }
