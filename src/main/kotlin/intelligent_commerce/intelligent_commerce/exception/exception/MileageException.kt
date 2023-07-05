@@ -3,5 +3,4 @@ package intelligent_commerce.intelligent_commerce.exception.exception
 import intelligent_commerce.intelligent_commerce.exception.message.MileageExceptionMessage
 import java.lang.RuntimeException
 
-class MileageException(val mileageExceptionMessage: MileageExceptionMessage) : RuntimeException(mileageExceptionMessage.message) {
-}
+class MileageException(val mileageExceptionMessage: MileageExceptionMessage) : RuntimeException(mileageExceptionMessage.message)
