@@ -4,12 +4,14 @@ import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.querydsl.from.fetch
 import com.linecorp.kotlinjdsl.querydsl.from.join
 import com.linecorp.kotlinjdsl.spring.data.SpringDataQueryFactory
+import com.linecorp.kotlinjdsl.spring.data.listQuery
 import com.linecorp.kotlinjdsl.spring.data.singleQuery
 import intelligent_commerce.intelligent_commerce.exception.exception.ShopException
 import intelligent_commerce.intelligent_commerce.exception.message.ShopExceptionMessage
 import intelligent_commerce.intelligent_commerce.member.domain.Member
 import intelligent_commerce.intelligent_commerce.shop.domain.Shop
 import intelligent_commerce.intelligent_commerce.shop.dto.response.ShopInfo
+import intelligent_commerce.intelligent_commerce.shop.repository.constant.ShopRepositoryConstant
 import jakarta.persistence.NoResultException
 import jakarta.persistence.criteria.JoinType
 import org.springframework.beans.factory.annotation.Autowired
@@ -48,6 +50,19 @@ class ShopRepositoryImpl @Autowired constructor(
         } catch (e: NoResultException) {
             throw ShopException(ShopExceptionMessage.SHOP_IS_NULL)
         }
+    }
+
+    override fun findOneByIdentityNullable(identity: String): Shop? {
+        val shop = queryFactory.listQuery {
+            select(entity(Shop::class))
+            from(entity(Shop::class))
+            fetch(Shop::seller)
+            join(Shop::seller, JoinType.INNER)
+            where(nestedCol(col(Shop::seller), Member::identity).equal(identity))
+        }
+
+        return if (shop.isEmpty()) null
+        else shop[ShopRepositoryConstant.FIRST_INDEX]
     }
 
     override fun findOneDtoByIdentity(identity: String): ShopInfo {

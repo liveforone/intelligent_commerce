@@ -7,5 +7,6 @@ interface ShopCustomRepository {
 
     fun findOneDtoById(id: Long): ShopInfo
     fun findOneByIdentity(identity: String): Shop
+    fun findOneByIdentityNullable(identity: String): Shop?
     fun findOneDtoByIdentity(identity: String): ShopInfo
 }
