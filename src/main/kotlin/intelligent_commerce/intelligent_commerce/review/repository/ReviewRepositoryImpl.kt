@@ -72,13 +72,6 @@ class ReviewRepositoryImpl @Autowired constructor(
         }
     }
 
-    private fun <T> SpringDataCriteriaQueryDsl<T>.ltLastId(lastId: Long): PredicateSpec? {
-        return if (lastId == 0.toLong()) null
-        else and(
-            col(Review::id).lessThan(lastId)
-        )
-    }
-
     override fun findOneDtoByItem(lastId: Long, itemId: Long): List<ReviewInfo> {
         return queryFactory.listQuery {
             select(listOf(
@@ -94,5 +87,10 @@ class ReviewRepositoryImpl @Autowired constructor(
             orderBy(col(Review::id).desc())
             limit(ReviewRepositoryConstant.LIMIT_PAGE)
         }
+    }
+
+    private fun <T> SpringDataCriteriaQueryDsl<T>.ltLastId(lastId: Long): PredicateSpec? {
+        return if (lastId == 0.toLong()) null
+        else and(col(Review::id).lessThan(lastId))
     }
 }

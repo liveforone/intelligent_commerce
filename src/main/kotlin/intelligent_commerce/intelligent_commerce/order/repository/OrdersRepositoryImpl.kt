@@ -78,13 +78,6 @@ class OrdersRepositoryImpl @Autowired constructor(
         }
     }
 
-    private fun <T> SpringDataCriteriaQueryDsl<T>.ltLastId(lastId: Long): PredicateSpec? {
-        return if (lastId == 0.toLong()) null
-        else and(
-            col(Orders::id).lessThan(lastId)
-        )
-    }
-
     override fun findOrdersByIdentity(lastId: Long, identity: String): List<OrderInfo> {
         return queryFactory.listQuery {
             select(listOf(
@@ -124,5 +117,10 @@ class OrdersRepositoryImpl @Autowired constructor(
             orderBy(col(Orders::id).desc())
             limit(OrdersRepositoryConstant.LIMIT_PAGE)
         }
+    }
+
+    private fun <T> SpringDataCriteriaQueryDsl<T>.ltLastId(lastId: Long): PredicateSpec? {
+        return if (lastId == 0.toLong()) null
+        else and(col(Orders::id).lessThan(lastId))
     }
 }

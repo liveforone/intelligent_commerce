@@ -69,13 +69,6 @@ class ItemRepositoryImpl @Autowired constructor(
         }
     }
 
-    private fun <T> SpringDataCriteriaQueryDsl<T>.ltLastId(lastId: Long): PredicateSpec? {
-        return if (lastId == 0.toLong()) null
-        else and(
-            col(Item::id).lessThan(lastId)
-        )
-    }
-
     override fun findAllItems(lastId: Long): List<ItemInfo> {
         return queryFactory.listQuery {
             select(listOf(
@@ -130,5 +123,10 @@ class ItemRepositoryImpl @Autowired constructor(
             orderBy(col(Item::id).desc())
             limit(ItemRepositoryConstant.LIMIT_PAGE)
         }
+    }
+
+    private fun <T> SpringDataCriteriaQueryDsl<T>.ltLastId(lastId: Long): PredicateSpec? {
+        return if (lastId == 0.toLong()) null
+        else and(col(Item::id).lessThan(lastId))
     }
 }
