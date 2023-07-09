@@ -15,6 +15,7 @@ import intelligent_commerce.intelligent_commerce.jwt.constant.JwtConstant
 import intelligent_commerce.intelligent_commerce.logger
 import intelligent_commerce.intelligent_commerce.member.dto.request.WithdrawRequest
 import intelligent_commerce.intelligent_commerce.member.dto.update.UpdateAddress
+import intelligent_commerce.intelligent_commerce.member.dto.update.UpdateEmail
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.Valid
@@ -85,6 +86,20 @@ class MemberController @Autowired constructor(
     fun info(principal: Principal): ResponseEntity<*> {
         val member = memberQueryService.getMemberByIdentity(identity = principal.name)
         return MemberResponse.infoSuccess(member)
+    }
+
+    @PutMapping(MemberUrl.UPDATE_EMAIL)
+    fun updateEmail(
+        @RequestBody @Valid updateEmail: UpdateEmail,
+        bindingResult: BindingResult,
+        principal: Principal
+    ): ResponseEntity<*> {
+        controllerValidator.validateBinding(bindingResult)
+
+        memberCommandService.updateEmail(updateEmail, identity = principal.name)
+        logger().info(MemberControllerLog.UPDATE_EMAIL_SUCCESS.log)
+
+        return MemberResponse.updateEmailSuccess()
     }
 
     @PutMapping(MemberUrl.UPDATE_PASSWORD)

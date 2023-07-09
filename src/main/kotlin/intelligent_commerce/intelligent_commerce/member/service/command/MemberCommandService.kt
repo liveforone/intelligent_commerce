@@ -15,6 +15,8 @@ import intelligent_commerce.intelligent_commerce.member.domain.Role
 import intelligent_commerce.intelligent_commerce.member.domain.util.PasswordUtil
 import intelligent_commerce.intelligent_commerce.member.dto.request.WithdrawRequest
 import intelligent_commerce.intelligent_commerce.member.dto.update.UpdateAddress
+import intelligent_commerce.intelligent_commerce.member.dto.update.UpdateEmail
+import intelligent_commerce.intelligent_commerce.member.service.validator.MemberServiceValidator
 import intelligent_commerce.intelligent_commerce.mileage.service.command.MileageCommandService
 import intelligent_commerce.intelligent_commerce.shop.service.command.ShopCommandService
 import org.springframework.beans.factory.annotation.Autowired
@@ -27,15 +29,17 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional
 class MemberCommandService @Autowired constructor(
-    private val memberRepository: MemberRepository,
+    private val memberServiceValidator: MemberServiceValidator,
     private val authenticationManagerBuilder: AuthenticationManagerBuilder,
     private val jwtTokenProvider: JwtTokenProvider,
+    private val memberRepository: MemberRepository,
     private val shopCommandService: ShopCommandService,
-    private val mileageCommandService: MileageCommandService
+    private val mileageCommandService: MileageCommandService,
 ) {
 
     fun createMember(signupRequest: SignupRequest): String {
         return with(signupRequest) {
+            memberServiceValidator.validateDuplicateEmail(email!!)
             Member.create(
                 email!!,
                 pw!!,
@@ -68,6 +72,12 @@ class MemberCommandService @Autowired constructor(
             .authenticate(UsernamePasswordAuthenticationToken(loginRequest.email, loginRequest.pw))
 
         return jwtTokenProvider.generateToken(authentication)
+    }
+
+    fun updateEmail(updateEmail: UpdateEmail, identity: String) {
+        memberServiceValidator.validateDuplicateEmail(updateEmail.newEmail!!)
+        memberRepository.findOneByIdentity(identity)
+            .also { it.updateEmail(updateEmail.newEmail!!) }
     }
 
     fun updatePassword(updatePassword: UpdatePassword, identity: String) {

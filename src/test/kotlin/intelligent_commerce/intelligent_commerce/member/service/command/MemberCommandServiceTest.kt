@@ -5,6 +5,7 @@ import intelligent_commerce.intelligent_commerce.member.domain.Role
 import intelligent_commerce.intelligent_commerce.member.dto.request.SignupRequest
 import intelligent_commerce.intelligent_commerce.member.dto.update.UpdateAddress
 import intelligent_commerce.intelligent_commerce.member.dto.update.UpdateBankbookNum
+import intelligent_commerce.intelligent_commerce.member.dto.update.UpdateEmail
 import intelligent_commerce.intelligent_commerce.member.service.query.MemberQueryService
 import jakarta.persistence.EntityManager
 import org.assertj.core.api.Assertions
@@ -66,6 +67,31 @@ class MemberCommandServiceTest @Autowired constructor(
         //then
         Assertions.assertThat(memberQueryService.getMemberByIdentity(identity).auth)
             .isEqualTo(Role.SELLER)
+    }
+
+    @Test
+    @Transactional
+    fun updateEmailTest() {
+        //given
+        val email = "update_bankbookNum_test@gmail.com"
+        val pw = "1234"
+        val bankbookNum = "1234567898765"
+        val city = "seoul"
+        val roadNum = "잠실-1-1"
+        val detail = "102동 102호"
+        val signupRequest = SignupRequest(email, pw, bankbookNum, city, roadNum, detail)
+        val identity = memberCommandService.createMember(signupRequest)
+        flushAndClear()
+
+        //when
+        val newEmail = "test_newEmail@gmail.com"
+        val updateRequest = UpdateEmail(newEmail)
+        memberCommandService.updateEmail(updateRequest, identity)
+        flushAndClear()
+
+        //then
+        Assertions.assertThat(memberQueryService.getMemberByIdentity(identity).email)
+            .isEqualTo(newEmail)
     }
 
     @Test

@@ -5,6 +5,7 @@ import intelligent_commerce.intelligent_commerce.member.dto.response.MemberInfo
 
 interface MemberCustomRepository {
 
+    fun findIdByEmailNullableForValidate(email: String): Long?
     fun findOneById(id: Long): Member
     fun findOneByEmail(email: String): Member
     fun findOneByIdentity(identity: String): Member

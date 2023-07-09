@@ -7,6 +7,22 @@ import org.junit.jupiter.api.Test
 class MemberTest {
 
     @Test
+    fun updateEmailTest() {
+        //given
+        val email = "test1234@gmail.com"
+        val pw = "1234"
+        val bankbookNum = "1234567898765"
+        val member = Member.create(email, pw, bankbookNum, Role.MEMBER, Address("seoul", "잠실-1-1", "102동 102호"))
+
+        //when
+        val newEmail = "test_update_email@gmail.com"
+        member.updateEmail(newEmail)
+
+        //then
+        Assertions.assertThat(member.email).isEqualTo(newEmail)
+    }
+
+    @Test
     fun updatePwTest() {
         //given
         val email = "test_updatePw@gmail.com"
