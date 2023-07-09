@@ -1,6 +1,5 @@
 package intelligent_commerce.intelligent_commerce.item.service.query
 
-import intelligent_commerce.intelligent_commerce.item.dto.response.ItemInfo
 import intelligent_commerce.intelligent_commerce.item.repository.ItemRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
