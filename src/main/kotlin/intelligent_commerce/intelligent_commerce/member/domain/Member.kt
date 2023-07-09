@@ -45,7 +45,7 @@ class Member private constructor(
     }
 
     fun updatePw(newPassword: String, oldPassword: String) {
-        if (!PasswordUtil.isMatchPassword(oldPassword, pw)) throw MemberException(MemberExceptionMessage.WRONG_PASSWORD)
+        check(PasswordUtil.isMatchPassword(oldPassword, pw)) { throw MemberException(MemberExceptionMessage.WRONG_PASSWORD) }
         pw = PasswordUtil.encodePassword(newPassword)
     }
 

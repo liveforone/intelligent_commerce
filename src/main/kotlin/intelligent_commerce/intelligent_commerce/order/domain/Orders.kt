@@ -52,15 +52,15 @@ class Orders private constructor(
     }
 
     fun deliveryCompleted() {
-        if (orderState == OrderState.CANCEL) throw OrdersException(OrdersExceptionMessage.ALREADY_CANCELED)
+        check(orderState != OrderState.CANCEL) { throw OrdersException(OrdersExceptionMessage.ALREADY_CANCELED) }
         orderState = OrderState.DELIVERY_COMPLETED
     }
 
     fun cancelOrder() {
-        if (orderState == OrderState.DELIVERY_COMPLETED) throw OrdersException(OrdersExceptionMessage.ALREADY_DELIVERY_COMPLETED)
+        check (orderState != OrderState.DELIVERY_COMPLETED) { throw OrdersException(OrdersExceptionMessage.ALREADY_DELIVERY_COMPLETED) }
         val limitDate = createdDate.toLocalDate().plusDays(OrdersConstant.LIMIT_CANCEL_DAY)
         val nowDate = LocalDate.now()
-        if (nowDate.isAfter(limitDate)) throw OrdersException(OrdersExceptionMessage.OVER_CANCEL_LIMIT_DAY)
+        check (nowDate.isBefore(limitDate)) { throw OrdersException(OrdersExceptionMessage.OVER_CANCEL_LIMIT_DAY) }
         orderState = OrderState.CANCEL
     }
 

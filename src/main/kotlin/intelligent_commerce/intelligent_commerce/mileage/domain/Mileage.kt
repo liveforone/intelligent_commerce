@@ -28,13 +28,13 @@ class Mileage private constructor(
 
     fun rollbackAddPoint(totalItemPrice: Long) {
         val calculatedMileage = MileagePolicy.calculateMileage(totalItemPrice)
-        if (mileagePoint - calculatedMileage < MileageConstant.MILEAGE_MINIMUM) throw MileageException(MileageExceptionMessage.MILEAGE_ALREADY_USE)
+        check(mileagePoint - calculatedMileage >= MileageConstant.MILEAGE_MINIMUM) { throw MileageException(MileageExceptionMessage.MILEAGE_ALREADY_USE) }
         mileagePoint -= calculatedMileage
     }
 
     fun subtractPoint(pointToUse: Long) {
-        if (mileagePoint - pointToUse < MileageConstant.MILEAGE_MINIMUM) throw MileageException(MileageExceptionMessage.POINT_TO_USE_IS_OVER)
-        if (mileagePoint < MileageConstant.USE_MILEAGE_LIMIT_POINT) throw MileageException(MileageExceptionMessage.MILEAGE_IS_TOO_SMALL)
+        require(mileagePoint - pointToUse >= MileageConstant.MILEAGE_MINIMUM) { throw MileageException(MileageExceptionMessage.POINT_TO_USE_IS_OVER) }
+        check(mileagePoint >= MileageConstant.USE_MILEAGE_LIMIT_POINT) { throw MileageException(MileageExceptionMessage.MILEAGE_IS_TOO_SMALL) }
         mileagePoint -= pointToUse
     }
 

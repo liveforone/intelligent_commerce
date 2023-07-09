@@ -21,7 +21,7 @@ class Shop private constructor(
 ) {
     companion object {
         fun create(seller: Member, shopName: String, tel: String): Shop {
-            if (seller.auth != Role.SELLER) throw ShopException(ShopExceptionMessage.AUTH_IS_NOT_SELLER)
+            require (seller.auth == Role.SELLER) { throw ShopException(ShopExceptionMessage.AUTH_IS_NOT_SELLER) }
             return Shop(id = null, seller, shopName, tel)
         }
     }

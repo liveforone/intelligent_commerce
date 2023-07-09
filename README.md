@@ -42,3 +42,8 @@
 * [dsl(Criteria)에서 Null을 허용하는 단건 쿼리 만들기](https://github.com/liveforone/intelligent_commerce/blob/master/Documents/NULLABLE_SINGLE_QUERY.md)
 ### 비즈니스적 고민
 * [장바구니가 수익창출에 효과가 있나?](https://github.com/liveforone/intelligent_commerce/blob/master/Documents/USELESS_CART.md)
+
+## 4. 리팩토링
+* 해당 프로젝트는 지속적으로 리팩토링 됩니다. 
+* 처음 설계한 것 이외에, 지속적으로 추가되는 리팩토링은 리팩토링 문서에 담아 기술하였습니다.
+* [이메일은 유니크로 두지 않는다.]()

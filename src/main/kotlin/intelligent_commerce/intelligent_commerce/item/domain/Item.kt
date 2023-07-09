@@ -53,7 +53,7 @@ class Item private constructor(
     }
 
     fun minusRemaining(orderQuantity: Long) {
-        if (remaining - orderQuantity < ItemConstant.REMAINING_MINIMUM) throw ItemException(ItemExceptionMessage.REMAINING_IS_ZERO)
+        require (remaining - orderQuantity >= ItemConstant.REMAINING_MINIMUM) { throw ItemException(ItemExceptionMessage.REMAINING_IS_ZERO) }
         this.remaining -= orderQuantity
     }
 

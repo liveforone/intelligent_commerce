@@ -1,6 +1,5 @@
 package intelligent_commerce.intelligent_commerce.member.controller
 
-import intelligent_commerce.intelligent_commerce.authenticationInfo.AuthenticationInfo
 import intelligent_commerce.intelligent_commerce.member.controller.constant.MemberControllerLog
 import intelligent_commerce.intelligent_commerce.member.controller.constant.MemberUrl
 import intelligent_commerce.intelligent_commerce.member.controller.response.MemberResponse
@@ -34,8 +33,7 @@ import java.security.Principal
 class MemberController @Autowired constructor(
     private val memberCommandService: MemberCommandService,
     private val memberQueryService: MemberQueryService,
-    private val controllerValidator: ControllerValidator,
-    private val authenticationInfo: AuthenticationInfo
+    private val controllerValidator: ControllerValidator
 ) {
 
     @PostMapping(MemberUrl.SIGNUP_MEMBER)

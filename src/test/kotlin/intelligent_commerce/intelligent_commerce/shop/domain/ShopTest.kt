@@ -11,7 +11,7 @@ class ShopTest {
     @Test
     fun updateShopNameTest() {
         //given
-        val seller = Member.create("test@gmail.com", "1234", "1234567898765", Role.MEMBER, Address("seoul", "잠실-1-1", "102동 102호"))
+        val seller = Member.create("test@gmail.com", "1234", "1234567898765", Role.SELLER, Address("seoul", "잠실-1-1", "102동 102호"))
         val shopName = "test_shop"
         val tel = "01012345678"
         val shop = Shop.create(seller, shopName, tel)
@@ -28,7 +28,7 @@ class ShopTest {
     @Test
     fun updateTelTest() {
         //given
-        val seller = Member.create("test@gmail.com", "1234", "1234567898765", Role.MEMBER, Address("seoul", "잠실-1-1", "102동 102호"))
+        val seller = Member.create("test@gmail.com", "1234", "1234567898765", Role.SELLER, Address("seoul", "잠실-1-1", "102동 102호"))
         val shopName = "test_shop"
         val tel = "01012345678"
         val shop = Shop.create(seller, shopName, tel)
