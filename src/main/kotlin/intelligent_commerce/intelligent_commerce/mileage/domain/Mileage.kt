@@ -18,7 +18,7 @@ class Mileage private constructor(
     @Column(nullable = false) var mileagePoint: Long
 ) {
     companion object {
-        fun create(member: Member): Mileage = Mileage(id = null, member, MileageConstant.DEFAULT_MILEAGE_POINT)
+        fun create(member: Member) = Mileage(id = null, member, MileageConstant.DEFAULT_MILEAGE_POINT)
     }
 
     fun addPoint(totalItemPrice: Long) {

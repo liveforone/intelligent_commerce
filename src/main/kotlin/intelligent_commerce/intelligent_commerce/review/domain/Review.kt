@@ -18,12 +18,8 @@ class Review private constructor(
 ) {
 
     companion object {
-        fun create(order: Orders, content: String): Review {
-            return Review(id = null, order, content)
-        }
+        fun create(order: Orders, content: String) = Review(id = null, order, content)
     }
 
-    fun isOwnerOfReview(identity: String): Boolean{
-        return order.member.identity == identity
-    }
+    fun isOwnerOfReview(identity: String) = order.member.identity == identity
 }

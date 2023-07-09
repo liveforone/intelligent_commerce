@@ -12,15 +12,11 @@ class ItemQueryService @Autowired constructor(
     private val itemRepository: ItemRepository
 ) {
 
-    fun getItemById(id: Long): ItemInfo = itemRepository.findOneDtoById(id)
+    fun getItemById(id: Long) = itemRepository.findOneDtoById(id)
 
-    fun getAllItems(lastId: Long): List<ItemInfo> = itemRepository.findAllItems(lastId)
+    fun getAllItems(lastId: Long) = itemRepository.findAllItems(lastId)
 
-    fun getItemsByShop(shopId: Long, lastId: Long): List<ItemInfo> {
-        return itemRepository.findItemsByShopId(shopId, lastId)
-    }
+    fun getItemsByShop(shopId: Long, lastId: Long) = itemRepository.findItemsByShopId(shopId, lastId)
 
-    fun searchItems(keyword: String, lastId: Long): List<ItemInfo> {
-        return itemRepository.searchItemsByKeyword(keyword, lastId)
-    }
+    fun searchItems(keyword: String, lastId: Long) = itemRepository.searchItemsByKeyword(keyword, lastId)
 }

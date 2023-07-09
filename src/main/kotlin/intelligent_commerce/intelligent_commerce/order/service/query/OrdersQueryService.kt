@@ -12,7 +12,7 @@ class OrdersQueryService @Autowired constructor(
     private val ordersRepository: OrdersRepository
 ) {
 
-    fun getOrderById(id: Long): OrderInfo = ordersRepository.findOneDtoById(id)
+    fun getOrderById(id: Long) = ordersRepository.findOneDtoById(id)
 
     fun getOrdersByIdentity(lastId: Long, identity: String): List<OrderInfo> {
         return ordersRepository.findOrdersByIdentity(lastId, identity)

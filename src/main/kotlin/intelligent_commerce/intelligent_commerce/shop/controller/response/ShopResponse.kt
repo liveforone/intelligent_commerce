@@ -10,9 +10,9 @@ object ShopResponse {
     private const val UPDATE_SHOP_NAME_SUCCESS = "상호명을 성공적으로 변경하였습니다."
     private const val UPDATE_TEL = "전화번호를 성공적으로 변경하였습니다."
 
-    fun shopDetailSuccess(shopInfo: ShopInfo): ResponseEntity<*> = ResponseEntity.ok(shopInfo)
+    fun shopDetailSuccess(shopInfo: ShopInfo) = ResponseEntity.ok(shopInfo)
 
-    fun shopInfoSuccess(shopInfo: ShopInfo): ResponseEntity<*> = ResponseEntity.ok(shopInfo)
+    fun shopInfoSuccess(shopInfo: ShopInfo) = ResponseEntity.ok(shopInfo)
 
     fun createShopSuccess(): ResponseEntity<*> {
         return ResponseEntity
@@ -20,9 +20,7 @@ object ShopResponse {
             .body(CREATE_SHOP_SUCCESS)
     }
 
-    fun updateShopNameSuccess(): ResponseEntity<*> {
-        return ResponseEntity.ok(UPDATE_SHOP_NAME_SUCCESS)
-    }
+    fun updateShopNameSuccess() = ResponseEntity.ok(UPDATE_SHOP_NAME_SUCCESS)
 
-    fun updateTelSuccess(): ResponseEntity<*> = ResponseEntity.ok(UPDATE_TEL)
+    fun updateTelSuccess() = ResponseEntity.ok(UPDATE_TEL)
 }

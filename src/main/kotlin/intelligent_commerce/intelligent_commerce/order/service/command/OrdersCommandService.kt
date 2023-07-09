@@ -32,9 +32,7 @@ class OrdersCommandService @Autowired constructor(
                 orderQuantity
             ).run {
                 itemCommandService.minusRemaining(orderQuantity, item.id!!)
-                requestDto.spentMileage?.let {
-                        mileage -> mileageCommandService.subtractPoint(mileage, identity)
-                }
+                requestDto.spentMileage?.let { mileage -> mileageCommandService.subtractPoint(mileage, identity) }
                 mileageCommandService.addPoint(totalItemPrice, identity)
                 ordersRepository.save(this).id!!
             }

@@ -9,23 +9,16 @@ object ReviewResponse {
     private const val CREATE_REVIEW_SUCCESS = "리뷰를 성공적으로 등록했습니다."
     private const val DELETE_REVIEW_SUCCESS = "리뷰를 성공적으로 삭제했습니다."
 
-    fun reviewDetailSuccess(reviewInfo: ReviewInfo): ResponseEntity<ReviewInfo> {
-        return ResponseEntity.ok(reviewInfo)
-    }
+    fun reviewDetailSuccess(reviewInfo: ReviewInfo) = ResponseEntity.ok(reviewInfo)
 
-    fun reviewByOrderSuccess(reviewInfo: ReviewInfo): ResponseEntity<ReviewInfo> {
-        return ResponseEntity.ok(reviewInfo)
-    }
+    fun reviewByOrderSuccess(reviewInfo: ReviewInfo) = ResponseEntity.ok(reviewInfo)
 
-    fun reviewsByItemSuccess(reviews: List<ReviewInfo>): ResponseEntity<List<ReviewInfo>> {
-        return ResponseEntity.ok(reviews)
-    }
-
+    fun reviewsByItemSuccess(reviews: List<ReviewInfo>) = ResponseEntity.ok(reviews)
     fun createReviewSuccess(): ResponseEntity<String> {
         return ResponseEntity
             .status(HttpStatus.CREATED)
             .body(CREATE_REVIEW_SUCCESS)
     }
 
-    fun deleteReviewSuccess(): ResponseEntity<String> = ResponseEntity.ok(DELETE_REVIEW_SUCCESS)
+    fun deleteReviewSuccess() = ResponseEntity.ok(DELETE_REVIEW_SUCCESS)
 }

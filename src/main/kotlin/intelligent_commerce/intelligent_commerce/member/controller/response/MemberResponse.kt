@@ -20,17 +20,17 @@ object MemberResponse {
             .body(SIGNUP_SUCCESS)
     }
 
-    fun loginSuccess(): ResponseEntity<*> = ResponseEntity.ok(LOGIN_SUCCESS)
+    fun loginSuccess() = ResponseEntity.ok(LOGIN_SUCCESS)
 
-    fun infoSuccess(member: MemberInfo): ResponseEntity<MemberInfo> = ResponseEntity.ok(member)
+    fun infoSuccess(member: MemberInfo) = ResponseEntity.ok(member)
 
-    fun updateEmailSuccess(): ResponseEntity<*> = ResponseEntity.ok(UPDATE_EMAIL_SUCCESS)
+    fun updateEmailSuccess() = ResponseEntity.ok(UPDATE_EMAIL_SUCCESS)
 
-    fun updatePwSuccess(): ResponseEntity<*> = ResponseEntity.ok(UPDATE_PW_SUCCESS)
+    fun updatePwSuccess() = ResponseEntity.ok(UPDATE_PW_SUCCESS)
 
-    fun updateBankbookNumSuccess(): ResponseEntity<*> = ResponseEntity.ok(UPDATE_BANKBOOK_NUM_SUCCESS)
+    fun updateBankbookNumSuccess() = ResponseEntity.ok(UPDATE_BANKBOOK_NUM_SUCCESS)
 
-    fun updateAddressSuccess(): ResponseEntity<*> = ResponseEntity.ok(UPDATE_ADDRESS_SUCCESS)
+    fun updateAddressSuccess() = ResponseEntity.ok(UPDATE_ADDRESS_SUCCESS)
 
-    fun withdrawSuccess(): ResponseEntity<*> = ResponseEntity.ok(WITHDRAW_SUCCESS)
+    fun withdrawSuccess() = ResponseEntity.ok(WITHDRAW_SUCCESS)
 }

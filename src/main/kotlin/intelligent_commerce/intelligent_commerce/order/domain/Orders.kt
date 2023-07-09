@@ -64,7 +64,5 @@ class Orders private constructor(
         orderState = OrderState.CANCEL
     }
 
-    fun isOwnerOfOrder(identity: String): Boolean {
-        return member.identity == identity
-    }
+    fun isOwnerOfOrder(identity: String) = member.identity == identity
 }

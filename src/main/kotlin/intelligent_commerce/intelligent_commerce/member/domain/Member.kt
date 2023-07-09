@@ -23,9 +23,9 @@ class Member private constructor(
 ) : UserDetails {
 
     companion object {
-        private fun createIdentity(): String = UUID.randomUUID().toString()
+        private fun createIdentity() = UUID.randomUUID().toString()
 
-        private fun isAdmin(email: String): Boolean = (email == MemberConstant.ADMIN_EMAIL)
+        private fun isAdmin(email: String) = (email == MemberConstant.ADMIN_EMAIL)
 
         fun create(email: String, pw: String, bankbookNum: String, auth: Role, address: Address): Member {
             return Member(
@@ -57,23 +57,21 @@ class Member private constructor(
         this.address = Address(city, roadNum, detail)
     }
 
-    fun isSeller(): Boolean {
-        return auth == Role.SELLER
-    }
+    fun isSeller() = auth == Role.SELLER
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         return arrayListOf<GrantedAuthority>(SimpleGrantedAuthority(auth.auth))
     }
 
-    override fun getPassword(): String = pw
+    override fun getPassword() = pw
 
-    override fun getUsername(): String = identity
+    override fun getUsername() = identity
 
-    override fun isAccountNonExpired(): Boolean = true
+    override fun isAccountNonExpired() = true
 
-    override fun isAccountNonLocked(): Boolean = true
+    override fun isAccountNonLocked() = true
 
-    override fun isCredentialsNonExpired(): Boolean = true
+    override fun isCredentialsNonExpired() = true
 
-    override fun isEnabled(): Boolean = true
+    override fun isEnabled() = true
 }

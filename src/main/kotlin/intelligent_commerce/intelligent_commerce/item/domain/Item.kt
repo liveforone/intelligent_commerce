@@ -61,7 +61,5 @@ class Item private constructor(
         this.remaining += orderQuantity
     }
 
-    fun isOwnerOfItem(identity: String): Boolean {
-        return shop.seller.identity == identity
-    }
+    fun isOwnerOfItem(identity: String) = shop.seller.identity == identity
 }
