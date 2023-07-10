@@ -32,38 +32,48 @@ class ItemCommandService @Autowired constructor(
     }
 
     fun updateTitle(requestDto: UpdateItemTitle, identity: String) {
-        itemRepository.findOneByIdJoinSeller(requestDto.id!!)
-            .takeIf { it.isOwnerOfItem(identity) }
-            ?.also { it.updateTitle(requestDto.title!!) }
-            ?: throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
+        with(requestDto) {
+            itemRepository.findOneByIdJoinSeller(id!!)
+                .takeIf { it.isOwnerOfItem(identity) }
+                ?.also { it.updateTitle(title!!) }
+                ?: throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
+        }
     }
 
     fun updateContent(requestDto: UpdateItemContent, identity: String) {
-        itemRepository.findOneByIdJoinSeller(requestDto.id!!)
-            .takeIf { it.isOwnerOfItem(identity) }
-            ?.also { it.updateContent(requestDto.content!!) }
-            ?: throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
+        with(requestDto) {
+            itemRepository.findOneByIdJoinSeller(id!!)
+                .takeIf { it.isOwnerOfItem(identity) }
+                ?.also { it.updateContent(content!!) }
+                ?: throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
+        }
     }
 
     fun updatePrice(requestDto: UpdatePrice, identity: String) {
-        itemRepository.findOneByIdJoinSeller(requestDto.id!!)
-            .takeIf { it.isOwnerOfItem(identity) }
-            ?.also { it.updatePrice(requestDto.price!!) }
-            ?: throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
+        with(requestDto) {
+            itemRepository.findOneByIdJoinSeller(id!!)
+                .takeIf { it.isOwnerOfItem(identity) }
+                ?.also { it.updatePrice(price!!) }
+                ?: throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
+        }
     }
 
     fun updateDeliverCharge(requestDto: UpdateDeliveryCharge, identity: String) {
-        itemRepository.findOneByIdJoinSeller(requestDto.id!!)
-            .takeIf { it.isOwnerOfItem(identity) }
-            ?.also { it.updateDeliveryCharge(requestDto.deliveryCharge!!) }
-            ?: throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
+        with(requestDto) {
+            itemRepository.findOneByIdJoinSeller(id!!)
+                .takeIf { it.isOwnerOfItem(identity) }
+                ?.also { it.updateDeliveryCharge(deliveryCharge!!) }
+                ?: throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
+        }
     }
 
     fun addRemaining(requestDto: AddRemaining, identity: String) {
-        itemRepository.findOneByIdJoinSeller(requestDto.id!!)
-            .takeIf { it.isOwnerOfItem(identity) }
-            ?.also { it.addRemaining(requestDto.remaining!!) }
-            ?: throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
+        with(requestDto) {
+            itemRepository.findOneByIdJoinSeller(id!!)
+                .takeIf { it.isOwnerOfItem(identity) }
+                ?.also { it.addRemaining(remaining!!) }
+                ?: throw ItemException(ItemExceptionMessage.NOT_OWNER_OF_ITEM)
+        }
     }
 
     fun minusRemaining(orderQuantity: Long, id: Long) {

@@ -75,16 +75,18 @@ class MemberCommandService @Autowired constructor(
     }
 
     fun updateEmail(updateEmail: UpdateEmail, identity: String) {
-        memberServiceValidator.validateDuplicateEmail(updateEmail.newEmail!!)
-        memberRepository.findOneByIdentity(identity)
-            .also { it.updateEmail(updateEmail.newEmail!!) }
+        with(updateEmail) {
+            memberServiceValidator.validateDuplicateEmail(newEmail!!)
+            memberRepository.findOneByIdentity(identity)
+                .also { it.updateEmail(newEmail!!) }
+        }
     }
 
     fun updatePassword(updatePassword: UpdatePassword, identity: String) {
-        memberRepository.findOneByIdentity(identity)
-            .also {
-                it.updatePw(updatePassword.password!!, updatePassword.oldPassword!!)
-            }
+        with(updatePassword) {
+            memberRepository.findOneByIdentity(identity)
+                .also { it.updatePw(password!!, oldPassword!!) }
+        }
     }
 
     fun updateBankbookNum(updateBankbookNum: UpdateBankbookNum, identity: String) {
@@ -93,10 +95,10 @@ class MemberCommandService @Autowired constructor(
     }
 
     fun updateAddress(updateAddress: UpdateAddress, identity: String) {
-        memberRepository.findOneByIdentity(identity)
-            .also {
-                it.updateAddress(updateAddress.city!!, updateAddress.roadNum!!, updateAddress.detail!!)
-            }
+        with(updateAddress) {
+            memberRepository.findOneByIdentity(identity)
+                .also { it.updateAddress(city!!, roadNum!!, detail!!) }
+        }
     }
 
     fun withdraw(withdrawRequest: WithdrawRequest, identity: String) {
