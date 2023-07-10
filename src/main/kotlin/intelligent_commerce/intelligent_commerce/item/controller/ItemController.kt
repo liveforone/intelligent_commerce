@@ -38,7 +38,7 @@ class ItemController @Autowired constructor(
 
     @GetMapping(ItemUrl.ITEM_HOME)
     fun itemHome(
-        @RequestParam(ItemParam.LAST_ID, defaultValue = ItemParam.DEFAULT_VALUE) lastId: Long
+        @RequestParam(ItemParam.LAST_ID, required = false) lastId: Long?
     ): ResponseEntity<*> {
         val items = itemQueryService.getAllItems(lastId)
         return ItemResponse.itemHomeSuccess(items)
@@ -47,7 +47,7 @@ class ItemController @Autowired constructor(
     @GetMapping(ItemUrl.SHOP_ITEMS)
     fun shopItems(
         @PathVariable(ItemParam.SHOP_ID) shopId: Long,
-        @RequestParam(ItemParam.LAST_ID, defaultValue = ItemParam.DEFAULT_VALUE) lastId: Long
+        @RequestParam(ItemParam.LAST_ID, required = false) lastId: Long?
     ): ResponseEntity<*> {
         val items = itemQueryService.getItemsByShop(shopId, lastId)
         return ItemResponse.shopItemsSuccess(items)
@@ -56,7 +56,7 @@ class ItemController @Autowired constructor(
     @GetMapping(ItemUrl.SEARCH_ITEM)
     fun searchItem(
         @RequestParam(ItemParam.KEYWORD) keyword: String,
-        @RequestParam(ItemParam.LAST_ID, defaultValue = ItemParam.DEFAULT_VALUE) lastId: Long
+        @RequestParam(ItemParam.LAST_ID, required = false) lastId: Long?
     ): ResponseEntity<*> {
         val items = itemQueryService.searchItems(keyword, lastId)
         return ItemResponse.searchItemSuccess(items)
