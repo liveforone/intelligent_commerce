@@ -13,6 +13,7 @@
 * 기존에 자바로만 만들었던 프로젝트를 간결하고 함수형을 지원하는 코틀린을 사용해 제작하였습니다.
 * 최대한 코틀린의 다양한 기능들을 살려, 코틀린 스러운 코드를 만드는데에 힘썻습니다.
 * 이러한 기술적 문제 외에도 장바구니와 관련하여 비즈니스 문제를 발견하고 이를 해결해 보았습니다.
+* 프로젝트의 코드는 더 아름답게 지속적으로 리팩토링됩니다.
 ### 기술 스택
 * Framework : Spring Boot 3.1.1
 * Lang : Kotlin, Jvm17
@@ -42,8 +43,3 @@
 * [dsl(Criteria)에서 Null을 허용하는 단건 쿼리 만들기](https://github.com/liveforone/intelligent_commerce/blob/master/Documents/NULLABLE_SINGLE_QUERY.md)
 ### 비즈니스적 고민
 * [장바구니가 수익창출에 효과가 있나?](https://github.com/liveforone/intelligent_commerce/blob/master/Documents/USELESS_CART.md)
-
-## 4. 리팩토링
-* 해당 프로젝트는 지속적으로 리팩토링 됩니다. 
-* 처음 설계한 것 이외에, 지속적으로 추가되는 리팩토링은 리팩토링 문서에 담아 기술하였습니다.
-* [이메일은 유니크로 두지 않는다.]()
