@@ -15,5 +15,5 @@ class ReviewQueryService @Autowired constructor(
 
     fun getReviewByOrder(orderId: Long) = reviewRepository.findOneDtoByOrder(orderId)
 
-    fun getReviewsByItem(lastId: Long, itemId: Long) = reviewRepository.findOneDtoByItem(lastId, itemId)
+    fun getReviewsByItem(lastId: Long?, itemId: Long) = reviewRepository.findOneDtoByItem(lastId, itemId)
 }

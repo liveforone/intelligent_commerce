@@ -5,5 +5,4 @@ object ReviewParam {
     const val ORDER_ID = "orderId"
     const val ITEM_ID = "itemId"
     const val LAST_ID = "lastId"
-    const val DEFAULT_LAST_ID = "0"
 }

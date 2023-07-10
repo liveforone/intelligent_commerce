@@ -44,7 +44,7 @@ class ReviewController @Autowired constructor(
     @GetMapping(ReviewUrl.REVIEWS_BY_ITEM)
     fun reviewsByItem(
         @PathVariable(ReviewParam.ITEM_ID) itemId: Long,
-        @RequestParam(ReviewParam.LAST_ID, defaultValue = ReviewParam.DEFAULT_LAST_ID) lastId: Long
+        @RequestParam(ReviewParam.LAST_ID, required = false) lastId: Long?
     ): ResponseEntity<*> {
         val reviews = reviewQueryService.getReviewsByItem(lastId, itemId)
         return ReviewResponse.reviewsByItemSuccess(reviews)
