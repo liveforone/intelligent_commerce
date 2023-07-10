@@ -7,6 +7,6 @@ interface OrdersCustomRepository {
     fun findOneById(id: Long): Orders
     fun findOneDtoById(id: Long): OrderInfo
     fun findOneByIdJoinSeller(id: Long): Orders
-    fun findOrdersByIdentity(lastId: Long, identity: String): List<OrderInfo>
-    fun findOrdersBySellerIdentityJoinSeller(lastId: Long, sellerIdentity: String): List<OrderInfo>
+    fun findOrdersByIdentity(lastId: Long?, identity: String): List<OrderInfo>
+    fun findOrdersBySellerIdentityJoinSeller(lastId: Long?, sellerIdentity: String): List<OrderInfo>
 }

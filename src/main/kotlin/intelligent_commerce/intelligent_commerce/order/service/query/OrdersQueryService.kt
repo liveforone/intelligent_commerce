@@ -14,11 +14,11 @@ class OrdersQueryService @Autowired constructor(
 
     fun getOrderById(id: Long) = ordersRepository.findOneDtoById(id)
 
-    fun getOrdersByIdentity(lastId: Long, identity: String): List<OrderInfo> {
+    fun getOrdersByIdentity(lastId: Long?, identity: String): List<OrderInfo> {
         return ordersRepository.findOrdersByIdentity(lastId, identity)
     }
 
-    fun getOrdersBySeller(lastId: Long, sellerIdentity: String): List<OrderInfo> {
+    fun getOrdersBySeller(lastId: Long?, sellerIdentity: String): List<OrderInfo> {
         return ordersRepository.findOrdersBySellerIdentityJoinSeller(lastId, sellerIdentity)
     }
 }

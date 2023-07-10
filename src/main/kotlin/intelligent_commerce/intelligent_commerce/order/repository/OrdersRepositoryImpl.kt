@@ -78,7 +78,7 @@ class OrdersRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun findOrdersByIdentity(lastId: Long, identity: String): List<OrderInfo> {
+    override fun findOrdersByIdentity(lastId: Long?, identity: String): List<OrderInfo> {
         return queryFactory.listQuery {
             select(listOf(
                 col(Orders::id),
@@ -97,7 +97,7 @@ class OrdersRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun findOrdersBySellerIdentityJoinSeller(lastId: Long, sellerIdentity: String): List<OrderInfo> {
+    override fun findOrdersBySellerIdentityJoinSeller(lastId: Long?, sellerIdentity: String): List<OrderInfo> {
         return queryFactory.listQuery {
             select(listOf(
                 col(Orders::id),
@@ -119,8 +119,7 @@ class OrdersRepositoryImpl @Autowired constructor(
         }
     }
 
-    private fun <T> SpringDataCriteriaQueryDsl<T>.ltLastId(lastId: Long): PredicateSpec? {
-        return if (lastId == 0.toLong()) null
-        else and(col(Orders::id).lessThan(lastId))
+    private fun <T> SpringDataCriteriaQueryDsl<T>.ltLastId(lastId: Long?): PredicateSpec? {
+        return lastId?.let { and(col(Orders::id).lessThan(lastId)) }
     }
 }

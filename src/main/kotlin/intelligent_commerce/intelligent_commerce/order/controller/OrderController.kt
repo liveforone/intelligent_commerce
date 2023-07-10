@@ -37,7 +37,7 @@ class OrderController @Autowired constructor(
 
     @GetMapping(OrderUrl.MY_ORDER)
     fun myOrder(
-        @RequestParam(OrderParam.LAST_ID, defaultValue = OrderParam.DEFAULT_LAST_ID) lastId: Long,
+        @RequestParam(OrderParam.LAST_ID, required = false) lastId: Long?,
         principal: Principal
     ): ResponseEntity<*> {
         val orders = ordersQueryService.getOrdersByIdentity(lastId, identity = principal.name)
@@ -46,7 +46,7 @@ class OrderController @Autowired constructor(
 
     @GetMapping(OrderUrl.SHOP_ORDER_LIST)
     fun shopOrderList(
-        @RequestParam(OrderParam.LAST_ID, defaultValue = OrderParam.DEFAULT_LAST_ID) lastId: Long,
+        @RequestParam(OrderParam.LAST_ID, required = false) lastId: Long?,
         principal: Principal
     ): ResponseEntity<*> {
         val orders = ordersQueryService.getOrdersBySeller(lastId, sellerIdentity = principal.name)
