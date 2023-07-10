@@ -69,7 +69,7 @@ class ItemRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun findAllItems(lastId: Long): List<ItemInfo> {
+    override fun findAllItems(lastId: Long?): List<ItemInfo> {
         return queryFactory.listQuery {
             select(listOf(
                 col(Item::id),
@@ -87,7 +87,7 @@ class ItemRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun findItemsByShopId(shopId: Long, lastId: Long): List<ItemInfo> {
+    override fun findItemsByShopId(shopId: Long, lastId: Long?): List<ItemInfo> {
         return queryFactory.listQuery {
             select(listOf(
                 col(Item::id),
@@ -106,7 +106,7 @@ class ItemRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun searchItemsByKeyword(keyword: String, lastId: Long): List<ItemInfo> {
+    override fun searchItemsByKeyword(keyword: String, lastId: Long?): List<ItemInfo> {
         return queryFactory.listQuery {
             select(listOf(
                 col(Item::id),
@@ -125,8 +125,7 @@ class ItemRepositoryImpl @Autowired constructor(
         }
     }
 
-    private fun <T> SpringDataCriteriaQueryDsl<T>.ltLastId(lastId: Long): PredicateSpec? {
-        return if (lastId == 0.toLong()) null
-        else and(col(Item::id).lessThan(lastId))
+    private fun <T> SpringDataCriteriaQueryDsl<T>.ltLastId(lastId: Long?): PredicateSpec? {
+        return lastId?.let { and(col(Item::id).lessThan(lastId)) }
     }
 }

@@ -5,5 +5,4 @@ object ItemParam {
     const val SHOP_ID = "shopId"
     const val LAST_ID = "lastId"
     const val KEYWORD = "keyword"
-    const val DEFAULT_VALUE = "0"
 }

@@ -7,7 +7,7 @@ interface ItemCustomRepository {
     fun findOneById(id: Long): Item
     fun findOneByIdJoinSeller(id: Long): Item
     fun findOneDtoById(id: Long): ItemInfo
-    fun findAllItems(lastId: Long): List<ItemInfo>
-    fun findItemsByShopId(shopId: Long, lastId: Long): List<ItemInfo>
-    fun searchItemsByKeyword(keyword: String, lastId: Long): List<ItemInfo>
+    fun findAllItems(lastId: Long?): List<ItemInfo>
+    fun findItemsByShopId(shopId: Long, lastId: Long?): List<ItemInfo>
+    fun searchItemsByKeyword(keyword: String, lastId: Long?): List<ItemInfo>
 }
